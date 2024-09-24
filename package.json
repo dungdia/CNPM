@@ -1,0 +1,18 @@
+{
+  "name": "phone_wrld",
+  "version": "1.0.1",
+  "description": "web ban dien thoai",
+  "main": "./src/server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --env-file .\\src\\config\\.env .\\src\\server.js",
+    "dev": "node --watch --env-file .\\src\\config\\.env .\\src\\server.js"
+  },
+  "author": "dungdia",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "mysql": "^2.18.1"
+  }
+}
