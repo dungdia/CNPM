@@ -1,0 +1,59 @@
+<nav class="navbar navbar_custom navbar-expand-lg d-flex">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/"><img src="../assets/icon/Logo.svg" alt=""></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-nav-custom">
+        <li class="nav-item px-2">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item px-2">
+          <a class="nav-link active" href="/product">Product</a>
+        </li>
+        <li class="nav-item px-2">
+          <a class="nav-link active" href="#">About</a>
+        </li>
+        <div class="login-display">
+          <!-- user info (Class user-info-nav to access)-->
+          <li class="nav-item px-2 btn-user-info-reponsive user-info-nav">
+            <a class="nav-link active" href="/user-info">user-info</a>
+          </li>
+  
+          <!--cart-order-->
+          <li class="nav-item px-2 btn-user-info-reponsive user-info-nav">
+            <a class="nav-link active cart-nav" href="/user-info">Cart</a>
+          </li>
+          <li class="nav-item px-2 btn-user-info-reponsive user-info-nav">
+            <a class="nav-link active order-nav" href="/user-info">Order</a>
+          </li>
+        </div>
+
+      </ul>
+      <form class="mx-auto nav-search-bar" role="search">
+        <div class="input-group">
+          <input type="text" class="form-control rounded-start-pill" placeholder="search_bar" aria-label="Search_bar" aria-describedby="button-addon2">
+          <button class="btn btn-dark rounded-end-circle" type="button" id="button-addon2"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+      </form>
+
+      
+      <a class="nav-link" href="/login" id="login-btn"><button class="btn btn-success button-nav mx-2">Đăng Nhập</button></a>
+        <div class="dropdown btn-cart-order login-display">
+          <button class="btn btn-outline-dark bi bi-cart3 py-2 px-3 mx-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item bi bi-cart3 p-3 cart-nav" href="/cart"> Giỏ Hàng</a></li>
+            <li><a class="dropdown-item bi bi-phone p-3 order-nav" href="/order"> Hóa Đơn</a></li>
+          </ul>
+        </div>
+        <!-- user info (Class user-info-nav to access)-->
+        <a class="btn btn-outline-dark bi bi-person-lines-fill py-2 px-3 mx-2 btn-user-info user-info-nav login-display" href="/user-info"></a>
+        <!--logout button (Class logout to access)-->
+        <button class="btn btn-danger btn-logout bi bi-arrow-bar-right mx-2 py-2 px-3 logout login-display"></button>
+        <button class="btn btn-outline-danger button-nav btn-logout-reponsive logout login-display">Log out</button>
+
+    </div>
+  </div>
+</nav>

@@ -34,11 +34,45 @@ async function viewsHandler(){
   }
 }
 
+async function productImgApi(){
+  
+  
+  app.get(`/img/:ten_sanpham`,async (req,res)=>{
+
+      const DBConnecter = require('./app/controller/DBconnecter')
+      const conn = new DBConnecter()
+      // console.log(req.params)
+      const product = await conn.select(`SELECT hinh_anh FROM sanpham WHERE sanpham.ten_sanpham = "${req.params.ten_sanpham}"`)
+      // if(product.size == 0 )
+        // res.send(product.length)
+      if(product.length <=0){
+        res.sendFile(path.join(__dirname,"assets","image","default.jpg"))
+        return
+      }
+
+      res.contentType("png")
+      res.send(product[0].hinh_anh)
+      conn.closeConnect()
+
+
+    })
+
+
+}
+
+productImgApi()
+
 apiHandler()
+
+
 
 app.get('/', function(req, res) {
     res.render('index');
 });
+
+app.get('/index',function(req, res) {
+  res.render('index');
+})
 
 viewsHandler()
 

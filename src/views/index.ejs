@@ -1,11 +1,124 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <%- include("./include/head.ejs"); %>
+
+  <title>Phone_WRLD</title>
 </head>
 <body>
-  <h1>hello world</h1>
+
+  <!-- header -->
+  <%- include("./include/header.ejs"); %>
+  
+
+  
+
+  
+  <!-- slide show -->
+  <div class="carousel slide m-5 p-2 border border-secondary border-opacity-50 rounded-4 Slide-show" id="Slide-show" data-bs-theme="dark" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#slide-show" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#slide-show" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#slide-show" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-bs-interval="3000"> 
+        <img src="../assets/image/slide_1.png" class="d-block w-100">
+      </div>
+      <div class="carousel-item" data-bs-interval="3000">
+        <img src="../assets/image/slide_2.png" class="d-block w-100">
+      </div>
+      <div class="carousel-item" data-bs-interval="3000">
+        <img src="../assets/image/slide_3.png" class="d-block w-100">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#slide-show" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#slide-show" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+
+
+
+
+  <!-- trending -->
+  <div class="trending-group mb-5">
+    <p class="fs-1 fw-bold mx-5 my-4">Trending Now</p>
+    <div class="product-trending-list mx-5 d-flex flex-wrap">
+
+      <!-- card treding example -->
+      <div class="product mx-1 border border-secondary rounded-4">
+        <img src="/img/sp1" class="card-img-top p-2" alt="...">
+      
+        <div class="card-body m-2">
+          <h5 class="card-title fs-3 fw-bold">Phone 1</h5>
+          <p class="card-text my-4 fs-4 fw-bold text-danger">12,023,234 đ</p>
+        </div>
+      </div>
+
+
+
+      <div class="product mx-1 border border-secondary rounded-4">
+        <img src="/img/sp1" class="card-img-top p-2" alt="...">
+      
+        <div class="card-body m-2">
+          <h5 class="card-title fs-3 fw-bold">Phone 1</h5>
+          <p class="card-text my-4 fs-4 fw-bold text-danger">12,023,234 đ</p>
+        </div>
+      </div>
+      <div class="product mx-1 border border-secondary rounded-4">
+        <img src="/img/sp1" class="card-img-top p-2" alt="...">
+      
+        <div class="card-body m-2">
+          <h5 class="card-title fs-3 fw-bold">Phone 1</h5>
+          <p class="card-text my-4 fs-4 fw-bold text-danger">12,023,234 đ</p>
+        </div>
+      </div>
+      <div class="product mx-1 border border-secondary rounded-4">
+        <img src="/img/sp1" class="card-img-top p-2" alt="...">
+      
+        <div class="card-body m-2">
+          <h5 class="card-title fs-3 fw-bold">Phone 1</h5>
+          <p class="card-text my-4 fs-4 fw-bold text-danger">12,023,234 đ</p>
+        </div>
+      </div>
+
+
+      
+    </div>
+    
+    </div>
+
+
+
+    <!-- product list at home page -->
+    <div class="product-list-home mb-5">
+      <p class="fs-1 fw-bold mx-5 my-4">Welcome <span class="text-danger">User</span> to website</p>
+      <div class="product-list mx-5 d-flex flex-wrap">
+
+
+
+      <!-- card treding example -->
+      <div class="product mx-1 my-1 border border-secondary rounded-4">
+        <img src="/img/sp1" class="card-img-top p-2" alt="...">
+      
+        <div class="card-body m-2">
+          <h5 class="card-title fs-3 fw-bold">Phone 1</h5>
+          <p class="card-text my-4 fs-4 fw-bold text-danger">12,023,234 đ</p>
+        </div>
+      </div>
+
+
+
+      </div>
+    </div>
+
+
+
+
+
 </body>
-</html>
+</html> 

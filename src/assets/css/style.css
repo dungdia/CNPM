@@ -1,0 +1,40 @@
+.navbar_custom{
+    background-color: #f6f5ff !important;
+    padding: 0 4.9rem !important;
+}
+
+.nav-search-bar{
+    width: 25rem !important;
+}
+
+.btn-logout-reponsive{
+    visibility: hidden;
+}
+
+.btn-user-info-reponsive{
+    display: none;
+}
+
+.Slide-show .carousel-inner{
+    max-height: 40% !important;
+}
+
+.Slide-show .carousel-inner .carousel-item img {
+    width: 100%;
+    height: 40%;
+    object-fit: inherit;
+    padding-left: 8rem;
+    padding-right: 8rem;
+}
+
+.product{
+    width: calc(25% - 8px) !important;
+}
+
+.product img{
+    object-fit: contain;
+}
+
+.product:hover img{
+    padding: 1.1rem !important;
+}
