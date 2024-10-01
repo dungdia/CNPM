@@ -15,16 +15,24 @@
   display: none;
 }
 
-.Slide-show .carousel-inner {
+/* .Slide-show .carousel-inner {
   max-height: 40% !important;
-}
+} */
 
 .Slide-show .carousel-inner .carousel-item img {
   width: 100%;
-  height: 40%;
+  height: 50%;
   object-fit: inherit;
   padding-left: 8rem;
   padding-right: 8rem;
+}
+
+.trending-group {
+  margin: 0 2.5rem;
+}
+
+.product-list-home {
+  margin: 0 2.5rem 2rem 2.5rem;
 }
 
 .product {
@@ -40,10 +48,19 @@
 }
 
 .footer {
-  padding: 4rem;
+  padding: 5rem;
+  padding-bottom: 1rem;
+  background-color: #f3f3f3;
 }
 
 .basic-describe img {
   max-height: 50%;
   max-width: 10%;
+}
+
+.company a:hover,
+.support a:hover,
+.address a:hover {
+  color: aqua;
+  font-size: large;
 }
