@@ -1,81 +1,74 @@
-require("ejs")
-const express = require("express")
-const path = require('path');
+require("ejs");
+const express = require("express");
+const path = require("path");
 const getAllFile = require("./utils/getAllFile");
-const setUpREST = require("./utils/setUpREST")
+const setUpREST = require("./utils/setUpREST");
 
-const app = express()
+const app = express();
 
-app.use("/assets",express.static(path.join(__dirname,"assets")))
+app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 // setting view engine to ejs
 app.set("view engine", "ejs");
-app.set('views', path.join(__dirname, 'views'));
+app.set("views", path.join(__dirname, "views"));
 
-async function apiHandler(){
+async function apiHandler() {
   //setup api với mỗi file trong app/api
-  const folders = await getAllFile(path.join(__dirname,"app","api"))
+  const folders = await getAllFile(path.join(__dirname, "app", "api"));
 
-  for(const folder of folders){
-    const parent = folder.split("\\").pop()
-    await setUpREST(app,path.join(__dirname,"app","api"),parent)
+  for (const folder of folders) {
+    const parent = folder.split("\\").pop();
+    await setUpREST(app, path.join(__dirname, "app", "api"), parent);
   }
 }
 
-async function viewsHandler(){
-  const viewFolder = await getAllFile(path.join(__dirname,"views","pages"))
+async function viewsHandler() {
+  const viewFolder = await getAllFile(path.join(__dirname, "views", "pages"));
 
-  for(const page of viewFolder){
+  for (const page of viewFolder) {
     //lấy tên trang để setup đường dẫn
-    const pageName = page.split('\\').pop().replace(".ejs","")
-    app.get(`/${pageName}`,(req,res)=>{
-      res.render(page)
-    })
+    const pageName = page.split("\\").pop().replace(".ejs", "");
+    app.get(`/${pageName}`, (req, res) => {
+      res.render(page);
+    });
   }
 }
 
-async function productImgApi(){
-  
-  
-  app.get(`/img/:ten_sanpham`,async (req,res)=>{
+async function productImgApi() {
+  app.get(`/img/:ten_sanpham`, async (req, res) => {
+    const DBConnecter = require("./app/controller/DBconnecter");
+    const conn = new DBConnecter();
+    // console.log(req.params)
+    const product = await conn.select(
+      `SELECT hinh_anh FROM sanpham WHERE sanpham.ten_sanpham = "${req.params.ten_sanpham}"`
+    );
+    // if(product.size == 0 )
+    // res.send(product.length)
+    if (product.length <= 0) {
+      res.sendFile(path.join(__dirname, "assets", "image", "default.jpg"));
+      return;
+    }
 
-      const DBConnecter = require('./app/controller/DBconnecter')
-      const conn = new DBConnecter()
-      // console.log(req.params)
-      const product = await conn.select(`SELECT hinh_anh FROM sanpham WHERE sanpham.ten_sanpham = "${req.params.ten_sanpham}"`)
-      // if(product.size == 0 )
-        // res.send(product.length)
-      if(product.length <=0){
-        res.sendFile(path.join(__dirname,"assets","image","default.jpg"))
-        return
-      }
-
-      res.contentType("png")
-      res.send(product[0].hinh_anh)
-      conn.closeConnect()
-
-
-    })
-
-
+    res.contentType("png");
+    res.send(product[0].hinh_anh);
+    conn.closeConnect();
+  });
 }
 
-productImgApi()
+productImgApi();
 
-apiHandler()
+apiHandler();
 
-
-
-app.get('/', function(req, res) {
-    res.render('index');
+app.get("/", function (req, res) {
+  res.render("index");
 });
 
-app.get('/index',function(req, res) {
-  res.render('index');
-})
+app.get("/index", function (req, res) {
+  res.render("index");
+});
 
-viewsHandler()
+viewsHandler();
 
-app.listen(process.env.PORT || 3000,()=>{
-    console.log(`running on: http://localhost:${process.env.PORT}`)
-})
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`running on: http://localhost:${process.env.PORT}`);
+});
