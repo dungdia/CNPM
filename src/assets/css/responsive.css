@@ -1,3 +1,10 @@
+@media (max-width: 1200px) {
+  .Slide-show .carousel-inner .carousel-item img {
+    height: 50%;
+    transition: 0.4s;
+  }
+}
+
 @media (max-width: 991px) {
   button.button-nav {
     width: 100%;

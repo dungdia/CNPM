@@ -25,8 +25,11 @@ function checkUser() {
 }
 
 async function renderProductList() {
-  const productData = await fetchProductData(8);
   const [productList] = document.getElementsByClassName("product-list");
+  if(!productList){
+    return;
+  }
+  const productData = await fetchProductData(8);
   const products = [];
   for (const product of productData) {
     products.push(product);
