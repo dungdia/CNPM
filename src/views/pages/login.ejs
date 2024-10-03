@@ -1,0 +1,45 @@
+<head>
+    <%- include("../include/head.ejs"); %>
+</head>
+
+<body style="overflow: hidden;">
+    <header>
+        <%- include("../include/header.ejs"); %>
+    </header>
+
+    <main>
+        <div class="login-container__sign-in">
+            <div class="box form-box">
+                <div class="login-form__header">
+                    <h1 class="login-form__title">Sign In</h1>
+                </div>
+                <form action="" method="POST" class="login-form__body" id="login-form__body">
+                    <div class="input_group">
+                        <label for="login-form__input--username" class="form-label">Username: </label>
+                        <input type="text" class="form-control" id="login-form__input--username" placeholder="Username">
+                        <div id="username-feedback" class="invalid-feedback">
+                            Please enter an username.
+                        </div>
+                    </div>
+                    <div class="input_group">
+                        <label for="login-form__input--password" class="form-label">Password: </label>
+                        <input type="password" class="form-control" id="login-form__input--password"
+                            placeholder="Password">
+                        <div id="email-feedback" class="invalid-feedback">
+                            Please enter an password.
+                        </div>
+                    </div>
+                </form>
+                <div class="login-form__footer">
+                    <button id="login-button__sign-in" class="btn btn-primary" type="button">Sign in</button>
+                    <div class="register-form__link">
+                        <p>
+                            Don't have account?
+                            <a href="/register">Register</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
