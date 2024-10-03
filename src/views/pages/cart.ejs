@@ -1,75 +1,109 @@
 <head>
-    <%- include("../include/head.ejs"); %>
-  
+  <%- include("../include/head.ejs"); %>
+  <script type="module" src="../../assets/js/cart.js"></script>
 </head>
 
 <body>
   <%- include("../include/header.ejs"); %>
 
-    <div class="cart-container border-top border-bottom border-1">
-        <div class="cart-header">
-            <div class="cart-header-img"></div>
-            <div class="cart-header-name">Product name</div>
-            <div class="cart-header-quantity">Quantity</div>
-            <div class="cart-header-price">Price</div>
-            <div class="cart-header-removebtn"></div>
-        </div>
-        <div class="cart-content-container" id="cart-content-container">
-            <div class="cart-item" id="cart-item">
-                <div class="item-img">
-                    <img src="https://cdn.hoanghamobile.com/i/preview/Uploads/2023/09/13/iphone-15-pro-max-natural-titanium-pure-back-iphone-15-pro-max-natural-titanium-pure-front-2up-screen-usen.png" alt="">
-                </div>
-                <div class="item-name">
-                    <p style="width: 50%;">Iphone 15 Pro Max Edtion 256 GB 16 GB RAM</p>
-                </div>
-                <div class="item-quantity">
-                    <button class="item-quantity-reduce">-</button>
-                    <p class="item-quantity-amount">1</p>
-                    <button class="item-quantity-increase">+</button>
-                </div>
-                <div class="item-price">15000000</div>
-                <div class="remove-from-cart">
-                    <button id="remove-from-cart-btn" class="remove-from-cart-btn btn btn-danger">Remove</button>
-                </div>
-            </div>
-        </div>
-        <div class="cart-footer" id="cart-footer">
-            <div class="cart-footer-img"></div>
-            <div class="cart-header-name"></div>
-            <div class="cart-header-quantity" id="cart-total-amount">1</div>
-            <div class="cart-total-fee cart-header-price" id="cart-total-price" style="margin-right: 0;">Total: 15,290,000</div>
-            <div class="cart-pay cart-header-removebtn">
-                <button id="cart-pay-btn" class="cart-pay-btn btn btn-success">Pay</button>
-            </div>
-        </div>
+  <div class="cart-container border-top border-bottom border-1">
+    <div class="cart-header">
+      <div class="cart-header-img"></div>
+      <div class="cart-header-name">Product name</div>
+      <div class="cart-header-quantity">Quantity</div>
+      <div class="cart-header-price">Price</div>
+      <div class="cart-header-removebtn"></div>
     </div>
-
-    <div class="user-payment-info-popup-container" id="user-payment-info-popup-container" style="top: -150%;">
-        <div class="user-payment-info-popup" id="user-payment-info-popup">
-            <div class="user-payment-info-header">Vui lòng nhập thông tin của bạn
-
-            </div>
-            <div class="user-payment-info-content">
-                <form id="user-payment-info-form" class="user-payment-info-form" action="">
-                    <p>Họ và Tên</p>
-                    <input type="text" name="txtFullName" id="user-fullName">
-                    <p>Số điện thoại</p>
-                    <input type="text" name="txtPhoneNumber" id="user-phoneNumber">
-                    <p>Địa chỉ</p>
-                    <input type="text" name="txtAddress" id="user-address">
-                    <p>Email</p>
-                    <input type="text" name="txtEmail" id="user-email">
-                    <p>Ghi chú</p>
-                    <input type="text" name="txtNote" id="user-note">
-                    <div class="button-container">
-                        <button type="submit" id="user-payment-info-confirm-button" class="user-payment-info-confirm-button btn btn-success">Xác nhận</button>
-                        <button id="user-payment-info-cancel-button" class="user-payment-info-cancel-button btn btn-danger">Hủy</button>
-                    </div>
-                </form>
-            </div>
+    <div class="cart-content-container" id="cart-content-container">
+      <div class="cart-item" id="cart-item">
+        <div class="item-img">
+          <img
+            src="https://cdn.hoanghamobile.com/i/preview/Uploads/2023/09/13/iphone-15-pro-max-natural-titanium-pure-back-iphone-15-pro-max-natural-titanium-pure-front-2up-screen-usen.png"
+            alt=""
+          />
         </div>
+        <div class="item-name">
+          <p style="width: 50%">Iphone 15 Pro Max Edtion 256 GB 16 GB RAM</p>
+        </div>
+        <div class="item-quantity">
+          <button class="item-quantity-reduce">-</button>
+          <p class="item-quantity-amount">1</p>
+          <button class="item-quantity-increase">+</button>
+        </div>
+        <div class="item-price">15000000</div>
+        <div class="remove-from-cart">
+          <button
+            id="remove-from-cart-btn"
+            class="remove-from-cart-btn btn btn-danger"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
     </div>
+    <div class="cart-footer" id="cart-footer">
+      <div class="cart-footer-img"></div>
+      <div class="cart-header-name"></div>
+      <div class="cart-header-quantity" id="cart-total-amount">1</div>
+      <div
+        class="cart-total-fee cart-header-price"
+        id="cart-total-price"
+        style="margin-right: 0"
+      >
+        Total: 15,290,000
+      </div>
+      <div class="cart-pay cart-header-removebtn">
+        <button id="cart-pay-btn" class="cart-pay-btn btn btn-success">
+          Pay
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="user-payment-info-popup-container"
+    id="user-payment-info-popup-container"
+    style="top: -150%"
+  >
+    <div class="user-payment-info-popup" id="user-payment-info-popup">
+      <div class="user-payment-info-header">
+        Vui lòng nhập thông tin của bạn
+      </div>
+      <div class="user-payment-info-content">
+        <form
+          id="user-payment-info-form"
+          class="user-payment-info-form"
+          action=""
+        >
+          <p>Họ và Tên</p>
+          <input type="text" name="txtFullName" id="user-fullName" />
+          <p>Số điện thoại</p>
+          <input type="text" name="txtPhoneNumber" id="user-phoneNumber" />
+          <p>Địa chỉ</p>
+          <input type="text" name="txtAddress" id="user-address" />
+          <p>Email</p>
+          <input type="text" name="txtEmail" id="user-email" />
+          <p>Ghi chú</p>
+          <input type="text" name="txtNote" id="user-note" />
+          <div class="button-container">
+            <button
+              type="submit"
+              id="user-payment-info-confirm-button"
+              class="user-payment-info-confirm-button btn btn-success"
+            >
+              Xác nhận
+            </button>
+            <button
+              id="user-payment-info-cancel-button"
+              class="user-payment-info-cancel-button btn btn-danger"
+            >
+              Hủy
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <%- include("../include/footer.ejs"); %>
-
 </body>
