@@ -65,3 +65,8 @@
   color: aqua;
   font-size: large;
 }
+
+.page-item:hover .page-link {
+  background-color: #0d6efd;
+  color: white;
+}
