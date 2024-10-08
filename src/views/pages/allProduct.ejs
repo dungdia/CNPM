@@ -1,0 +1,54 @@
+<head>
+  <%- include("../include/head.ejs"); %>
+</head>
+<body>
+  <header><%- include("../include/header.ejs"); %></header>
+
+  <div class="product-list-allproduct py-5">
+    <p class="fs-1 fw-bold mx-5 my-4">
+      Welcome <span class="text-danger">User</span> to website
+    </p>
+
+    <div class="product-list-all mx-5 d-flex flex-wrap">
+      <!-- card treding example -->
+      <a
+        href="/product?id=1"
+        class="product mx-1 border border-secondary rounded-4 link-underline link-underline-opacity-0"
+      >
+        <img src="/img/sp1" class="card-img-top p-2" alt="..." />
+
+        <div class="card-body m-2">
+          <h5 class="card-title text-center fs-3 text-dark fw-bold">Phone 1</h5>
+          <p class="card-text my-4 fs-4 fw-bold text-danger">12,023,234 đ</p>
+        </div>
+      </a>
+    </div>
+  </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination w-100 justify-content-center py-2">
+      <li class="page-item">
+        <li class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </li>
+      </li>
+      <li class="page-item active"><button class="page-link" href="#">1</button></li>
+      <li class="page-item"><button class="page-link" href="#">2</button></li>
+      <li class="page-item"><button class="page-link" href="#">3</button></li>
+      <li class="page-item"><button class="page-link" href="#">4</button></li>
+      <li class="page-item"><button class="page-link" href="#">5</button></li>
+      <li class="page-item"><button class="page-link" href="#">6</button></li>
+      <li class="page-item"><button class="page-link" href="#">7</button></li>
+      <li class="page-item"><button class="page-link" href="#">8</button></li>
+      <li class="page-item"><button class="page-link" href="#">9</button></li>
+      <li class="page-item"><button class="page-link" href="#">10</button></li>
+      <li class="page-item"><button class="page-link" href="#">...</button></li>
+      <li class="page-item"><button class="page-link" href="#">100</button></li>
+      <li class="page-item">
+        <li class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </li>
+      </li>
+    </ul>
+  </nav>
+  <%- include("../include/footer.ejs"); %>
+</body>

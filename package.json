@@ -5,8 +5,8 @@
   "main": "./src/server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --env-file .\\src\\config\\.env .\\src\\server.js",
-    "dev": "node --watch --env-file .\\src\\config\\.env .\\src\\server.js"
+    "start": "node --env-file ./src/config/.env ./src/server.js",
+    "dev": "node --watch --env-file ./src/config/.env ./src/server.js"
   },
   "author": "dungdia",
   "license": "ISC",

@@ -26,7 +26,7 @@ function checkUser() {
 
 async function renderProductList() {
   const [productList] = document.getElementsByClassName("product-list");
-  if(!productList){
+  if (!productList) {
     return;
   }
   const productData = await fetchProductData(8);
@@ -42,17 +42,20 @@ async function renderProductList() {
   productList.innerHTML = products
     .map(
       (product) => `
-  <a href="/product?id=${product.id_sanpham
-        }" class="product mx-1 border border-secondary rounded-4 link-underline link-underline-opacity-0">
+  <a href="/product?id=${
+    product.id_sanpham
+  }" class="product mx-1 my-1 border border-secondary rounded-4 link-underline link-underline-opacity-0">
   <img src="/img/${product.ten_sanpham}" class="card-img-top p-2" alt="...">
 
   <div class="card-body m-2">
-    <h5 class="card-title text-center fs-3 text-dark fw-bold">${product.ten_sanpham
-        }</h5>
-    <p class="card-text my-4 fs-4 fw-bold text-danger">${product.productPrice.gia == 0
-          ? "Comming Soon!"
-          : VND.format(product.productPrice.gia)
-        }</p>
+    <h5 class="card-title text-center fs-4 text-dark fw-bold">${
+      product.ten_sanpham
+    }</h5>
+    <p class="card-text my-4 fs-4 fw-bold text-danger">${
+      product.productPrice.gia == 0
+        ? "Comming Soon!"
+        : VND.format(product.productPrice.gia)
+    }</p>
   </div>
 </a>
   `

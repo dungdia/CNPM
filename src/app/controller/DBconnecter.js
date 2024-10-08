@@ -11,8 +11,12 @@ module.exports = class {
       database: process.env.DBNAME,
     });
 
+
     this.#con.connect((err) => {
-      if (err) this.#con = null;
+      if (err){
+        this.#con = null;
+        return
+      } 
     });
   }
 
