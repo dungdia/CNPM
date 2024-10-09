@@ -10,10 +10,9 @@ module.exports = async (req, res) => {
   //itemPerPage (Number), page? (number) 
   const parameterList = []
   const params = req.query;
-  console.log(params)
 
   if (!params.itemPerPage) {
-    sendFail("không có số sản phẩm mỗi trang")
+    sendFail(res,"không có số sản phẩm mỗi trang")
     return;
   }
   const itemPerPage = params.itemPerPage;
