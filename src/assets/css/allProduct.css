@@ -1,0 +1,19 @@
+.product-list-all {
+    margin: 0 3.5rem;
+}
+
+.product {
+    width: calc(25% - 30px) !important;
+}
+
+.page-item > button{
+    color: black;
+}
+
+.page-link:hover {
+    background-color: #01BAEF !important;
+}
+
+.active>.page-link, .page-link.active {
+    background-color: #3AAED8 !important;
+}

@@ -42,7 +42,7 @@ async function renderProductList() {
   productList.innerHTML = products
     .map(
       (product) => `
-  <a href="/product?id=${
+  <a href="/productDetail?id=${
     product.id_sanpham
   }" class="product mx-1 my-1 border border-secondary rounded-4 link-underline link-underline-opacity-0">
   <img src="/img/${product.ten_sanpham}" class="card-img-top p-2" alt="...">
