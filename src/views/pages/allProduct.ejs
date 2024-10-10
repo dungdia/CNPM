@@ -9,8 +9,8 @@
       Welcome <span class="text-danger">User</span> to website
     </p>
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      Launch demo modal
+    <button type="button" class="btn btn-primary mx-5 mb-4 filter-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Bộ lọc
     </button>
     
     <!-- Modal -->
@@ -18,15 +18,84 @@
       <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Lọc sản phẩm</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            ...
+            <form class="mx-auto nav-search-bar filter-search-bar" role="search">
+              <div class="input-group mw-100">
+                <input
+                  type="text"
+                  class="form-control rounded-start"
+                  placeholder="Nhập tên sản phẩm"
+                  aria-label="Search_bar"
+                  aria-describedby="button-addon2"
+                />
+                <!-- <button
+                  class="btn btn-dark rounded-end"
+                  type="submit"
+                  id="button-addon2"
+                >
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button> -->
+              </div>
+            </form>
+            <div class="brand-container">
+              <p class="brand-header">Thương hiệu:</p>
+              <div class="brand-list">
+                <div class="brand-list-item selected border border-black rounded">Apple</div>
+                <div class="brand-list-item border border-black rounded">Samsung</div>
+                <div class="brand-list-item border border-black rounded">Xiaomi</div>
+                <div class="brand-list-item border border-black rounded">Oppo 1</div>
+                <div class="brand-list-item border border-black rounded">Oppo 2</div>
+                <div class="brand-list-item selected border border-black rounded">Oppo 3</div>
+                <div class="brand-list-item border border-black rounded">Oppo 4</div>
+                <div class="brand-list-item border border-black rounded">Oppo 5</div>
+              </div>
+            </div>
+            <div class="ram-container">
+              <p class="ram-header">RAM:</p>
+              <div class="ram-list">
+                <div class="ram-list-item border border-black rounded">4 GB</div>
+                <div class="ram-list-item selected border border-black rounded">8 GB</div>
+                <div class="ram-list-item border border-black rounded">12 GB</div>
+                <div class="ram-list-item border border-black rounded">16 GB</div>
+                <div class="ram-list-item selected border border-black rounded">32 GB</div>
+                <div class="ram-list-item border border-black rounded">64 GB</div>
+                <div class="ram-list-item border border-black rounded">128 GB</div>
+              </div>
+            </div>
+            <div class="memory-storage-container">
+              <p class="memory-storage-header">Memory Storage:</p>
+              <div class="memory-storage-list">
+                <div class="memory-storage-list-item border border-black rounded">8 GB</div>
+                <div class="memory-storage-list-item selected border border-black rounded">16 GB</div>
+                <div class="memory-storage-list-item selected border border-black rounded">32 GB</div>
+                <div class="memory-storage-list-item border border-black rounded">64 GB</div>
+                <div class="memory-storage-list-item border border-black rounded">128 GB</div>
+                <div class="memory-storage-list-item border border-black rounded">256 GB</div>
+                <div class="memory-storage-list-item border border-black rounded">512 GB</div>
+                <div class="memory-storage-list-item border border-black rounded">1 TB</div>
+              </div>
+            </div>
+            <div class="price-container">
+              <p class="price-header">Price:</p>
+              <div class="price-content">
+                <p>From:</p>
+                <div class="primary-price">
+                  <input type="number" id="primary-price-value" class="primary-price-value border border-black rounded">
+                </div>
+                <p>to</p>
+                <div class="secondary-price">
+                  <input type="number" name="" id="secondary-price-value" class="secondary-price-value border border-black rounded">
+                </div>
+                <p>VNĐ</p>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-primary">Xác nhận</button>
           </div>
         </div>
       </div>
