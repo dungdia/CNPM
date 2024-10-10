@@ -20,9 +20,9 @@ module.exports = class {
     });
   }
 
-  select(querry) {
+  select(querry,statementList=[]) {
     return new Promise((resolve) => {
-      this.#con.query(querry, (err, result) => {
+      this.#con.query(querry,statementList, (err, result) => {
         if (err) resolve(err);
         resolve(result);
       });
