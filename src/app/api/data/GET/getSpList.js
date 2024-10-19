@@ -96,8 +96,8 @@ module.exports = async (req, res) => {
     const newGia = Math.ceil(gia*Constant.profit)
     productData.push({...probs,gia:newGia})
   }
-  res.send({ success: true,data:productData})
-
+  res.send({success: true ,data:productData})
+  conn.closeConnect()
   } catch (error) {
     res.send(error);
   }

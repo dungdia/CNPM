@@ -10,6 +10,22 @@
     color: black;
 }
 
+.page-link,.page-link-input{
+    height: 2rem;
+}
+.page-link-input{
+    border: #dee2e6 solid!important;
+    border-width: 1px !important;
+    width: 4rem;
+    text-align: center;
+}
+
+input.page-link-input:focus{
+    outline: none;
+    border-width: 1px !important;
+    border: #000000 solid!important;
+}
+
 .page-link:hover {
     background-color: #01BAEF !important;
 }
