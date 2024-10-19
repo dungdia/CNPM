@@ -10,6 +10,7 @@ module.exports = async (req, res) => {
             data.push(item.ram);
         }
         res.send(data);
+        conn.closeConnect()
     } catch (error) {
         res.send(error);
     }

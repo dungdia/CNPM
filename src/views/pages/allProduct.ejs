@@ -42,40 +42,40 @@
             </form>
             <div class="brand-container">
               <p class="brand-header">Thương hiệu:</p>
-              <div class="brand-list">
-                <div class="brand-list-item selected border border-black rounded">Apple</div>
+              <div class="brand-list" id="brand-list">
+                <!-- <div class="brand-list-item selected border border-black rounded">Apple</div>
                 <div class="brand-list-item border border-black rounded">Samsung</div>
                 <div class="brand-list-item border border-black rounded">Xiaomi</div>
                 <div class="brand-list-item border border-black rounded">Oppo 1</div>
                 <div class="brand-list-item border border-black rounded">Oppo 2</div>
                 <div class="brand-list-item selected border border-black rounded">Oppo 3</div>
                 <div class="brand-list-item border border-black rounded">Oppo 4</div>
-                <div class="brand-list-item border border-black rounded">Oppo 5</div>
+                <div class="brand-list-item border border-black rounded">Oppo 5</div> -->
               </div>
             </div>
             <div class="ram-container">
               <p class="ram-header">RAM:</p>
-              <div class="ram-list">
-                <div class="ram-list-item border border-black rounded">4 GB</div>
+              <div class="ram-list" id="ram-list">
+                <!-- <div class="ram-list-item border border-black rounded">4 GB</div>
                 <div class="ram-list-item selected border border-black rounded">8 GB</div>
                 <div class="ram-list-item border border-black rounded">12 GB</div>
                 <div class="ram-list-item border border-black rounded">16 GB</div>
                 <div class="ram-list-item selected border border-black rounded">32 GB</div>
                 <div class="ram-list-item border border-black rounded">64 GB</div>
-                <div class="ram-list-item border border-black rounded">128 GB</div>
+                <div class="ram-list-item border border-black rounded">128 GB</div> -->
               </div>
             </div>
             <div class="memory-storage-container">
               <p class="memory-storage-header">Memory Storage:</p>
-              <div class="memory-storage-list">
-                <div class="memory-storage-list-item border border-black rounded">8 GB</div>
+              <div class="memory-storage-list" id="memory-storage-list">
+                <!-- <div class="memory-storage-list-item border border-black rounded">8 GB</div>
                 <div class="memory-storage-list-item selected border border-black rounded">16 GB</div>
                 <div class="memory-storage-list-item selected border border-black rounded">32 GB</div>
                 <div class="memory-storage-list-item border border-black rounded">64 GB</div>
                 <div class="memory-storage-list-item border border-black rounded">128 GB</div>
                 <div class="memory-storage-list-item border border-black rounded">256 GB</div>
                 <div class="memory-storage-list-item border border-black rounded">512 GB</div>
-                <div class="memory-storage-list-item border border-black rounded">1 TB</div>
+                <div class="memory-storage-list-item border border-black rounded">1 TB</div> -->
               </div>
             </div>
             <div class="price-container">
@@ -103,7 +103,7 @@
 
     <div class="product-list-all d-flex flex-wrap">
       <!-- card treding example -->
-      <a
+      <!-- <a
         href="/productDetail?id=1"
         class="product mx-1 border border-secondary rounded-4 link-underline link-underline-opacity-0"
       >
@@ -113,12 +113,12 @@
           <h5 class="card-title text-center fs-3 text-dark fw-bold">Phone 1</h5>
           <p class="card-text my-4 fs-4 fw-bold text-danger">12,023,234 đ</p>
         </div>
-      </a>
+      </a> -->
     </div>
   </div>
   <nav aria-label="Page navigation example">
-    <ul class="pagination w-100 justify-content-center py-2">
-      <li class="page-item">
+    <ul class="pagination w-100 justify-content-center py-2" id="page-list">
+      <!-- <li class="page-item">
         <li class="page-link" href="#" style="cursor: pointer;" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
         </li>
@@ -133,13 +133,13 @@
       <li class="page-item"><button class="page-link" href="#">8</button></li>
       <li class="page-item"><button class="page-link" href="#">9</button></li>
       <li class="page-item"><button class="page-link" href="#">10</button></li>
-      <li class="page-item"><button class="page-link" href="#">...</button></li>
+      <li class="page-item"><input type="number" class="page-link-input"></li>
       <li class="page-item"><button class="page-link" href="#">100</button></li>
       <li class="page-item">
         <li class="page-link" href="#" style="cursor: pointer;" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </li>
-      </li>
+      </li> -->
     </ul>
   </nav>
   <%- include("../include/footer.ejs"); %>

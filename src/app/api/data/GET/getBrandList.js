@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
             data.push(item.brandName);
         }
         res.send(data);
-
+        conn.closeConnect()
     } catch (error) {
         res.send(error);
     }
