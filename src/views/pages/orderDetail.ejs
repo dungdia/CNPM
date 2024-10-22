@@ -1,0 +1,105 @@
+<head>
+    <%- include("../include/head.ejs"); %>
+</head>
+<body>
+    <header>
+        <%- include("../include/header.ejs"); %>
+    </header>
+    <div class="container">
+        <div class="order_detail_container">
+            <div class="order">
+                <div class="order_container">
+                    <div id="order_header" class="order_header">
+                        <div class="order_header_img"></div>
+                        <div class="order_header_name">Product name</div>
+                        <div class="order_header_quantity">Quantity</div>
+                        <div class="order_header_price">Price</div>
+                    </div>
+                    <div id="order_item_container" class="order_item_container">
+                        <div id="order_item" class="order_item">
+                            <div class="item_img" class="item_img">
+                                <img src="https://cdn.hoanghamobile.com/i/preview/Uploads/2023/09/13/iphone-15-pro-max-natural-titanium-pure-back-iphone-15-pro-max-natural-titanium-pure-front-2up-screen-usen.png" alt="" />
+                            </div>
+                            <div class="item_name">
+                                Iphone 15 Pro Max Edtion 256 GB 16 GB RAM
+                            </div>
+                            <div class="item_quantity">3</div>
+                            <div class="item_price">15000000</div>
+                        </div>
+                        <div id="order_item" class="order_item">
+                            <div class="item_img" class="item_img">
+                                <img src="https://cdn.hoanghamobile.com/i/preview/Uploads/2023/09/13/iphone-15-pro-max-natural-titanium-pure-back-iphone-15-pro-max-natural-titanium-pure-front-2up-screen-usen.png" alt="" />
+                            </div>
+                            <div class="item_name">
+                                Iphone 15 Pro Max Edtion 256 GB 16 GB RAM
+                            </div>
+                            <div class="item_quantity">3</div>
+                            <div class="item_price">15000000</div>
+                        </div>
+                    </div>
+                    <div id="order_status_container" class="order_status_container">
+                        <div id="order_status" class="order_status">
+                            <div class="order_place" id="order_place">
+                                <div class="order_place_check_symbol" id="order_place_check_symbol">
+                                    ✔
+                                </div>
+                                <div class="order_place_text" id="order_place_text">
+                                    Order Placed
+                                </div>
+                            </div>
+                            <div class="order_connector1" id="order_connector1"></div>
+                            <div class="order_pay" id="orde_pay">
+                                <div class="order_pay_check_symbol" id="order_pay_check_symbol">
+                                    ✔
+                                </div>
+                                <div class="order_pay_text" id="order_pay_text">
+                                    Order Paid
+                                </div>
+                            </div>
+                            <div class="order_connector2" id="order_connector2"></div>
+                            <div class="order_ship_out" id="order_ship_out">
+                                <div class="order_ship_out_check_symbol" id="order_ship_out_check_symbol">
+                                    ✔
+                                </div>
+                                <div class="order_ship_out_text" id="order_ship_out_text">
+                                    Order Shipped Out
+                                </div>
+                            </div>
+                            <div class="order_connector3" id="order_ship_out_text"></div>
+                            <div class="order_receive" id="order_receive">
+                                <div class="order_receive_check_symbol" id="order_receive_check_symbol">
+                                    ✔
+                                </div>
+                                <div class="order_receive_text" id="order_receive_text">
+                                    Order Received
+                                </div>
+                            </div>
+                            <div class="order_connector4" id="order_connector4"></div>
+                            <div class="order_rate" id="order_rate">
+                                <div class="order_rate_check_symbol" id="order_rate_check_symbol">
+                                    ✔
+                                </div>
+                                <div class="order_rate_text" id="order_rate_text">
+                                    Order rated
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order_user_info_container">
+                <div class="order_user_info_header">Thông tin hóa đơn</div>
+                <div class="order_user_info" id="order_user_info">
+                    <p id="order_user_fullname">Họ và tên khách hàng:</p>
+                    <p id="order_user_phone_number">Số điện thoại:</p>
+                    <p id="order_user_address">Địa chỉ:</p>
+                    <p id="order_user_email">Email:</p>
+                    <p id="order_user_total_price">Tổng tiền:</p>
+                    <p id="order_user_note">Note:</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include("../include/footer.ejs"); %> 
+</body>
