@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <head>
   <%- include("../include/head.ejs"); %>
 </head>
@@ -30,6 +31,7 @@
                   placeholder="Nhập tên sản phẩm"
                   aria-label="Search_bar"
                   aria-describedby="button-addon2"
+                  id="Search_bar-filter"
                 />
                 <!-- <button
                   class="btn btn-dark rounded-end"
@@ -94,8 +96,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-            <button type="button" class="btn btn-primary">Xác nhận</button>
+            <button type="button" id="cancel-button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="button" id="confirm-button" class="btn btn-primary">Xác nhận</button>
           </div>
         </div>
       </div>
