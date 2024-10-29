@@ -1,0 +1,96 @@
+<head>
+    <%- include("../include/head.ejs"); %>
+</head>
+<body>
+    <header>
+        <%- include("../include/header.ejs"); %>
+    </header>
+
+    <div class="order_list_container">
+        <h3 class="order_header">
+            Danh sách hóa đơn 
+            <span class="order_amount" id="order_amount">(3 orders)</span>
+        </h3>
+        <div class="order_list" id="order_list">
+                <article class="order_item">
+                    <figure class="order_item_image_container">
+                        <img src="./assets/image/default.jpg"  class="order_item_img" alt="">
+                    </figure>
+                    <div class="order_content">
+                        <div class="order_content_row1">
+                            <div class="order_content_name">
+                                Hóa đơn 1
+                            </div>
+
+                            <div class="order_content_id_container">
+                                Mã đơn hàng :
+                                <span class="order_content_id">
+                                    200
+                                </span>
+                            </div>
+                        </div>
+                        <div class="order_content_row2">
+                            <div class="order_content_price">
+                                10.123.456đ
+                            </div>
+                            <a href="" class="order_content_detail_btn">
+                                View Order Details
+                            </a>
+                        </div>
+                        <div class="order_content_row3">
+                            Ngày đặt hàng:
+                            <span class="order_content_date">
+                                25/05/2024
+                            </span>
+                        </div>
+                        <div class="order_content_row4">
+                            Tình trạng:
+                            <span class="order_content_status">Order Placed</span>
+                        </div>
+                        <div class="order_content_cancel_btn">Cancel</div>
+                    </div>
+                </article>
+                <article class="order_item">
+                    <figure class="order_item_image_container">
+                        <img src="./assets/image/default.jpg"  class="order_item_img" alt="">
+                    </figure>
+                    <div class="order_content">
+                        <div class="order_content_row1">
+                            <div class="order_content_name">
+                                Hóa đơn 1
+                            </div>
+
+                            <div class="order_content_id_container">
+                                Mã đơn hàng :
+                                <span class="order_content_id">
+                                    200
+                                </span>
+                            </div>
+                        </div>
+                        <div class="order_content_row2">
+                            <div class="order_content_price">
+                                10.123.456đ
+                            </div>
+                            <a href="" target="_blank" class="order_content_detail_btn">
+                                View Order Details
+                            </a>
+                        </div>
+                        <div class="order_content_row3">
+                            Ngày đặt hàng:
+                            <span class="order_content_date">
+                                25/05/2024
+                            </span>
+                        </div>
+                        <div class="order_content_row4">
+                            Tình trạng:
+                            <span class="order_content_status">Order Placed</span>
+                        </div>
+                        <div class="order_content_cancel_btn">Cancel</div>
+                    </div>
+                </article>
+        </div>
+        
+    </div>
+    
+    <%- include("../include/footer.ejs"); %> 
+</body>
