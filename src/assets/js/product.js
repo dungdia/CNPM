@@ -174,6 +174,7 @@ async function renderAllFilterList(){
     renderProductList(itemPerPage,1)
     await getTotalPage(itemPerPage)
     renderPaginationList()
+    cancelButton.click()
   }
 }
 
