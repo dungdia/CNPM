@@ -1,7 +1,8 @@
 <!DOCTYPE html>
+
 <head>
   <%- include("../include/head.ejs"); %>
-  <script type="module" src="../../assets/js/register.js"></script>
+    <script type="module" src="../../assets/js/register.js"></script>
 </head>
 
 <body style="overflow: hidden">
@@ -13,94 +14,49 @@
         <div class="login-form__header">
           <h1 class="login-form__title">Sign Up</h1>
         </div>
-        <form
-          action=""
-          method="POST"
-          class="login-form__body"
-          id="register-form__body"
-        >
+        <form action="" method="POST" class="login-form__body" id="register-form__body">
           <div class="input_group">
-            <label for="register-form__input--username" class="form-label"
-              >Username:
+            <label for="register-form__input--username" class="form-label">Username:
             </label>
-            <input
-              type="text"
-              class="form-control"
-              id="register-form__input--username"
-              placeholder="Username"
-              required
-            />
+            <input type="text" class="form-control" id="register-form__input--username" name="username"
+              placeholder="Username" />
             <div class="valid-feedback"></div>
             <div id="username-feedback" class="invalid-feedback">
               Please enter an username.
             </div>
           </div>
           <div class="input_group">
-            <label for="register-form__input--email" class="form-label"
-              >Email:
+            <label for="register-form__input--password" class="form-label">Password:
             </label>
-            <input
-              type="email"
-              class="form-control"
-              id="register-form__input--email"
-              placeholder="Email"
-              required
-            />
-            <div class="valid-feedback"></div>
-            <div id="email-feedback" class="invalid-feedback">
-              Please enter an email.
-            </div>
-          </div>
-          <div class="input_group">
-            <label for="register-form__input--password" class="form-label"
-              >Password:
-            </label>
-            <input
-              type="password"
-              class="form-control"
-              id="register-form__input--password"
-              placeholder="Password"
-              required
-            />
+            <input type="password" class="form-control" id="register-form__input--password" name="password"
+              placeholder="Password" />
             <div class="valid-feedback"></div>
             <div id="password-feedback" class="invalid-feedback">
               Please enter a password.
             </div>
           </div>
           <div class="input_group">
-            <label
-              for="register-form__input--confirm-password"
-              class="form-label"
-              >Confirm password:
+            <label for="register-form__input--confirm-password" class="form-label">Confirm password:
             </label>
-            <input
-              type="password"
-              class="form-control"
-              id="register-form__input--confirm-password"
-              placeholder="Password"
-              required
-            />
+            <input type="password" class="form-control" id="register-form__input--confirm-password"
+              name="confirmPassword" placeholder="Confirm password" />
             <div class="valid-feedback"></div>
             <div id="confirm-password-feedback" class="invalid-feedback">
               Please enter a password to confirm.
             </div>
           </div>
-        </form>
-        <div class="login-form__footer">
-          <button
-            id="register-button__sign-up"
-            class="btn btn-primary"
-            type="button"
-          >
-            Sign up
-          </button>
-          <div class="login-form__link">
-            <p>
-              Have a account?
-              <a href="/login">Sign In</a>
-            </p>
+          <div class="login-form__footer">
+            <button id="register-button__sign-up" class="btn btn-primary" type="submit">
+              Sign up
+            </button>
+            <div class="login-form__link">
+              <p>
+                Have a account?
+                <a href="/login">Sign In</a>
+              </p>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </main>
