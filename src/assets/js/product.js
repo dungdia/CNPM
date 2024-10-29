@@ -1,8 +1,17 @@
-const route = (document.location.href).split('/').pop()
+const fullRoute = (document.location.href).split('/').pop().split('?')
+const route = (fullRoute.length > 1 ? fullRoute[0]: fullRoute.pop())
+import { Validate } from "./Validate.js"
 
 let page = 1
 const itemPerPage = 8
 let totalPage
+let filterBrand =""
+let filterRam =""
+let filterMemory=""
+let filterName =""
+let filetrPrimaryNumber=-1
+let filterSecondaryNumber=-1
+
 
 const urls = ['getBrandList','getRamList','getDungLuongList']
 const fetchFilterList = urls.map( async (url) => {
@@ -12,20 +21,23 @@ const fetchFilterList = urls.map( async (url) => {
 })
 
 
-
 export async function fetchProductData(itemPerPage = 16,page = 1) {
-  const res = await fetch(`./api/data/getSpList?itemPerPage=${itemPerPage}&page=${page}`);
+  const res = await fetch(`./api/data/getSpList?itemPerPage=${itemPerPage}&page=${page}${filterBrand === "" ? "" : `&thuonghieu=${filterBrand}`}${filterRam === "" ? "" : `&ram=${filterRam}`}${filterMemory === "" ? "" : `&dung_luong=${filterMemory}`}${filterName === "" ? "" : `&productName=${filterName}`}${filetrPrimaryNumber === -1 ? "" : `&lowestPrice=${filetrPrimaryNumber}`}${filterSecondaryNumber === -1 ? "" : `&highestPrice=${filterSecondaryNumber}`}`);
   const json = await res.json();
   return json;
 }
 async function getTotalPage(itemPerPage=16){
-  const res = await fetch(`./api/data/getTotalProductPage?itemPerPage=${itemPerPage}`)
+  const res = await fetch(`./api/data/getTotalProductPage?itemPerPage=${itemPerPage}${filterBrand == "" ? "" : `&thuonghieu=${filterBrand}`}${filterRam === "" ? "" : `&ram=${filterRam}`}${filterMemory === "" ? "" : `&dung_luong=${filterMemory}`}${filterName === "" ? "" : `&productName=${filterName}`}${filetrPrimaryNumber === -1 ? "" : `&lowestPrice=${filetrPrimaryNumber}`}${filterSecondaryNumber === -1 ? "" : `&highestPrice=${filterSecondaryNumber}`}`)
   const json = await res.json();
   totalPage = json
 }
 
 async function renderAllFilterList(){
   const [brandList,ramList,memoryList] = await Promise.all(fetchFilterList)
+  // console.log(memoryList)
+  let tempBrand = filterRam
+  let tempRam = filterRam
+  let tempMemory = filterMemory
   
   const brandListElement = document.getElementById('brand-list')
   if(!brandListElement)
@@ -34,16 +46,20 @@ async function renderAllFilterList(){
   for(const brand of brandList){
     const brandItem = document.createElement('div')
     brandItem.classList.add('brand-list-item','border','border-black','rounded')
+    if(brand == tempRam)
+      brandItem.classList.add("selected")
     brandItem.textContent = brand
     brandItem.onclick = ()=>{
       if(brandItem.classList.contains("selected")){
         brandItem.classList.remove("selected")
+        tempBrand = ""
         return
       }
       const brandListButton = document.getElementsByClassName("brand-list-item")
       for(const button of brandListButton)
         button.classList.remove("selected")
       brandItem.classList.add("selected")
+      tempBrand = brand
     }
 
     brandListElement.append(brandItem)
@@ -57,16 +73,20 @@ async function renderAllFilterList(){
   for(const ram of ramList){
     const ramItem = document.createElement('div')
     ramItem.classList.add("ram-list-item","border","border-black","rounded")
+    if(ram == tempRam)
+      ramItem.classList.add("selected")
     ramItem.textContent = `${ram} GB`
     ramItem.onclick = () =>{
       if(ramItem.classList.contains("selected")){
         ramItem.classList.remove("selected")
+        tempRam =""
         return
       }
       const ramListButton = document.getElementsByClassName("ram-list-item")
       for(const button of ramListButton)
         button.classList.remove("selected")
       ramItem.classList.add("selected")
+      tempRam = ram
     }
     ramListElement.append(ramItem)
   }
@@ -78,21 +98,83 @@ async function renderAllFilterList(){
   for(const memory of memoryList){
     const memoryElement = document.createElement('div')
     memoryElement.classList.add("memory-storage-list-item","border","border-black","round")
+    if(memory == tempMemory)
+      memoryElement.classList.add("selected")
     memoryElement.textContent = `${memory} GB`
     memoryElement.onclick = () =>{
       if(memoryElement.classList.contains("selected")){
         memoryElement.classList.remove("selected")
+        tempMemory = ""
         return
       }
       const memoryListButton = document.getElementsByClassName('memory-storage-list-item')
       for(const button of memoryListButton)
         button.classList.remove("selected")
       memoryElement.classList.add("selected")
+      tempMemory= memory
     }
 
     memoryListElement.append(memoryElement)
   }
 
+  const searchBarFilter = document.getElementById("Search_bar-filter")
+  const primaryNumber = document.getElementById("primary-price-value")
+  const secondaryNumber = document.getElementById("secondary-price-value")
+  const confirmButton = document.getElementById("confirm-button")
+  const cancelButton = document.getElementById("cancel-button")
+  if(!searchBarFilter || !primaryNumber || !secondaryNumber || !confirmButton || !cancelButton)
+    return
+
+  searchBarFilter.value = filterName
+  primaryNumber.value = (filetrPrimaryNumber === -1 ? "" : filetrPrimaryNumber)
+  secondaryNumber.value = (filterSecondaryNumber === -1 ? "" : filterSecondaryNumber)
+
+  primaryNumber.onkeydown = (e) =>{
+    if(!Validate.isNumber(e.key) && !e.key == "Backspace")
+      e.preventDefault()
+  }
+
+  secondaryNumber.onkeydown = (e)=>{
+    if(!Validate.isNumber(e.key) && !e.key == "Backspace")
+      e.preventDefault()
+  }
+
+  confirmButton.onclick = async ()=>{
+    // console.log("click")
+    const primaryNumberValue = primaryNumber.value
+    const secondaryNumberValue = secondaryNumber.value
+    if(!Validate.isNumber(primaryNumberValue) || !Validate.isNumber(secondaryNumberValue)){
+      alert("Giá phải là số")
+      return
+    }
+    let lowestPrice
+    if(primaryNumberValue == "")
+      lowestPrice = -1
+    else
+      lowestPrice = Number.parseInt(primaryNumberValue)
+
+     let highestPrice
+    if(secondaryNumberValue == "")
+      highestPrice = -1
+    else
+      highestPrice = Number.parseInt(secondaryNumberValue)
+
+    if(lowestPrice != -1 && highestPrice != -1 && lowestPrice > highestPrice){
+      alert("giá bắt đầu phải nhỏ hơn giá kết thúc")
+      return
+    }  
+
+    console.table({"tempName":searchBarFilter.value,"tempBrand":tempBrand,'tempRam':tempRam,'tempMemory':tempMemory,"lowest_Price":lowestPrice,'highestPrice':highestPrice})
+    filterName = searchBarFilter.value
+    filterBrand = tempBrand
+    filterRam = tempRam
+    filterMemory = tempMemory
+    filetrPrimaryNumber = lowestPrice
+    filterSecondaryNumber = highestPrice
+    renderProductList(itemPerPage,1)
+    await getTotalPage(itemPerPage)
+    renderPaginationList()
+  }
 }
 
 
@@ -120,6 +202,15 @@ export async function renderProductList(itemPerPage = 16,page = 1) {
   for (const product of data) {
     products.push(product);
   }
+  
+  if(products.length <= 0){
+    productList.innerHTML = `<div class="w-100 m-3 py-1">
+    <p class="fs-1 text-center m-5">Không có sản phẩm</p>
+    </div>`
+    return
+  }
+
+
   const VND = new Intl.NumberFormat("Vi-VN", {
     style: "currency",
     currency: "VND",
@@ -159,20 +250,23 @@ async function changeToPage(Page) {
 
 async function renderPaginationList(){
   if(!totalPage)
-    return
-  const {success,data} = totalPage
-  if(!success){
-    console.log(data)
-    return
-  }
-  if(data <= 1)
-    return
+  return
+const {success,data} = totalPage
+if(!success){
+  console.log(data)
+  return
+}
 
-  const pageList = document.getElementById("page-list")
-  if(!pageList)
-    return
+const pageList = document.getElementById("page-list")
+if(!pageList)
+return
 
   pageList.innerHTML=""
+
+if(data <= 1)
+  return
+
+
 
   if(page != 1){
     const firstButton = document.createElement('li')
@@ -261,6 +355,11 @@ async function renderPaginationList(){
         
         function inputHandler(){
           const pageNum = input.value
+          if(!Validate.isNumber(pageNum)){
+            pageButton.innerHTML = `<li class="page-item"><button class="page-link" href="#">...</button></li>`
+            pageButton.onclick = handlePageClick
+            return
+          }
           if(pageNum != ""){
             if(pageNum < 1){
               changeToPage(1)
@@ -284,7 +383,7 @@ async function renderPaginationList(){
           input.onblur = inputHandler
 
           input.onkeydown = (e) =>{
-            if(["e", "E", "+", "-"].includes(e.key))
+            if(!Validate.isNumber(e.key) && !e.key == "Backspace")
               e.preventDefault();
             if(e.key == 'Enter')
               input.blur()
