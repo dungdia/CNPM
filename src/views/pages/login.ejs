@@ -1,6 +1,6 @@
 <head>
   <%- include("../include/head.ejs"); %>
-  <script type="module" src="../../assets/js/login.js"></script>
+    <script type="module" src="../../assets/js/login.js"></script>
 </head>
 
 <body style="overflow: hidden">
@@ -12,48 +12,27 @@
         <div class="login-form__header">
           <h1 class="login-form__title">Sign In</h1>
         </div>
-        <form
-          action=""
-          method="POST"
-          class="login-form__body"
-          id="login-form__body"
-        >
+        <form action="" method="POST" class="login-form__body" id="login-form__body">
           <div class="input_group">
-            <label for="login-form__input--username" class="form-label"
-              >Username:
+            <label for="login-form__input--username" class="form-label">Username:
             </label>
-            <input
-              type="text"
-              class="form-control"
-              id="login-form__input--username"
-              name="username"
-              placeholder="Username"
-            />
+            <input type="text" class="form-control" id="login-form__input--username" name="username"
+              placeholder="Username" />
             <div id="username-feedback" class="invalid-feedback">
               Please enter an username.
             </div>
           </div>
           <div class="input_group">
-            <label for="login-form__input--password" class="form-label"
-              >Password:
+            <label for="login-form__input--password" class="form-label">Password:
             </label>
-            <input
-              type="password"
-              class="form-control"
-              id="login-form__input--password"
-              name="password"
-              placeholder="Password"
-            />
+            <input type="password" class="form-control" id="login-form__input--password" name="password"
+              placeholder="Password" />
             <div id="email-feedback" class="invalid-feedback">
               Please enter an password.
             </div>
           </div>
           <div class="login-form__footer">
-            <button
-              id="login-button__sign-in"
-              class="btn btn-primary"
-              type="submit"
-            >
+            <button id="login-button__sign-in" class="btn btn-primary" type="submit">
               Sign in
             </button>
             <div class="register-form__link">

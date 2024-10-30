@@ -10,9 +10,11 @@ const signupInputConfirmPassword = document.getElementById("register-form__input
 formRegister.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    let valid = true;
-    if (Validation.isFormBlank(signupFormBody) &&
-        Validation.checkConfirmPassword(signupInputPassword, signupInputConfirmPassword)) {
+    if (
+        Validation.isFormBlank(signupFormBody) &&
+        Validation.checkPassword(signupInputPassword, signupInputConfirmPassword) &&
+        Validation.checkConfirmPassword(signupInputPassword, signupInputConfirmPassword)
+    ) {
         await registerData();
     }
 })
@@ -20,6 +22,7 @@ formRegister.addEventListener('submit', async (e) => {
 let registerData = async () => {
     var formData = new FormData(formRegister);
     var data = Object.fromEntries(formData.entries());
+    console.log(data)
     try {
         const res = await fetch(`/api/data/register`, {
             method: 'POST',
@@ -34,12 +37,12 @@ let registerData = async () => {
         }
 
         const resData = await res.json();
-        if (resData.message === "1") {
+        if (resData.message === "0") {
             alert("Đăng ký thành công")
             // thành công thì chuyển sang login form
             window.location.href = "/login"
         }
-        else if (resData.message === "0") {
+        else if (resData.message === "1") {
             alert("Tên tài khoản đã tồn tại")
         }
         else {
