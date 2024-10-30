@@ -3,7 +3,6 @@ const { DateTime } = require('luxon');
 const Validator = require('../../../../utils/validator')
 
 module.exports = async (req, res) => {
-    console.log(req.body)
     const { username, password, confirmPassword } = req.body;
     const nowInVietnam = DateTime.now().setZone('Asia/Ho_Chi_Minh'); // Set to Vietnam timezone
     const formattedDate = nowInVietnam.toFormat('yyyy-MM-dd HH:mm:ss');
@@ -12,7 +11,7 @@ module.exports = async (req, res) => {
 
     let isEmpty = dataList.some(Validator.isEmpty);
     let checkConfirmPassword = Validator.checkConfirmPassword(password, confirmPassword);
-    
+
     if (!isEmpty && checkConfirmPassword) {
         try {
             const DBConnecter = require("../../../controller/DBconnecter");
