@@ -11,8 +11,10 @@
   "author": "dungdia",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "ejs": "^3.1.10",
     "express": "^4.21.0",
+    "luxon": "^3.5.0",
     "mysql": "^2.18.1"
   }
 }
