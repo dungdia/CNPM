@@ -2,10 +2,13 @@ require("ejs");
 const express = require("express");
 const path = require("path");
 const getAllFile = require("./utils/getAllFile");
+const bodyParser = require("body-parser");
 const setUpREST = require("./utils/setUpREST");
 
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 // setting view engine to ejs
