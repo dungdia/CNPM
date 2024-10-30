@@ -13,11 +13,11 @@ module.exports = async (req, res) => {
             FROM taikhoan
             WHERE user_name = ?
         `, [username]);
-
+        console.log(passwordList)
         if (passwordList.length == 0) {
             return res.send({ status: "1", message: "Tài khoản không tồn tại" })
         }
-
+        
         const verifiedPassword = await bcrypt.compare(password, passwordList[0].password);
 
         if (!verifiedPassword) {

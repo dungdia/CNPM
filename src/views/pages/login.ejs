@@ -26,6 +26,7 @@
               type="text"
               class="form-control"
               id="login-form__input--username"
+              name="username"
               placeholder="Username"
             />
             <div id="username-feedback" class="invalid-feedback">
@@ -40,29 +41,29 @@
               type="password"
               class="form-control"
               id="login-form__input--password"
+              name="password"
               placeholder="Password"
             />
             <div id="email-feedback" class="invalid-feedback">
               Please enter an password.
             </div>
           </div>
-        </form>
-        <div class="login-form__footer">
-          <button
-            id="login-button__sign-in"
-            class="btn btn-primary"
-            type="button"
-          >
-            Sign in
-          </button>
-          <div class="register-form__link">
-            <p>
-              New to our website?
-              New to our website?
-              <a href="/register">Register</a>
-            </p>
+          <div class="login-form__footer">
+            <button
+              id="login-button__sign-in"
+              class="btn btn-primary"
+              type="submit"
+            >
+              Sign in
+            </button>
+            <div class="register-form__link">
+              <p>
+                New to our website?
+                <a href="/register">Register</a>
+              </p>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </main>
