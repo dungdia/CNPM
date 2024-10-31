@@ -1,5 +1,5 @@
 export class Validation {
-  constructor() {}
+  constructor() { }
   //=======================================================================
   // isEmpty
   //=======================================================================
@@ -11,6 +11,7 @@ export class Validation {
   //=======================================================================
   static isFormBlank(element) {
     console.log("-> Check form is not empty...");
+
     let valid = true;
     element.forEach((element) => {
       const idOfElement = document.getElementById(element.id);
@@ -32,13 +33,48 @@ export class Validation {
     let valid = true;
     const regex = /^[a-zA-z0-9._]+@[a-zA-Z0-9._]+\.[a-zA-Z]{2,}$/;
     const emailFeedback = email.parentElement.querySelector("#email-feedback");
-    if (Validation.isEmpty(email.value)) {
-      emailFeedback.innerHTML = `Please enter an email`;
-      return (valid = false);
-    }
     if (!regex.test(email.value) && !Validation.isEmpty(email.value)) {
       email.classList.add("is-invalid");
       emailFeedback.innerHTML = `Email is invalid`;
+      return (valid = false);
+    }
+    return valid;
+  }
+  //=======================================================================
+  // regexUsername
+  //=======================================================================
+  static checkUsername(username) {
+    console.log(`-> Check regex of username... `);
+
+    let valid = true
+    const regexUsername = /^(?! ).*/
+    const usernameFeedback = username.parentElement.querySelector(
+      "#username-feedback"
+    );
+    if (!regexUsername.test(username.value)) {
+      username.classList.add("is-invalid");
+      usernameFeedback.innerHTML = `Username is invalid`;
+      return (valid = false);
+    }
+    return valid;
+  }
+  //=======================================================================
+  // checkPassword
+  //=======================================================================
+  static checkPassword(setPassword, confirmPassword) {
+    console.log(`-> Check regex of password... `);
+
+    let valid = true;
+    const regexPassword = /^(?! )[^\s ]{6,}$/
+    const passwordFeedback = setPassword.parentElement.querySelector(
+      "#password-feedback"
+    );
+
+    if (!regexPassword.test(setPassword.value)) {
+      setPassword.classList.add("is-invalid");
+      passwordFeedback.innerHTML = `Password is invalid`;
+      confirmPassword.value = ""
+      confirmPassword.classList.remove("is-valid")
       return (valid = false);
     }
     return valid;
@@ -60,6 +96,8 @@ export class Validation {
       confirmPassword.classList.add("is-invalid");
       confirmFeedback.innerHTML = `Password is not match`;
       return (valid = false);
+    } else {
+      confirmPassword.classList.add("is-valid");
     }
     return valid;
   }

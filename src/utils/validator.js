@@ -3,7 +3,15 @@ module.exports = class Validator {
         return value === null || value === undefined || value === "";
     }
 
-    static checkConfirmPassword(setPassword, confirmPassword){
+    static regexUsername(username) {
+        return /^(?! ).*/.test(username)
+    }
+
+    static regexPassword(password) {
+        return /^(?! )[^\s ]{6,}$/.test(password);
+    }
+
+    static checkPassword(setPassword, confirmPassword) {
         return setPassword === confirmPassword;
     }
 }

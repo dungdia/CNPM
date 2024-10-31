@@ -3,16 +3,23 @@ const { DateTime } = require('luxon');
 const Validator = require('../../../../utils/validator')
 
 module.exports = async (req, res) => {
-    const { username, password, confirmPassword } = req.body;
     const nowInVietnam = DateTime.now().setZone('Asia/Ho_Chi_Minh'); // Set to Vietnam timezone
     const formattedDate = nowInVietnam.toFormat('yyyy-MM-dd HH:mm:ss');
 
+    const { username, password, confirmPassword } = req.body;
     const dataList = [username, password, confirmPassword];
 
-    let isEmpty = dataList.some(Validator.isEmpty);
-    let checkConfirmPassword = Validator.checkConfirmPassword(password, confirmPassword);
+    const isEmpty = dataList.some(Validator.isEmpty);
+    const regexUsername = Validator.regexUsername(username);
+    const regexPassword = Validator.regexPassword(password);
+    const checkPassword = Validator.checkPassword(password, confirmPassword);
 
-    if (!isEmpty && checkConfirmPassword) {
+    if (
+        !isEmpty &&
+        regexUsername &&
+        regexPassword &&
+        checkPassword
+    ) {
         try {
             const DBConnecter = require("../../../controller/DBconnecter");
             const conn = new DBConnecter();
@@ -24,7 +31,7 @@ module.exports = async (req, res) => {
             `, [username]);
 
             if (usernameList.length > 0) {
-                res.send({ message: "0" })
+                res.send({ message: "1" })
                 return;
             }
 
@@ -37,9 +44,11 @@ module.exports = async (req, res) => {
                 `,
                 [username, hashedPassword, formattedDate])
 
-            res.send({ message: "1" })
+            res.send({ message: "0" })
         } catch (error) {
             console.error("Error fetching usernames:", error);
         }
+    } else {
+        res.send({ message: "???!" })
     }
 }
