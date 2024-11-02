@@ -1,6 +1,8 @@
-import { fetchProductData,renderProductList } from "./product.js";
+// import { fetchProductData,renderProductList } from "./product.js";
 
+export function getNewToken(callback){
 
+}
 
 function checkUser() {
   const loginDisplay = document.getElementsByClassName("login-display");
