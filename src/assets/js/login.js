@@ -32,16 +32,18 @@ let loginData = async () => {
         }
 
         const resData = await res.json();
-        if(resData.status === "0") {
+        if(!resData.success) {
+            alert(resData.message)
+            return
+        }
+            console.log(resData)
+            const {access_token,refesh_token} = resData
+            // console.log(access_token ,"\n",refesh_token)
+            localStorage.setItem("refesh_token",refesh_token)
+            localStorage.setItem("token",access_token)
             alert("Đăng nhập thành công")
-            window.location.href = "/";
-        }
-        else if (resData.status === "1") {
-            alert("Tài khoản không tồn tại")
-        }
-        else if (resData.status === "2") {
-            alert("Sai mật khẩu")
-        }
+            window.location = "/"
+
     } catch (error) {
         console.log(error)
     }

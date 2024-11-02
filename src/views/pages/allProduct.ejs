@@ -105,9 +105,10 @@
 
     <div class="product-list-all w-100 d-flex flex-wrap">
       <!-- card treding example -->
-      <!-- <a
+      <% for(let i=1;i<=8;i++){ %>
+      <a
         href="/productDetail?id=1"
-        class="product mx-1 border border-secondary rounded-4 link-underline link-underline-opacity-0"
+        class="product mx-1 my-1 border border-secondary rounded-4 link-underline link-underline-opacity-0"
       >
         <img src="/img/sp1" class="card-img-top p-2" alt="..." />
 
@@ -115,7 +116,9 @@
           <h5 class="card-title text-center fs-3 text-dark fw-bold">Phone 1</h5>
           <p class="card-text my-4 fs-4 fw-bold text-danger">12,023,234 đ</p>
         </div>
-      </a> -->
+      </a>
+      <% }; %>
+
     </div>
   </div>
   <nav aria-label="Page navigation example">

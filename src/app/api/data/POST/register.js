@@ -15,40 +15,46 @@ module.exports = async (req, res) => {
     const checkPassword = Validator.checkPassword(password, confirmPassword);
 
     if (
-        !isEmpty &&
-        regexUsername &&
-        regexPassword &&
-        checkPassword
+        isEmpty ||
+        !regexUsername ||
+        !regexPassword ||
+        !checkPassword
     ) {
-        try {
-            const DBConnecter = require("../../../controller/DBconnecter");
-            const conn = new DBConnecter();
+        res.send({ message: "Lỗi định dạng dữ liệu",success: false })
+        return
+    } 
 
-            const usernameList = await conn.select(`
-                SELECT user_name as username
-                FROM taikhoan
-                WHERE user_name = ?
-            `, [username]);
+    try {
+        const DBConnecter = require("../../../controller/DBconnecter");
+        const conn = new DBConnecter();
 
-            if (usernameList.length > 0) {
-                res.send({ message: "1" })
-                return;
-            }
+        const usernameList = await conn.select(`
+            SELECT user_name as username
+            FROM taikhoan
+            WHERE user_name = ?
+        `, [username]);
 
-            const saltRounds = 10;
-            const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-            const insertUser = await conn.insert(`
-                    INSERT INTO taikhoan (user_name, password, ngaythamgia)
-                    VALUES (?, ?, ?)
-                `,
-                [username, hashedPassword, formattedDate])
-
-            res.send({ message: "0" })
-        } catch (error) {
-            console.error("Error fetching usernames:", error);
+        if (usernameList.length > 0) {
+            res.send({ message: "Tên tài khoản đã tồn tại", success: false })
+            return;
         }
-    } else {
-        res.send({ message: "???!" })
+
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        const insertUser = await conn.insert(`
+                INSERT INTO taikhoan (user_name, password, ngaythamgia)
+                VALUES (?, ?, ?)
+            `,
+            [username, hashedPassword, formattedDate])
+
+        if(insertUser.status == 200){
+            res.send({ message: "Đăng ký tài khoản thành công", success: true })
+            return
+        }
+        res.send({message: "Đã xảy ra lỗi trong lúc đăng ký", success: false})
+    } catch (error) {
+        console.error("Error fetching usernames:", error);
+        res.send({message: "Lỗi không thể thực hiện việc đăng ký", success: false})
     }
 }

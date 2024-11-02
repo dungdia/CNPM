@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 
 module.exports = class {
   #con;
@@ -40,9 +40,9 @@ module.exports = class {
     });
   }
 
-  delete(querry) {
+  delete(querry,list) {
     return new Promise((resolve) => {
-      this.#con.query(querry, (err, result) => {
+      this.#con.query(querry,list, (err, result) => {
         if (err) resolve(err);
         if (result.affectedRows == 0)
           resolve({ messsage: "lỗi delete không thành công", status: 500 });
@@ -51,9 +51,9 @@ module.exports = class {
     });
   }
 
-  update(querry) {
+  update(querry,list) {
     return new Promise((resolve) => {
-      this.#con.query(querry, (err, result) => {
+      this.#con.query(querry,list, (err, result) => {
         if (err) resolve(err);
         if (result.affectedRows == 0)
           resolve({ messsage: "lỗi update không thành công", status: 500 });

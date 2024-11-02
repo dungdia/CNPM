@@ -37,17 +37,13 @@ let registerData = async () => {
         }
 
         const resData = await res.json();
-        if (resData.message === "0") {
-            alert("Đăng ký thành công")
-            // thành công thì chuyển sang login form
-            window.location.href = "/login"
+        if(!resData.success){
+            alert(resData.message)
+            return
         }
-        else if (resData.message === "1") {
-            alert("Tên tài khoản đã tồn tại")
-        }
-        else {
-            alert("Đăng ký thất bại")
-        }
+        alert(resData.message)
+        window.location = "/login"
+
     } catch (error) {
         console.log(error)
     }
