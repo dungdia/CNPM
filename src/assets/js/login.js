@@ -49,5 +49,3 @@ let loginData = async () => {
     }
 }
 
-
-

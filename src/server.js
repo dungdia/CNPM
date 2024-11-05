@@ -20,7 +20,7 @@ async function apiHandler() {
   const folders = await getAllFile(path.join(__dirname, "app", "api"));
 
   for (const folder of folders) {
-    const parent = folder.split("/").pop();
+    const parent = folder.split("\\").pop();
     await setUpREST(app, path.join(__dirname, "app", "api"), parent);
   }
 }
@@ -30,7 +30,7 @@ async function viewsHandler() {
 
   for (const page of viewFolder) {
     //lấy tên trang để setup đường dẫn
-    const pageName = page.split("/").pop().replace(".ejs", "");
+    const pageName = page.split("\\").pop().replace(".ejs", "");
     app.get(`/${pageName}`, (req, res) => {
       res.render(page);
     });
