@@ -95,6 +95,10 @@
     background-color: #d68c45;
 }
 
+.product-version a {
+    text-decoration: none;;
+}
+
 .on-active {
     background: #ff5b2e;
     color: #fff;

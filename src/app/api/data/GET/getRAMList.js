@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
             (select ROW_NUMBER() OVER(PARTITION BY ram) c, ram FROM phienbansanpham) RAMList
             WHERE c = 1`);
         const data = [];
-        for(const item of ramList){
+        for (const item of ramList) {
             data.push(item.ram);
         }
         res.send(data);

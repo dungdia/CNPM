@@ -67,12 +67,20 @@ productImgApi();
 
 apiHandler();
 
-app.get(["/","/index"], function (req, res) {
+app.get(["/", "/index"], function (req, res) {
   res.render("index");
 });
 
 
 viewsHandler();
+
+function productId() {
+  app.get("/productDetail", (req, res) => {
+    console.log(req.query.id)
+    res.send({ message: "OK"})
+  })
+}
+// productId()
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Running on: http://localhost:${process.env.PORT}`);

@@ -13,16 +13,16 @@ module.exports = class {
 
 
     this.#con.connect((err) => {
-      if (err){
+      if (err) {
         this.#con = null;
         return
-      } 
+      }
     });
   }
 
-  select(querry,statementList=[]) {
+  select(querry, statementList = []) {
     return new Promise((resolve) => {
-      this.#con.query(querry,statementList, (err, result) => {
+      this.#con.query(querry, statementList, (err, result) => {
         if (err) resolve(err);
         resolve(result);
       });
@@ -40,9 +40,9 @@ module.exports = class {
     });
   }
 
-  delete(querry,list) {
+  delete(querry, list) {
     return new Promise((resolve) => {
-      this.#con.query(querry,list, (err, result) => {
+      this.#con.query(querry, list, (err, result) => {
         if (err) resolve(err);
         if (result.affectedRows == 0)
           resolve({ messsage: "lỗi delete không thành công", status: 500 });
@@ -51,9 +51,9 @@ module.exports = class {
     });
   }
 
-  update(querry,list) {
+  update(querry, list) {
     return new Promise((resolve) => {
-      this.#con.query(querry,list, (err, result) => {
+      this.#con.query(querry, list, (err, result) => {
         if (err) resolve(err);
         if (result.affectedRows == 0)
           resolve({ messsage: "lỗi update không thành công", status: 500 });
