@@ -32,17 +32,18 @@ let loginData = async () => {
         }
 
         const resData = await res.json();
-        if(!resData.success) {
+        if (!resData.success) {
             alert(resData.message)
             return
         }
-            console.log(resData)
-            const {access_token,refesh_token} = resData
-            // console.log(access_token ,"\n",refesh_token)
-            localStorage.setItem("refesh_token",refesh_token)
-            localStorage.setItem("token",access_token)
-            alert("Đăng nhập thành công")
-            window.location = "/"
+        console.log(resData)
+        const { access_token, refesh_token, login_account } = resData
+        // console.log(access_token ,"\n",refesh_token)
+        localStorage.setItem("refesh_token", refesh_token)
+        localStorage.setItem("token", access_token)
+        localStorage.setItem("login_account", login_account)
+        alert("Đăng nhập thành công")
+        window.location = "/"
 
     } catch (error) {
         console.log(error)
