@@ -1,4 +1,5 @@
 import { Validation } from './validation.js'
+import CookieManager from 'https://cdn.jsdelivr.net/npm/js-cookie-manager@1.0.2/index.min.js';
 
 const loginForm = document.getElementById("login-form__body")
 const singinInputBody = document.getElementById("login-form__body").querySelectorAll("input")
@@ -37,12 +38,17 @@ let loginData = async () => {
             return
         }
         console.log(resData)
-        const { access_token, refesh_token, login_account } = resData
+        const { access_token, refesh_token } = resData
         // console.log(access_token ,"\n",refesh_token)
-        localStorage.setItem("refesh_token", refesh_token)
-        localStorage.setItem("token", access_token)
-        localStorage.setItem("login_account", login_account)
+        // localStorage.setItem("refesh_token", refesh_token)
+        // localStorage.setItem("token", access_token)
+        // localStorage.setItem("login_account", login_account)
         alert("Đăng nhập thành công")
+
+        const cookieManager = new CookieManager();
+        cookieManager.set("access_token",access_token)
+        cookieManager.set("refesh_token",refesh_token)
+        // cookieManager.set("access_token",access_token)
         window.location = "/"
 
     } catch (error) {

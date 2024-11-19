@@ -1,4 +1,4 @@
-// import { fetchProductData,renderProductList } from "./product.js";
+import CookieManager from 'https://cdn.jsdelivr.net/npm/js-cookie-manager@1.0.2/index.min.js';
 
 export function getNewToken(callback){
 
@@ -10,7 +10,9 @@ function checkUser() {
 
   if (!loginDisplay || !loginBtn) return;
 
-  const user = localStorage.getItem("token");
+  const cookieManager = new CookieManager();
+
+  const user = cookieManager.get("access_token");
   //kiểm tra user ở đây từ từ viết
   if (!user) {
     loginBtn.classList.remove("visually-hidden");
@@ -32,7 +34,6 @@ checkUser();
 
 const logoutBtn = document.getElementById("logout_button");
 logoutBtn.onclick = () => {
-    console.log("alo djt me")
     const popupContainer = document.getElementById("popup_container");
     const popup = document.getElementById("popup");
     const [body] = document.getElementsByTagName("body");
@@ -64,8 +65,9 @@ logoutBtn.onclick = () => {
     }
 
     yesBtn.onclick = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("refresh_token");
+        const cookieManager = new CookieManager();
+        cookieManager.remove("access_token")
+        cookieManager.remove("refesh_token")
         window.location = "/";
     }
 }
