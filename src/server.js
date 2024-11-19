@@ -4,11 +4,13 @@ const path = require("path");
 const getAllFile = require("./utils/getAllFile");
 const bodyParser = require("body-parser");
 const setUpREST = require("./utils/setUpREST");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieParser())
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 // setting view engine to ejs
@@ -20,20 +22,31 @@ async function apiHandler() {
   const folders = await getAllFile(path.join(__dirname, "app", "api"));
 
   for (const folder of folders) {
-    const parent = folder.split("\\").pop();
+    const parent = folder.split("/").pop();
     await setUpREST(app, path.join(__dirname, "app", "api"), parent);
   }
 }
 
 async function viewsHandler() {
+  const authMiddleWare = require("./utils/authMiddleWare")
+  const roleMiddleWare = require("./utils/roleMiddleWare")
   const viewFolder = await getAllFile(path.join(__dirname, "views", "pages"));
+  const adminFolder = await getAllFile(path.join(__dirname,"views","admin"))
+  const requireLoginPage = ["cart","order","orderDetail","user-info"]
 
   for (const page of viewFolder) {
     //lấy tên trang để setup đường dẫn
-    const pageName = page.split("\\").pop().replace(".ejs", "");
-    app.get(`/${pageName}`, (req, res) => {
+    const pageName = page.split("/").pop().replace(".ejs", "");
+    app.get(`/${pageName}`,requireLoginPage.includes(pageName) ? authMiddleWare : (req,res,next)=> {next()}, (req, res) => {
       res.render(page);
     });
+  }
+
+  for(const page of adminFolder){
+    const pageName = page.split("/").pop().replace(".ejs", "");
+    app.get(`/admin/${pageName}`,authMiddleWare,roleMiddleWare,(req,res)=>{
+    res.render(page)
+  })
   }
 }
 
@@ -74,12 +87,12 @@ app.get(["/", "/index"], function (req, res) {
 
 viewsHandler();
 
-function productId() {
-  app.get("/productDetail", (req, res) => {
-    console.log(req.query.id)
-    res.send({ message: "OK"})
-  })
-}
+// function productId() {
+//   app.get("/productDetail", (req, res) => {
+//     console.log(req.query.id)
+//     res.send({ message: "OK"})
+//   })
+// }
 // productId()
 
 app.listen(process.env.PORT || 3000, () => {

@@ -17,7 +17,7 @@ const urls = ['getBrandList','getRamList','getDungLuongList']
 const fetchFilterList = urls.map( async (url) => {
   if(route != "allProduct")
     return //không gọi request nếu không phải route cần filter
-  const res = await fetch(`./api/data/${url}`,{headers: {Authorization: `Bearer ${localStorage.getItem("token")}`}})
+  const res = await fetch(`./api/data/${url}`)
   const json = await res.json()
   return json
 })
