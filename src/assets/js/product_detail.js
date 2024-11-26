@@ -25,12 +25,13 @@ async function renderProductDetail() {
     const productDetailMoreDetail = document.querySelector('.product-detail-more-detail')
     productDetail.innerHTML = `
         <div class="product-name">${productDetailData[0].ten_sanpham}</div>
+        <div class="product-quantity">Số lượng tồn kho: 34</div>
         <div class="product-price">${formatVND(productDetailData[0].gia)}đ</div>
         <div class="product-version-container">
-            <p class="product-version-label">Chọn phiên bản</p>
+            <p class="product-version-label" style="font-size:1.2rem">Chọn phiên bản RAM và Dung lượng lưu trữ: </p>
             <div class="product-version-list">
                 ${productDetailData.map((element, index) =>
-                    `<div class="product-version ${index === 0 ? 'on-active' : ''}">${element.ram}</div>`
+                    `<div class="product-version ${index === 0 ? 'on-active' : ''}">${element.ram} GB - ${element.dung_luong} GB</div>`
                 ).join('')}
             </div>
         </div>
@@ -40,7 +41,7 @@ async function renderProductDetail() {
     `
     productDetailMoreDetail.innerHTML = `
         <pre style="font-size: 20px">
-            Màn hình: ${productDetailData[0].kichThuocMan}
+            Màn hình: ${productDetailData[0].kichThuocMan} inch
 
             Hệ điều hành: ${productDetailData[0].heDieuHanh}
             
