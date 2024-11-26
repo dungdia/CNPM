@@ -30,7 +30,7 @@ async function renderProductDetail() {
             <p class="product-version-label">Chọn phiên bản</p>
             <div class="product-version-list">
                 ${productDetailData.map((element, index) =>
-                    `<div class="product-version ${index === 0 ? 'on-active' : ''}">${element.ram}</div>`
+                    `<div class="product-version ${index === 0 ? 'on-active' : ''}">${element.ram} GB - ${productDetailData[index].dung_luong} GB</div>`
                 ).join('')}
             </div>
         </div>
@@ -49,10 +49,6 @@ async function renderProductDetail() {
             Camera trước: ${productDetailData[0].cameraTruoc}
             
             Chip: ${productDetailData[0].chipXuLy}
-            
-            RAM: ${productDetailData[0].ram} GB
-            
-            Dung lượng lưu trữ: ${productDetailData[0].dung_luong} GB
             
             SIM: 1 Nano SIM &amp; 1 eSIM Hỗ trợ 5G
             

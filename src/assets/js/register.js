@@ -37,7 +37,7 @@ let registerData = async () => {
         }
 
         const resData = await res.json();
-        if(!resData.success){
+        if (!resData.success) {
             alert(resData.message)
             return
         }

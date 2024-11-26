@@ -14,4 +14,10 @@ module.exports = class Validator {
     static checkPassword(setPassword, confirmPassword) {
         return setPassword === confirmPassword;
     }
+
+    static isPhoneNumber(phoneNumber) {
+        const regex = /^((03|05|07|08|09)[0-9]{8})$/;
+
+        return regex.test(phoneNumber);
+    }
 }
