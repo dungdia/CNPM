@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <head>
   <%- include("./include/head.ejs"); %>
 
@@ -9,53 +10,57 @@
   <!-- header -->
   <%- include("./include/header.ejs"); %>
 
-  <!-- slide show -->
-  <div class="carousel slide p-2 border border-secondary border-opacity-50 rounded-4 Slide-show" id="Slide-show" data-bs-theme="dark" data-bs-ride="carousel" style="margin: 5rem 5rem 3rem 5rem !important;">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#slide-show" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#slide-show" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#slide-show" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-      <div class="carousel-item active" data-bs-interval="3000"> 
-        <img alt="phone-banner-1" src="../assets/image/slide_1.png" class="d-block w-100">
+    <!-- slide show -->
+    <div class="carousel slide p-2 border border-secondary border-opacity-50 rounded-4 Slide-show" id="Slide-show"
+      data-bs-theme="dark" data-bs-ride="carousel" style="margin: 5rem 5rem 3rem 5rem !important;">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#slide-show" data-bs-slide-to="0" class="active" aria-current="true"
+          aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#slide-show" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#slide-show" data-bs-slide-to="2" aria-label="Slide 3"></button>
       </div>
-      <div class="carousel-item" data-bs-interval="3000">
-        <img alt="phone-banner-2" src="../assets/image/slide_2.png" class="d-block w-100">
-      </div>
-      <div class="carousel-item" data-bs-interval="3000">
-        <img alt="phone-banner-3" src="../assets/image/slide_3.png" class="d-block w-100">
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#slide-show" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#slide-show" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-  
-  <!-- trending -->
-  <div class="trending-group">
-    <p class="fs-1 fw-bold mx-5 my-4">Trending Now</p>
-    <div class="product-trending-list w-100 mx-5 d-flex flex-wrap">
-
-      <!-- card treding example -->
-      <% for(let i=1;i<=4;i++){ %>
-      <a href="/productDetail?id=1" class="product mx-1 border border-secondary rounded-4 link-underline link-underline-opacity-0">
-        <img src="/img/sp1" class="card-img-top p-2" alt="...">
-      
-        <div class="card-body m-2">
-          <h5 class="card-title text-center fs-3 text-dark fw-bold">Phone <%=i%></h5>
-          <p class="card-text my-4 fs-4 fw-bold text-danger">99,999,999 đ</p>
+      <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="3000">
+          <img alt="phone-banner-1" src="../assets/image/slide_1.png" class="d-block w-100">
         </div>
-      </a>
-      <% }; %>
-
+        <div class="carousel-item" data-bs-interval="3000">
+          <img alt="phone-banner-2" src="../assets/image/slide_2.png" class="d-block w-100">
+        </div>
+        <div class="carousel-item" data-bs-interval="3000">
+          <img alt="phone-banner-3" src="../assets/image/slide_3.png" class="d-block w-100">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#slide-show" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#slide-show" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-    
+
+    <!-- trending -->
+    <div class="trending-group">
+      <p class="fs-1 fw-bold mx-5 my-4">Trending Now</p>
+      <div class="product-trending-list w-100 mx-5 d-flex flex-wrap">
+
+        <!-- card treding example -->
+        <% for(let i=1;i<=4;i++){ %>
+          <a href="/productDetail?id=1"
+            class="product mx-1 border border-secondary rounded-4 link-underline link-underline-opacity-0">
+            <img src="/img/sp1" class="card-img-top p-2" alt="...">
+
+            <div class="card-body m-2">
+              <h5 class="card-title text-center fs-3 text-dark fw-bold">Phone <%=i%>
+              </h5>
+              <p class="card-text my-4 fs-4 fw-bold text-danger">99,999,999 đ</p>
+            </div>
+          </a>
+          <% }; %>
+
+      </div>
+
     </div>
 
 
@@ -67,8 +72,8 @@
 
 
 
-      <!-- card example -->
-      <!-- <a href="/product?id=1" class="product mx-1 border border-secondary rounded-4 link-underline link-underline-opacity-0">
+        <!-- card example -->
+        <!-- <a href="/product?id=1" class="product mx-1 border border-secondary rounded-4 link-underline link-underline-opacity-0">
         <img src="/img/sp1" class="card-img-top p-2" alt="...">
       
         <div class="card-body m-2">
@@ -76,16 +81,18 @@
           <p class="card-text my-4 fs-4 fw-bold text-danger">12,023,234 đ</p>
         </div>
       </a> -->
-      <% for(let i=1;i<=8;i++){ %>
-      <a href="" class="product mx-1 my-1 border border-secondary rounded-4 link-underline link-underline-opacity-0">
-        <img src="./../assets/image/default.jpg" class="card-img-top p-2" alt="no image">
-      
-        <div class="card-body m-2">
-          <h5 class="card-title text-center fs-3 text-dark fw-bold">Phone <%=i%></h5>
-          <p class="card-text my-4 fs-4 fw-bold text-danger">99,999,99 đ</p>
-        </div>
-      </a>
-      <% }; %>
+        <% for(let i=1;i<=8;i++){ %>
+          <a href=""
+            class="product mx-1 my-1 border border-secondary rounded-4 link-underline link-underline-opacity-0">
+            <img src="./../assets/image/default.jpg" class="card-img-top p-2" alt="no image">
+
+            <div class="card-body m-2">
+              <h5 class="card-title text-center fs-3 text-dark fw-bold">Phone <%=i%>
+              </h5>
+              <p class="card-text my-4 fs-4 fw-bold text-danger">99,999,99 đ</p>
+            </div>
+          </a>
+          <% }; %>
 
 
       </div>
@@ -99,4 +106,5 @@
 
 
 </body>
-</html> 
+
+</html>
