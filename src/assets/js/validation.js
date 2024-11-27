@@ -1,3 +1,5 @@
+// import { Validator } from "../../utils/validator.js";
+
 export class Validation {
   constructor() { }
   //=======================================================================
@@ -23,7 +25,30 @@ export class Validation {
         element.classList.add("is-valid");
       }
     });
+
     return valid;
+  }
+  // 
+  // 
+  // 
+  static checkIsEmpty(e) {
+    console.log("-> Check form is not empty...");
+
+    let valid = true;
+    if (Validation.isEmpty(e.value)) {
+      e.classList.add("is-invalid")
+      valid = false
+    } else {
+      e.classList.remove("is-invalid")
+      e.classList.add("is-valid")
+    }
+
+    return valid
+  }
+  //=======================================================================
+  static isPassword(password) {
+    const regexPassword = (/^(?! )[^\s ]{6,}$/);
+    return regexPassword.test(password);
   }
   //=======================================================================
   // regexEmail
@@ -32,10 +57,10 @@ export class Validation {
     console.log("-> Check email...");
     let valid = true;
     const regex = /^[a-zA-z0-9._]+@[a-zA-Z0-9._]+\.[a-zA-Z]{2,}$/;
-    const emailFeedback = email.parentElement.querySelector("#email-feedback");
+    const emailFeedback = email.parentElement.querySelector("#userEmail-feedback");
     if (!regex.test(email.value) && !Validation.isEmpty(email.value)) {
       email.classList.add("is-invalid");
-      emailFeedback.innerHTML = `Email is invalid`;
+      emailFeedback.innerHTML = `Email không hợp lệ`;
       return (valid = false);
     }
     return valid;
@@ -83,22 +108,75 @@ export class Validation {
   // checkConfirmPassword
   //=======================================================================
   static checkConfirmPassword(setPassword, confirmPassword) {
+    console.log(`-> Check regex of password... `);
+
+    let valid = true;
+    const regexPassword = /^(?! )[^\s ]{6,}$/
+    const passwordFeedback = setPassword.parentElement.querySelector(
+      "#password-feedback"
+    );
+
+    if (!regexPassword.test(setPassword.value)) {
+      setPassword.classList.add("is-invalid");
+      passwordFeedback.innerHTML = `Password is invalid`;
+      confirmPassword.value = ""
+      confirmPassword.classList.remove("is-valid")
+      return (valid = false);
+    }
+    return valid;
+  }
+  // =======================================================================
+  // checkPhoneNumber
+  //=======================================================================
+  static isPhoneNumber(phoneNumber) {
+    const regex = /^((03|05|07|08|09)[0-9]{8})$/;
+
+    return regex.test(phoneNumber);
+  }
+  static checkPhoneNumber(phoneNumber) {
+    console.log(`-> Check regex of phone number... `)
+    let valid = true;
+
+    const userPhoneNumberFeedback = phoneNumber.parentElement.querySelector(
+      "#userPhoneNumber-feedback"
+    );
+
+    if (Validation.isEmpty(phoneNumber.value)) {
+      phoneNumber.classList.add("is-invalid");
+      userPhoneNumberFeedback.innerHTML = `Số điện thoại không hợp lệ`;
+      (valid = false);
+    }
+    if (!Validation.isPhoneNumber(phoneNumber.value)) {
+      phoneNumber.classList.add("is-invalid");
+      (valid = false);
+    }
+
+    return valid
+  }
+  //=======================================================================
+  // checkConfirmPassword
+  //=======================================================================
+  static checkConfirmChangePassword(setPassword, confirmPassword) {
     console.log("-> Check password is match...");
     let valid = true;
-    const confirmFeedback = confirmPassword.parentElement.querySelector(
-      "#confirm-password-feedback"
-    );
-    if (Validation.isEmpty(confirmPassword.value)) {
-      confirmFeedback.innerHTML = `Please enter a password to confirm.`;
-      return (valid = false);
-    }
-    if (setPassword.value !== confirmPassword.value) {
-      confirmPassword.classList.add("is-invalid");
-      confirmFeedback.innerHTML = `Password is not match`;
-      return (valid = false);
+    const newPasswordFeedback = document.querySelector(`label[for=${setPassword.id}]`);
+    const newConfirmPasswordFeedback = document.querySelector(`label[for=${confirmPassword.id}]`);
+    if (!Validation.isPassword(setPassword.value)) {
+      setPassword.classList.add("is-invalid");
+      newPasswordFeedback.innerHTML = `Vui lòng nhập mật khẩu hợp lệ.`;
+      (valid = false);
     } else {
-      confirmPassword.classList.add("is-valid");
+      if (setPassword.value !== confirmPassword.value) {
+        confirmPassword.classList.add("is-invalid");
+        confirmPassword.value = "";
+        newConfirmPasswordFeedback.innerHTML = `Mật khẩu không khớp`;
+        (valid = false);
+      } else {
+        confirmPassword.classList.remove("is-invalid");
+        confirmPassword.classList.add("is-valid");
+      }
     }
+
     return valid;
   }
 }

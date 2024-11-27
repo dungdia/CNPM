@@ -51,10 +51,6 @@ async function renderProductDetail() {
             
             Chip: ${productDetailData[0].chipXuLy}
             
-            RAM: ${productDetailData[0].ram} GB
-            
-            Dung lượng lưu trữ: ${productDetailData[0].dung_luong} GB
-            
             SIM: 1 Nano SIM &amp; 1 eSIM Hỗ trợ 5G
             
             Pin, Sạc: ${productDetailData[0].dungLuongPin} mAh 20 W

@@ -20,9 +20,9 @@ module.exports = async (req, res) => {
         !regexPassword ||
         !checkPassword
     ) {
-        res.send({ message: "Lỗi định dạng dữ liệu",success: false })
+        res.send({ message: "Lỗi định dạng dữ liệu", success: false })
         return
-    } 
+    }
 
     try {
         const DBConnecter = require("../../../controller/DBconnecter");
@@ -48,13 +48,13 @@ module.exports = async (req, res) => {
             `,
             [username, hashedPassword, formattedDate])
 
-        if(insertUser.status == 200){
+        if (insertUser.status == 200) {
             res.send({ message: "Đăng ký tài khoản thành công", success: true })
             return
         }
-        res.send({message: "Đã xảy ra lỗi trong lúc đăng ký", success: false})
+        res.send({ message: "Đã xảy ra lỗi trong lúc đăng ký", success: false })
     } catch (error) {
         console.error("Error fetching usernames:", error);
-        res.send({message: "Lỗi không thể thực hiện việc đăng ký", success: false})
+        res.send({ message: "Lỗi không thể thực hiện việc đăng ký", success: false })
     }
 }
