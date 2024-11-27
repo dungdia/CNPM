@@ -72,4 +72,12 @@ logoutBtn.onclick = () => {
     }
 }
 
+//------ Search ------//
 
+const searchResult = document.getElementById("search-result");
+const searchForm = document.getElementById("search-form");
+
+searchForm.onsubmit = () => {
+  window.location.href =`/allProduct?result=${searchResult.value}`
+  event.preventDefault();
+}

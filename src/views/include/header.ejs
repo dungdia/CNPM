@@ -35,7 +35,7 @@
         <div class="login-display">
           <!-- user info (Class user-info-nav to access)-->
           <li class="nav-item px-2 btn-user-info-reponsive user-info-nav">
-            <a class="nav-link active" href="/user-info">user-info</a>
+            <a class="nav-link active" href="/user-info">Account Information</a>
           </li>
 
           <!--cart-order-->
@@ -47,7 +47,7 @@
           </li>
         </div>
       </ul>
-      <form class="mx-auto nav-search-bar" role="search">
+      <form class="mx-auto nav-search-bar" role="search" id="search-form">
         <div class="input-group mw-100">
           <input
             type="text"
@@ -55,6 +55,7 @@
             placeholder="search_bar"
             aria-label="Search_bar"
             aria-describedby="button-addon2"
+            id="search-result"
           />
           <button
             class="btn btn-dark rounded-end-circle"
