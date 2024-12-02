@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
         const data = [];
         const Constant = require('../../../../config/Constant')
         for (const item of productByIdList) {
-            item.gia = Math.ceil(item.gia * Constant.profit)
+            item.gia = Math.ceil(item.gia*Constant.profit)
             const soLuongQuery = await conn.select(`SELECT COUNT(imei) as so_luong FROM 
             (SELECT ROW_NUMBER() OVER(PARTITION BY ctsanpham.imei) stt,ctsanpham.*
             FROM ctsanpham 
@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
                 LEFT JOIN cthoadon ON cthoadon.imei = ctsanpham.imei
                 LEFT JOIN hoadon ON hoadon.id_hoadon = cthoadon.id_hoadon
             WHERE ctsanpham.pbSanPham_id = ? AND ((hoadon.id_trangthaiHD = 5 AND ctgiohang.imei IS NULL) OR 
-            (cthoadon.imei IS NULL AND ctgiohang.imei IS NULL))) c WHERE stt = 1;`, [item.id_phienban])
+            (cthoadon.imei IS NULL AND ctgiohang.imei IS NULL))) c WHERE stt = 1;`,[item.id_phienban])
             item.so_luong = (soLuongQuery.length > 0 ? soLuongQuery[0].so_luong : 0)
             data.push(item)
         }

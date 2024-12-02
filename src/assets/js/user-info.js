@@ -86,8 +86,8 @@ userInfoForm.addEventListener("submit", async (e) => {
     await handleUpdateUserInfo();
 });
 
-const clearValid = (formBody) => {
-    for (const ele of formBody) {
+const clearValid = (formBody) =>{
+    for(const ele of formBody){
         ele.classList.remove("is-valid")
     }
 }
