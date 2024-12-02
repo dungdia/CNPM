@@ -35,7 +35,7 @@ function getLabel(e) {
     return document.querySelector(`label[for=${oldPassword.id}]`)
 }
 
-let handleUpdateUserPassword = async () => {
+const handleUpdateUserPassword = async () => {
     var formData = new FormData(changePasswordForm);
     var data = Object.fromEntries(formData.entries());
 
@@ -79,9 +79,6 @@ userInfoForm.addEventListener("submit", async (e) => {
     if (!Validation.checkPhoneNumber(userPhoneNumber)) {
         valid = false;
     }
-    if (!Validation.regexEmail(userEmail)) {
-        valid = false;
-    }
     if (!valid) {
         return
     }
@@ -89,7 +86,13 @@ userInfoForm.addEventListener("submit", async (e) => {
     await handleUpdateUserInfo();
 });
 
-let handleUpdateUserInfo = async () => {
+const clearValid = (formBody) =>{
+    for(const ele of formBody){
+        ele.classList.remove("is-valid")
+    }
+}
+
+const handleUpdateUserInfo = async () => {
     var formData = new FormData(userInfoForm);
     var data = Object.fromEntries(formData.entries());
 
