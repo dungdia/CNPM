@@ -1,0 +1,36 @@
+.datatable-pagination-list-item {
+    padding: 0 2px;
+}
+
+.datatable-pagination-list-item button {
+    border-radius: 0.2rem;
+    background-color: transparent;
+    padding: 0px 5px;
+}
+
+.datatable-pagination-list-item>button:hover {
+    background-color: aquamarine;
+}
+
+.datatable-active>button {
+    background-color: aquamarine;
+}
+
+.datatable-disabled {
+    display: none;
+}
+
+tr.selectedRow {
+    background-color: #ffff72;
+    border: transparent;
+}
+
+.modal-second {
+    z-index: 1052;
+}
+
+.modal-backdrop.fade {
+    &+.modal-backdrop.fade {
+        z-index: 1051;
+    }
+}

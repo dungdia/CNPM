@@ -1,24 +1,15 @@
 <!-- Div chứa popup -->
 <div class="popup_container" id="popup_container">
   <div class="popup" id="popup">
-    
-  </div>  
+
+  </div>
 </div>
 
 <nav class="navbar navbar_custom navbar-expand-lg d-flex fixed-top z-3">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"
-      ><img src="../assets/icon/Logo.svg" alt=""
-    /></a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <a class="navbar-brand" href="/"><img src="../assets/icon/Logo.svg" alt="" /></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -49,105 +40,69 @@
       </ul>
       <form class="mx-auto nav-search-bar" role="search" id="search-form">
         <div class="input-group mw-100">
-          <input
-            type="text"
-            class="form-control rounded-start-pill"
-            placeholder="search_bar"
-            aria-label="Search_bar"
-            aria-describedby="button-addon2"
-            id="search-result"
-          />
-          <button
-            class="btn btn-dark rounded-end-circle"
-            type="submit"
-            id="button-addon2"
-          >
+          <input type="text" class="form-control rounded-start-pill" placeholder="search_bar" aria-label="Search_bar"
+            aria-describedby="button-addon2" id="search-result" />
+          <button class="btn btn-dark rounded-end-circle" type="submit" id="button-addon2">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
 
         <!-- Search suggest -->
-<div
-class="search_result"
-id="search_result"
->
-<ul class="search_suggest">
-  <li class="search_suggest_result">
-    <a href="">
-      <img
-        class="search_suggest_result_img"
-        src="./assets/image/default.jpg"
-        alt=""
-      />
-      <div class="search_suggest_result_info">
-        <h3>iPhone 15</h3>
-        <p>23,690,000đ</p>
-      </div>
-    </a>
-  </li>
-  <li class="search_suggest_result">
-    <a href="">
-      <img
-        class="search_suggest_result_img"
-        src="./assets/image/default.jpg"
-        alt=""
-      />
-      <div class="search_suggest_result_info">
-        <h3>iPhone 15</h3>
-        <p>23,690,000đ</p>
-      </div>
-    </a>
-  </li>
-  <li class="search_suggest_result">
-    <a href="">
-      <img
-        class="search_suggest_result_img"
-        src="./assets/image/default.jpg"
-        alt=""
-      />
-      <div class="search_suggest_result_info">
-        <h3>iPhone 15</h3>
-        <p>23,690,000đ</p>
-      </div>
-    </a>
-  </li>
-</ul>
-</div>
+        <div class="search_result" id="search_result">
+          <ul class="search_suggest">
+            <li class="search_suggest_result">
+              <a href="">
+                <img class="search_suggest_result_img" src="./assets/image/default.jpg" alt="" />
+                <div class="search_suggest_result_info">
+                  <h3>iPhone 15</h3>
+                  <p>23,690,000đ</p>
+                </div>
+              </a>
+            </li>
+            <li class="search_suggest_result">
+              <a href="">
+                <img class="search_suggest_result_img" src="./assets/image/default.jpg" alt="" />
+                <div class="search_suggest_result_info">
+                  <h3>iPhone 15</h3>
+                  <p>23,690,000đ</p>
+                </div>
+              </a>
+            </li>
+            <li class="search_suggest_result">
+              <a href="">
+                <img class="search_suggest_result_img" src="./assets/image/default.jpg" alt="" />
+                <div class="search_suggest_result_info">
+                  <h3>iPhone 15</h3>
+                  <p>23,690,000đ</p>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
       </form>
 
-      <a class="nav-link" href="/login" id="login-btn"
-        ><button class="btn btn-success button-nav mx-2">Đăng Nhập</button></a
-      >
+      <a class="nav-link" href="/login" id="login-btn"><button class="btn btn-success button-nav mx-2">Đăng
+          Nhập</button></a>
       <div class="dropdown btn-cart-order login-display">
-        <button
-          class="btn btn-outline-dark bi bi-cart3 py-2 px-3 mx-2"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        ></button>
+        <button class="btn btn-outline-dark bi bi-cart3 py-2 px-3 mx-2" type="button" data-bs-toggle="dropdown"
+          aria-expanded="false"></button>
         <ul class="dropdown-menu">
           <li>
             <a class="dropdown-item bi bi-cart3 p-3 cart-nav" href="/cart">
-              Giỏ Hàng</a
-            >
+              Giỏ Hàng</a>
           </li>
           <li>
             <a class="dropdown-item bi bi-phone p-3 order-nav" href="/order">
-              Hóa Đơn</a
-            >
+              Hóa Đơn</a>
           </li>
         </ul>
       </div>
       <!-- user info (Class user-info-nav to access)-->
-      <a
-        class="btn btn-outline-dark bi bi-person-lines-fill py-2 px-3 mx-2 btn-user-info user-info-nav login-display"
-        href="/user-info"
-      ></a>
+      <a class="btn btn-outline-dark bi bi-person-lines-fill py-2 px-3 mx-2 btn-user-info user-info-nav login-display"
+        href="/user-info"></a>
       <!--logout button (Class logout to access)-->
-      <button
-        class="btn btn-danger btn-logout bi bi-arrow-bar-right mx-2 py-2 px-3 logout login-display"
-        id="logout_button"
-      ></button>
+      <button class="btn btn-danger btn-logout bi bi-arrow-bar-right mx-2 py-2 px-3 logout login-display"
+        id="logout_button"></button>
       <!-- <button
         class="btn btn-outline-danger button-nav btn-logout-reponsive logout login-display"
       >
@@ -156,5 +111,3 @@ id="search_result"
     </div>
   </div>
 </nav>
-
-

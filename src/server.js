@@ -31,22 +31,23 @@ async function viewsHandler() {
   const authMiddleWare = require("./utils/authMiddleWare")
   const roleMiddleWare = require("./utils/roleMiddleWare")
   const viewFolder = await getAllFile(path.join(__dirname, "views", "pages"));
-  const adminFolder = await getAllFile(path.join(__dirname,"views","admin"))
-  const requireLoginPage = ["cart","order","orderDetail","user-info"]
+  const adminFolder = await getAllFile(path.join(__dirname, "views", "admin"))
+
+  const requireLoginPage = ["cart", "order", "orderDetail", "user-info"]
 
   for (const page of viewFolder) {
     //lấy tên trang để setup đường dẫn
     const pageName = page.split("\\").pop().replace(".ejs", "");
-    app.get(`/${pageName}`,requireLoginPage.includes(pageName) ? authMiddleWare : (req,res,next)=> {next()}, (req, res) => {
+    app.get(`/${pageName}`, requireLoginPage.includes(pageName) ? authMiddleWare : (req, res, next) => { next() }, (req, res) => {
       res.render(page);
     });
   }
 
-  for(const page of adminFolder){
+  for (const page of adminFolder) {
     const pageName = page.split("\\").pop().replace(".ejs", "");
-    app.get(`/admin/${pageName}`,authMiddleWare,roleMiddleWare,(req,res)=>{
-    res.render(page)
-  })
+    app.get(`/admin/${pageName}`, authMiddleWare, roleMiddleWare, (req, res) => {
+      res.render(page)
+    })
   }
 }
 
