@@ -22,7 +22,7 @@ async function fetchCustomerData() {
     return json;
 }
 
-async function customerInfomationRender() {
+async function customerInformationRender() {
     const data = await fetchCustomerData(); // fetch thông tin tài khoản của khách hàng
     console.log(data);
     
@@ -34,7 +34,7 @@ async function customerInfomationRender() {
     userPhoneNumber.value = data[0].sodienthoai;
     userAddress.value = data[0].diachi;
 }
-customerInfomationRender();
+customerInformationRender();
 
 changePasswordForm.addEventListener("submit", async (e) => {
     e.preventDefault();
