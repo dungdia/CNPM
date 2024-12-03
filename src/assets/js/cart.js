@@ -73,7 +73,7 @@ const renderCartItems = async () =>{
         <img src="/img/${item.ten_sanpham}" alt="${item.ten_sanpham} img">
         </div>
         <div class="item-name">
-        <p style="width: 50%">${item.ten_sanpham} ${item.ram} GB ${item.dung_luong} GB</p>
+        <p>${item.ten_sanpham} ${item.ram} GB ${item.dung_luong} GB</p>
         </div>
         `
 
@@ -150,7 +150,7 @@ const renderCartItems = async () =>{
 
 
         const deleteDiv = document.createElement('div')
-        deleteDiv.classList.add("remove-form-cart")
+        deleteDiv.classList.add("remove-from-cart")
 
         const deleteButton = document.createElement('button')
         deleteButton.id = "remove-from-cart-btn"

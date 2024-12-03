@@ -55,7 +55,7 @@ module.exports = async (req,res) =>{
         res.send({success:true,message:"Thêm giỏ hàng thành công"})
 
     } catch (error) {
-        res.select({success:false,message:error})
+        res.send({success:false,message:error})
     }
 
 }
