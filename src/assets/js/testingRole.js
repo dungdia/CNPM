@@ -22,80 +22,6 @@
 //     }
 // }
 
-// SIMPLE DATATABLES
-
-function initTable(jsonData, tableId = "datatablesSimple") {
-    // Simple-DataTables
-    // https://github.com/fiduswriter/Simple-DataTables/wiki
-    const data = [];
-
-    for (const item of jsonData) {
-        data.push(item);
-    }
-
-    const dataJson = JSON.stringify(data);
-
-    const datatablesSimple = document.getElementById(tableId);
-    if (datatablesSimple) {
-        const convertData = new simpleDatatables.convertJSON({
-            data: dataJson,
-        });
-        const option = {
-            classes: {
-                sorter: "datatable-sorter btn btn-secondary btn-sm",
-                pagination: "datatable-pagination",
-                paginationList: "datatable-pagination-list pagination",
-            },
-        };
-        const dataTable = new simpleDatatables.DataTable(datatablesSimple, option);
-        dataTable.insert(convertData);
-
-        dataTable.on("datatable.selectrow", (rowIndex, event) => {
-            event.preventDefault();
-
-            const tableRowList = document.querySelectorAll(`#${tableId} tr`);
-            let selectedRow;
-            for (const item of tableRowList) {
-                if (item.getAttribute("data-index") == rowIndex) selectedRow = item;
-                else item.classList.remove("selectedRow");
-            }
-            selectedRow.classList.toggle("selectedRow");
-        });
-
-        return dataTable;
-    }
-}
-
-async function fetchJsonData(key) {
-    const res = await fetch(`../api/data/${key}`);
-    const json = await res.json();
-    return json;
-}
-
-function alertSelectRow() {
-    const popUpLabel = document.getElementById("popup-label");
-    const popUpBody = document.getElementById("Popup-Body");
-    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-    popUpSaveBtn.classList.add("d-none");
-    popUpLabel.textContent = "No Row Selected";
-    popUpBody.textContent = "Bạn chưa chọn dòng nào trong bảng";
-}
-
-function mergeArrayToJson(heading, data) {
-    let obj = {};
-    for (let i = 0; i < data.cells.length; i++) {
-        obj[heading[i].data] = data.cells[i].text;
-    }
-    return obj;
-}
-
-function getSelectedData(dataTable, rowIdx) {
-    const heading = dataTable.data.headings;
-    const rowData = dataTable.data.data[rowIdx];
-    const selectedData = mergeArrayToJson(heading, rowData);
-    return selectedData;
-}
-
 // ROLE
 
 let accountPermission;
@@ -138,7 +64,7 @@ async function renderPermissionList(data, type) {
         permssionName.push(item);
         count++;
     }
-
+    console.log(permssionName)
     popUpLabel.textContent = `${type != "add" ? "Role" : ""} ${data.ten_quyen ? data.ten_quyen : data.ten_vaitro}`;
     popUpBody.innerHTML = `${type == "add"
         ?
@@ -149,7 +75,7 @@ async function renderPermissionList(data, type) {
         }${permssionName.map((item) =>
             `<div class="form-check form-switch form-check-reverse text-start fs-6" id="${item.id}">
                     <input class="form-check-input me-1" type="checkbox" role="switch" id="switch${item.id}" ${type == "view" ? "disabled" : ""}>
-                    <label class="form-check-label" for="switch${item.id}">${item.ten_quen}</label>
+                    <label class="form-check-label" for="switch ${item.id}">${item.ten_quyen}</label>
                 </div>`
         ).join("")}`;
 
@@ -234,6 +160,7 @@ async function showAdd(data) {
         //     console.log("Error: ", error);
         // }
 
+        // TODO: 
         for (const permission of newPermissionList) {
             try {
                 const addRoleDetail = await fetch(`/api/data/insertRoleDetail`, {
@@ -242,14 +169,13 @@ async function showAdd(data) {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        "id_vaitro": resAddRole.message,
+                        "id_vaitro": "Test",
                         "id_quyen": permission.id_quyen,
                         "havePermission": permission.isChecked ? 1 : 0,
                     }),
                 })
 
                 const restAddRoleDetail = await addRoleDetail.json();
-                console.log(restAddRoleDetail)
             } catch (error) {
                 console.log("Error: ", error);
             }

@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
         `)
         const data = getPermission.map((row) => ({
             id: row.id_quyen,
-            ten_quen: row.ten_quen,
+            ten_quyen: row.ten_quyen,
             trangthai: row.trangthai
         }))
         res.json(data)

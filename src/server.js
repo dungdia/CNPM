@@ -22,7 +22,7 @@ async function apiHandler() {
   const folders = await getAllFile(path.join(__dirname, "app", "api"));
 
   for (const folder of folders) {
-    const parent = folder.split("/").pop();
+    const parent = folder.split("\\").pop();
     await setUpREST(app, path.join(__dirname, "app", "api"), parent);
   }
 }
@@ -32,19 +32,18 @@ async function viewsHandler() {
   const roleMiddleWare = require("./utils/roleMiddleWare")
   const viewFolder = await getAllFile(path.join(__dirname, "views", "pages"));
   const adminFolder = await getAllFile(path.join(__dirname, "views", "admin"))
-
   const requireLoginPage = ["cart", "order", "orderDetail", "user-info"]
 
   for (const page of viewFolder) {
     //lấy tên trang để setup đường dẫn
-    const pageName = page.split("/").pop().replace(".ejs", "");
+    const pageName = page.split("\\").pop().replace(".ejs", "");
     app.get(`/${pageName}`, requireLoginPage.includes(pageName) ? authMiddleWare : (req, res, next) => { next() }, (req, res) => {
       res.render(page);
     });
   }
 
   for (const page of adminFolder) {
-    const pageName = page.split("/").pop().replace(".ejs", "");
+    const pageName = page.split("\\").pop().replace(".ejs", "");
     app.get(`/admin/${pageName}`, authMiddleWare, roleMiddleWare, (req, res) => {
       res.render(page)
     })

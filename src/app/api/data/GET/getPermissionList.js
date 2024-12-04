@@ -57,7 +57,7 @@ module.exports = async (req, res) => {
         }
 
         const getPermissionList = await conn.select(`
-            SELECT q.ten_quen 
+            SELECT q.ten_quyen 
             FROM quyen q
             JOIN ctquyen ctq ON q.id_quyen = ctq.id_quyen 
             WHERE id_vaitro = ?
@@ -65,7 +65,7 @@ module.exports = async (req, res) => {
 
         if (getPermissionList.length > 0) {
             for (const role of getPermissionList) {
-                switch (role.ten_quen) {
+                switch (role.ten_quyen) {
                     case 'Thêm sản phẩm':
                         permissions.product.add = true;
                         break;

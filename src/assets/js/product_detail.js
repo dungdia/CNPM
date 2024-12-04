@@ -23,12 +23,12 @@ async function renderProductDetail() {
     const productDetailMainImage = document.querySelector(`.product-detail-main-image img`)
     const productDetail = document.querySelector('.product-detail')
     const productDetailMoreDetail = document.querySelector('.product-detail-more-detail')
-    if(!productDetail){
+    if (!productDetail) {
         alert("Lỗi không tìm thấy element cần tìm")
         return
     }
 
-    if(productDetailMainImage){
+    if (productDetailMainImage) {
         productDetailMainImage.src = `/img/${productDetailData[0].ten_sanpham}`
     }
 
@@ -40,15 +40,15 @@ async function renderProductDetail() {
             <p class="product-version-label" style="font-size:1.2rem">Chọn phiên bản RAM và Dung lượng lưu trữ: </p>
             <div class="product-version-list">
                 ${productDetailData.map((element, index) =>
-                    `<div id=${element.id_phienban} class="product-version ${index === 0 ? 'on-active' : ''}">${element.ram} GB - ${element.dung_luong} GB</div>`
-                ).join('')}
+        `<div id=${element.id_phienban} class="product-version ${index === 0 ? 'on-active' : ''}">${element.ram} GB - ${element.dung_luong} GB</div>`
+    ).join('')}
             </div>
         </div>
         <div class="product-add-to-cart-button-container">
             <button class="add-to-cart-btn btn btn-primary" id="add-to-cart-btn">Add to cart</button>
         </div>
     `
-    if(!productDetailMoreDetail){
+    if (!productDetailMoreDetail) {
         alert("Lỗi không tìm thấy element cần tìm")
         return
     }
@@ -75,7 +75,7 @@ async function renderProductDetail() {
     const productPrice = document.querySelector('.product-price')
     const productQuantity = document.querySelector('.product-quantity-detail')
     const productVersion = document.querySelectorAll('.product-version')
-    if(!productName || !productPrice ||!productQuantity){
+    if (!productName || !productPrice || !productQuantity) {
         alert("không tìm thấy element cần tìm")
         return
     }
@@ -94,30 +94,30 @@ async function renderProductDetail() {
 
     const addToCartBtn = document.getElementById("add-to-cart-btn")
 
-    if(!addToCartBtn){
+    if (!addToCartBtn) {
         alert("không có nút add to cart")
         return
     }
 
-    addToCartBtn.onclick = async ()=>{
+    addToCartBtn.onclick = async () => {
         console.log("add to cart")
         const [phienbanSelected] = document.getElementsByClassName("on-active")
         console.log(phienbanSelected.id)
         let index = -1
-        for(let i=0;i<productDetailData.length;i++){
-            if(productDetailData[i].id_phienban == phienbanSelected.id){
+        for (let i = 0; i < productDetailData.length; i++) {
+            if (productDetailData[i].id_phienban == phienbanSelected.id) {
                 index = i
             }
-            if(index != -1 && productDetailData[i].so_luong == 0){
+            if (index != -1 && productDetailData[i].so_luong == 0) {
                 alert("Đã hết hàng vui lòng quay lại sau")
                 return
             }
         }
-        if(index ==-1){
+        if (index == -1) {
             alert("Không tìm thấy phiên bản sản phẩm")
             return
         }
-        const data = {id_phienban:phienbanSelected.id}
+        const data = { id_phienban: phienbanSelected.id }
 
         try {
             const res = await fetch(`/api/auth/addToCart`, {
@@ -128,7 +128,7 @@ async function renderProductDetail() {
                 body: JSON.stringify(data)
             })
             const result = await res.json()
-            if(!result.success){
+            if (!result.success) {
                 alert(result.message)
                 return
             }
@@ -145,7 +145,7 @@ async function renderProductDetail() {
     }
 }
 
-async function handleAddToCart(){
+async function handleAddToCart() {
 
 }
 

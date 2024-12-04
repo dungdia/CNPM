@@ -20,6 +20,8 @@ module.exports = class {
     });
   }
 
+
+
   select(querry, statementList = []) {
     return new Promise((resolve) => {
       this.#con.query(querry, statementList, (err, result) => {
@@ -35,7 +37,7 @@ module.exports = class {
         if (err) resolve(err);
         if (result.affectedRows == 0)
           resolve({ messsage: "lỗi insert không thành công", status: 500 });
-        resolve({ messsage: "insert thành công", status: 200 });
+        resolve({ messsage: "insert thành công", status: 200, insertId: result.insertId });
       });
     });
   }
@@ -58,6 +60,24 @@ module.exports = class {
         if (result.affectedRows == 0)
           resolve({ messsage: "lỗi update không thành công", status: 500 });
         resolve({ messsage: "update thành công", status: 200 });
+      });
+    });
+  }
+
+  startTransaction() {
+    return new Promise((resolve) => {
+      this.#con.beginTransaction((err) => {
+        if (err) resolve(err);
+        resolve(this.#con);
+      });
+    });
+  }
+
+  commit() {
+    return new Promise((resolve) => {
+      this.#con.commit((err) => {
+        if (err) resolve(err);
+        resolve(this.#con);
       });
     });
   }
