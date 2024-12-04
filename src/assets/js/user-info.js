@@ -3,14 +3,38 @@ import CookieManager from 'https://cdn.jsdelivr.net/npm/js-cookie-manager@1.0.2/
 
 const userInfoForm = document.getElementById("user-info-form-container");
 const userInfoFormBody = document.getElementById("user-info-form-container").querySelectorAll("input");
-const userEmail = document.getElementById("user-info-email");
+const userFullname = document.getElementById("user-info-fullname");
+// const userEmail = document.getElementById("user-info-email");
+const userGenderMale = document.getElementById("gender-male");
+const userGenderFemale = document.getElementById("gender-female");
 const userPhoneNumber = document.getElementById("user-info-phone-number");
+const userAddress = document.getElementById("user-info-address");
 
 const changePasswordForm = document.getElementById("user-info-password-configure");
 const changePasswordFormBody = document.getElementById("user-info-password-configure").querySelectorAll("input");
 const oldPassword = document.getElementById("user-info-old-password");
 const newPassword = document.getElementById("user-info-new-password");
 const newConfirmPassword = document.getElementById("user-info-confirm-new-password");
+
+async function fetchCustomerData() {
+    const res = await fetch(`./api/auth/getCustomerInfo`);
+    const json = await res.json();
+    return json;
+}
+
+async function customerInformationRender() {
+    const data = await fetchCustomerData(); // fetch thông tin tài khoản của khách hàng
+    console.log(data);
+    
+    userFullname.value = data[0].ho_ten;
+    if(data[0].gioi_tinh == 0)
+        userGenderMale.checked = true;
+    else
+        userGenderFemale.checked = true;
+    userPhoneNumber.value = data[0].sodienthoai;
+    userAddress.value = data[0].diachi;
+}
+customerInformationRender();
 
 changePasswordForm.addEventListener("submit", async (e) => {
     e.preventDefault();

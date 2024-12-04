@@ -41,6 +41,7 @@
 
 .cart-header-name, .item-name {
     width: 50%;
+    max-width: 50%;
 }
 
 .cart-header-quantity, .item-quantity {
@@ -49,7 +50,7 @@
 
 .cart-header-price, .item-price {
     width: 25%;
-    margin-right: 20px;
+    /* margin-right: 20px; */
 }
 
 .cart-header-removebtn, .remove-from-cart {
@@ -75,7 +76,7 @@
 
 .cart-item .item-img > img {
     width: 125%;
-    margin-left: 5rem;
+    margin-left: 2rem;
 }
 
 .cart-item:hover {

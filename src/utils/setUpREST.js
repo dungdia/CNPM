@@ -10,7 +10,7 @@ function requestHandler(app,list,parent,type){
         //folder là từng folder trong folder api
         //vd: D:\Project\Web\CNPM\src\app\api\${parent}\${filename}.js
         //split để thành mảng, pop để lấy ra tên file
-        const apiName = Method.split("/").pop().replace(".js","") 
+        const apiName = Method.split("\\").pop().replace(".js","") 
         //import callback từ file vào
         const apiCallback = require(Method)
 
@@ -52,7 +52,7 @@ module.exports = async (app,apiDir,parent) =>{
 
     for(const folder of folderDir){
 
-        const type = folder.split("/").pop()
+        const type = folder.split("\\").pop()
         
         const fileList = await getAllFile(folder)
         
