@@ -43,7 +43,7 @@ async function renderProductInfo(data, type) {
             class="form-control" 
             id="productName" 
             placeholder="" 
-            value="${type === "add" || type === "edit" ? `` : item.ten_sanpham}" 
+            value="${type === "add" ? `` : item.ten_sanpham}" 
             ${type !== "detail" ? `` : `readonly`}
             style="appearance: none; -moz-appearance: textfield; margin: 0;">
             <label for="productName">Tên sản phẩm</label> 
@@ -55,7 +55,7 @@ async function renderProductInfo(data, type) {
             class="form-control" 
             id="productSZ" 
             placeholder="" 
-            value="${type === "add" || type === "edit" ? `` : item.kichThuocMan}" 
+            value="${type === "add" ? `` : item.kichThuocMan}" 
             ${type !== "detail" ? `` : `readonly`}
             style="appearance: none; -moz-appearance: textfield; margin: 0;">
             <label for="productSZ">Kích thước màn</label> 
@@ -67,7 +67,7 @@ async function renderProductInfo(data, type) {
             class="form-control" 
             id="productRC" 
             placeholder="" 
-            value="${type === "add" || type === "edit" ? `` : item.cameraSau}" 
+            value="${type === "add" ? `` : item.cameraSau}" 
             ${type !== "detail" ? `` : `readonly`}
             style="appearance: none; -moz-appearance: textfield; margin: 0;">
             <label for="productRC">Camera sau</label> 
@@ -79,7 +79,7 @@ async function renderProductInfo(data, type) {
             class="form-control" 
             id="productFC" 
             placeholder="" 
-            value="${type === "add" || type === "edit" ? `` : item.cameraTruoc}" 
+            value="${type === "add" ? `` : item.cameraTruoc}" 
             ${type !== "detail" ? `` : `readonly`}
             style="appearance: none; -moz-appearance: textfield; margin: 0;">
             <label for="productFC">Camera trước</label> 
@@ -91,7 +91,7 @@ async function renderProductInfo(data, type) {
             class="form-control" 
             id="productCPU" 
             placeholder="" 
-            value="${type === "add" || type === "edit" ? `` : item.chipXuLy}" 
+            value="${type === "add" ? `` : item.chipXuLy}" 
             ${type !== "detail" ? `` : `readonly`}
             style="appearance: none; -moz-appearance: textfield; margin: 0;">
             <label for="productCPU">Chip Xu Ly</label> 
@@ -103,7 +103,7 @@ async function renderProductInfo(data, type) {
             class="form-control" 
             id="productOS" 
             placeholder="" 
-            value="${type === "add" || type === "edit" ? `` : item.heDieuHanh}" 
+            value="${type === "add" ? `` : item.heDieuHanh}" 
             ${type !== "detail" ? `` : `readonly`}
             style="appearance: none; -moz-appearance: textfield; margin: 0;">
             <label for="productOS">Hệ điều hành</label> 
@@ -115,7 +115,7 @@ async function renderProductInfo(data, type) {
             class="form-control" 
             id="productBC" 
             placeholder="" 
-            value="${type === "add" || type === "edit" ? `` : item.dungLuongPin}" 
+            value="${type === "add" ? `` : item.dungLuongPin}" 
             ${type !== "detail" ? `` : `readonly`}
             style="appearance: none; -moz-appearance: textfield; margin: 0;">
             <label for="productBC">Dung Lượng Pin</label> 
@@ -224,6 +224,85 @@ function showAdd() {
     }
 }
 
+async function showEdit(data) {
+    const popUpLabel = document.getElementById("popup-label");
+    const popUpBody = document.getElementById("Popup-Body");
+    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+    const popUpCloseBtn = document.getElementById("Footer-Close-PopUp-Button")
+    popUpSaveBtn.classList.remove("d-none");
+
+    popUpLabel.textContent = `Sửa sản phẩm: ${data.id_sanpham}`;
+    renderProductInfo(data, "edit");
+
+    popUpSaveBtn.onclick = async () => {
+        const productImg = document.getElementById("productImg").files[0];
+        const productName = document.getElementById("productName").value;
+        const productSZ = document.getElementById("productSZ").value;
+        const productRC = document.getElementById("productRC").value;
+        const productFC = document.getElementById("productFC").value;
+        const productCPU = document.getElementById("productCPU").value;
+        const productOS = document.getElementById("productOS").value;
+        const productBC = document.getElementById("productBC").value;
+        const productBrand = document.getElementById("brandSelect").value;
+
+        const projection = {
+            "id_sanpham": data.id_sanpham,
+            "ten_sanpham": productName,
+            "kichThuocMan": productSZ,
+            "cameraSau": productRC,
+            "cameraTruoc": productFC,
+            "chipXuLy": productCPU,
+            "heDieuHanh": productOS,
+            "dungLuongPin": productBC,
+            "id_thuonghieu": productBrand,
+            "hinh_anh": productImg
+        }
+        const formData = new FormData();
+        for (const [key, value] of Object.entries(projection)) {
+            formData.append(key, value);
+        }
+        console.log(formData)
+        const res = await postImageData("updateSanPham", formData);
+        if (!res.success) {
+            alert(res.message)
+        } else {
+            alert(res.message)
+        }
+    }
+}
+
+async function showLock(data) {
+    const popUpLabel = document.getElementById("popup-label");
+    const popUpBody = document.getElementById("Popup-Body");
+    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+    const popUpCloseBtn = document.getElementById("Footer-Close-PopUp-Button")
+    popUpSaveBtn.classList.remove("d-none");
+
+    popUpSaveBtn.textContent = "YES";
+    popUpCloseBtn.textContent = "NO";
+
+    popUpLabel.textContent = `Khóa sản phẩm`;
+    popUpBody.textContent = `Bạn có muốn ${(data.trangThai === "1" ? "lock" : "unclock")} tài khoản ${data.ten_sanpham}?`;
+
+    popUpSaveBtn.onclick = async () => {
+        const projection = {
+            "id_sanpham": data.id_sanpham,
+            "trangThai": data.trangThai === "1" ? "0" : "1",
+        }
+        const formData = new FormData();
+        for (const [key, value] of Object.entries(projection)) {
+            formData.append(key, value);
+        }
+        console.log(formData)
+        const res = await postImageData("updateSanPham", formData);
+        if (!res.success) {
+            alert(res.message)
+        } else {
+            alert(res.message)
+        }
+    }
+}
+
 window.addEventListener("DOMContentLoaded", async () => {
     console.log("hi")
     const jsonData = await fetchJsonData("getAllSanPham")
@@ -234,7 +313,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     removeBtn.remove()
 
     const popupBtnGroup = document.getElementById("popup-button-group");
-    popupBtnGroup.innerHTML += `<button class="btn btn-danger w-auto" id="btn-popup-ban" data-bs-toggle="modal" data-bs-target="#popupContent">Ban/Unban</button>`
+    popupBtnGroup.innerHTML += `<button class="btn btn-danger w-auto" id="btn-popup-ban" data-bs-toggle="modal" data-bs-target="#popupContent">Lock/Unlock</button>`
 
     const banBtn = document.getElementById("btn-popup-ban")
     const btnPopUp = document.getElementById("btn-popup-detail");
@@ -262,5 +341,31 @@ window.addEventListener("DOMContentLoaded", async () => {
         popUpSaveBtn.onclick = {};
 
         showAdd();
+    })
+
+    editBtn.addEventListener("click", () => {
+        const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+        popUpSaveBtn.onclick = {};
+        const selectRow = document.querySelector(".selectedRow");
+        if (!selectRow) {
+            alertSelectRow();
+            return;
+        }
+        const rowIdx = selectRow.getAttribute("data-index");
+        const selectedData = getSelectedData(dataTable, rowIdx);
+
+        showEdit(selectedData)
+    })
+
+    banBtn.addEventListener("click", () => {
+        const selectRow = document.querySelector(".selectedRow");
+        if (!selectRow) {
+            alertSelectRow();
+            return;
+        }
+        const rowIdx = selectRow.getAttribute("data-index");
+        const selectedData = getSelectedData(dataTable, rowIdx);
+        console.log(selectedData)
+        showLock(selectedData);
     })
 })

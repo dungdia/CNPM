@@ -109,7 +109,65 @@ async function insertProduct() {
   })
 }
 
+async function updateProduct() {
+  app.post("/api/data/updateSanPham", upload.single('hinh_anh'), async (req, res) => {
+    const { id_sanpham, ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, trangThai } = req.body;
+    const image = req.file ? req.file.buffer : null
+    try {
+      const DBConnecter = require("./app/controller/DBconnecter");
+      const conn = new DBConnecter();
+
+      let updateSanPham
+
+      if (trangThai) {
+        console.log("LOCK")
+        updateSanPham = await conn.update(`
+          UPDATE cnpm.sanpham
+          SET trangThai = ?
+          WHERE id_sanpham = ?;
+        `, [trangThai, id_sanpham])
+
+        if (updateSanPham.status !== 200) {
+          return res.json({ message: "Khóa sản phẩm không thành công", success: false })
+        }
+
+        conn.closeConnect();
+        res.json({ message: "Khóa sản phẩm thành công", success: true });
+      } else {
+        if (!id_sanpham || !ten_sanpham || !kichThuocMan || !cameraSau || !cameraTruoc || !chipXuLy || !heDieuHanh || !dungLuongPin) {
+          return res.json({ message: "Không được để trống" });
+        }
+
+        updateSanPham = await conn.update(`
+          UPDATE cnpm.sanpham
+          SET 
+            ten_sanpham = ?, 
+            kichThuocMan = ?, 
+            cameraSau = ?, 
+            cameraTruoc = ?, 
+            chipXuLy = ?, 
+            heDieuHanh = ?, 
+            dungLuongPin = ?, 
+            id_thuongthieu = ?, 
+            hinh_anh = ?
+          WHERE id_sanpham = ?;  
+        `, [ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, image, id_sanpham])
+
+        if (updateSanPham.status !== 200) {
+          return res.json({ message: "Sửa sản phẩm không thành công", success: false })
+        }
+
+        conn.closeConnect();
+        res.json({ message: "Sửa sản phẩm thành công", success: true });
+      }
+    } catch (error) {
+      res.json({ message: "Lỗi", success: false });
+    }
+  })
+}
+
 insertProduct();
+updateProduct();
 
 productImgApi();
 
