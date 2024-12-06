@@ -33,12 +33,14 @@ module.exports = async (req, res) => {
 
             if (updateUserPassword.status === 200) {
                 res.send({ message: "Lưu thông mật khẩu thành công", success: true })
+                conn.closeConnect()
                 return
             }
             res.send({ message: "Đã xảy ra lỗi trong lúc lưu mật khẩu", success: false })
         } else {
             res.send({ message: "Mật khẩu cũ không không khớp", success: false })
         }
+        conn.closeConnect()
     } catch (error) {
         console.log(error)
     }

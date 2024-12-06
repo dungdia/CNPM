@@ -26,7 +26,7 @@ module.exports = async (req,res)=>{
         }
 
         res.send({success:true,data})
-        
+        conn.closeConnect()
     } catch (error) {
         res.send({success:false,message:error})
     }

@@ -5,9 +5,17 @@ const confirmBtn = document.getElementById("user-payment-info-confirm-button");
 const fullName = document.getElementById("user-fullName");
 const phoneNumber = document.getElementById("user-phoneNumber");
 const address = document.getElementById("user-address");
-const email = document.getElementById("user-email");
 const note = document.getElementById("user-note");
 const [body] = document.getElementsByTagName("body");
+
+let total_amount = 0
+let total_price = 0
+
+const getUserInfo = async ()=>{
+    const res = await fetch(`./api/auth/getCustomerInfo`);
+    const json = await res.json();
+    return json;
+}
 
 const getCartItems = async () =>{
     const res = await fetch(`/api/auth/getCartItem`)
@@ -15,16 +23,61 @@ const getCartItems = async () =>{
     return json
 }
 
+const removeCartItem = async (id_phienban,cartItem)=>{
+    try {
+        console.log(`Remove ${id_phienban}`)
+        const data = {id_phienban:id_phienban}
+        const res = await fetch(`/api/auth/removeFromCart`,{
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        const result = await res.json()
+        if(!result.success){
+            alert(result.message)
+            return
+        }
+        cartItem.remove()
+
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+const decreaseItemAmount = async (id_phienban)=>{
+    try {
+        const data = {id_phienban:id_phienban}
+        const res = await fetch(`/api/auth/decreaseItemFromCart`,{
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+
+        const json = await res.json()
+        console.log(json)
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 const renderCartItems = async () =>{
-    const data = await getCartItems()
-    
-
     const container = document.getElementById("cart-content-container")
-
+    container.innerHTML = "Loading..."
     if(!container){
         console.log("Không tìm thấy khung để render")
         return
     }
+    
+    const data = await getCartItems()
+    
+
+
     console.log(data)
 
     container.innerHTML = ""
@@ -49,8 +102,7 @@ const renderCartItems = async () =>{
 //     </div>
 //   </div>`
 
-    let total_amount = 0
-    let total_price = 0
+
 
     const total_amount_element = document.getElementById("cart-total-amount")
     const total_price_element = document.getElementById("cart-total-price")
@@ -83,22 +135,31 @@ const renderCartItems = async () =>{
         const decreaseBtn = document.createElement('button') 
         decreaseBtn.classList.add("item-quantity-reduce")
         decreaseBtn.textContent = '-'
-
-        decreaseBtn.onclick = async ()=>{
-            //TODO
-            console.log(`decrease ${item.id_phienban}`)
-        }
-
+        
         quantity.append(decreaseBtn)
-
-
-
+        
+        
+        
         // quantity.innerHTML += `<p class="item-quantity-amount">${item.so_luong}</p>`
         const quantityNumberElement = document.createElement('p')
         quantityNumberElement.classList.add("item-quantity-amount")
         quantityNumberElement.textContent = item.so_luong
-
+        
         quantity.append(quantityNumberElement)
+        
+                decreaseBtn.onclick = async ()=>{
+                    if(item.so_luong <=1){
+                        removeCartItem(item.id_phienban,cartItem)
+                        return
+                    }
+                    decreaseItemAmount(item.id_phienban)
+                    item.so_luong--
+                    total_amount--
+                    total_price=total_amount*item.gia
+                    total_amount_element.textContent = total_amount
+                    total_price_element.textContent=`Total ${VND.format(total_price)}`
+                    quantityNumberElement.textContent = item.so_luong
+                }
 
         const increaseBtn = document.createElement('button')
         increaseBtn.classList.add("item-quantity-increase")
@@ -121,11 +182,12 @@ const renderCartItems = async () =>{
                     return
                 }
                 item.so_luong++
-                quantityNumberElement.textContent = item.so_luong
                 total_amount++
+                total_price=total_amount*item.gia
+                quantityNumberElement.textContent = item.so_luong
                 total_amount_element.textContent = total_amount
-                total_price += item.gia
-                total_price_element = `Total ${VND.format(total_price)}`
+                total_price_element.textContent = `Total ${VND.format(total_price)}`
+                console.log(total_amount*item.gia)
             } catch (error) {
                 console.log(error)
             }
@@ -158,8 +220,13 @@ const renderCartItems = async () =>{
         deleteButton.textContent = "Remove"
 
         deleteButton.onclick = ()=>{
-            //TODO
-            console.log(`delete ${item.id_phienban}`)
+            // let currentAmount = item.so_luong
+            // let currentTotalPrice = item.gia
+            removeCartItem(item.id_phienban,cartItem)
+            total_amount -= item.so_luong
+            total_price -= item.gia*item.so_luong 
+            total_amount_element.textContent = total_amount
+            total_price_element.textContent = VND.format(total_price)
         }
 
         deleteDiv.append(deleteButton)
@@ -178,6 +245,39 @@ const renderCartItems = async () =>{
 
 }
 
+const addNewOrder = async () =>{
+    if(fullName.value == ""){
+        alert("Họ và tên không được bỏ trống!");
+        return;
+    }
+    if(phoneNumber.value == ""){
+        alert("Số điện thoại không được bỏ trống");
+        return;
+    }
+    if(address.value == ""){
+        alert("Địa chỉ không được để trống");
+        return;
+    }     
+    try {
+        const body = {fullName:fullName.value,phoneNumber:phoneNumber.value,address:address.value,note:note.ariaValueMin}
+        const res = await fetch(`/api/auth/addNewOrder`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+        const result = await res.json()
+        alert(result.message)
+        if(!result.success)
+            return
+        location.reload()
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     document.onkeydown = (event) => {
         if(event.key == "Escapse") {
@@ -187,37 +287,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
     }
-    payBtn.onclick = () => {
+    payBtn.onclick = async () => {
         if(document.getElementById("cart-content-container").value == ""){
             alert("Không có sản phẩm trong giỏ hàng");
         } else {
             paymentPopup.style.top = "0%";
             body.style.overflow = "hidden";
+            const userInfo = await getUserInfo()
+            fullName.value = userInfo[0].ho_ten
+            phoneNumber.value = userInfo[0].sodienthoai
+            address.value = userInfo[0].diachi
         }
     }
 
-    confirmBtn.onclick = () => {
-        if(fullName.value == ""){
-            alert("Họ và tên không được bỏ trống!");
-            event.preventDefault();
-            return;
-        }
-        if(phoneNumber.value == ""){
-            alert("Số điện thoại không được bỏ trống");
-            event.preventDefault();
-            return;
-        }
-        if(address.value == ""){
-            alert("Địa chỉ không được để trống");
-            event.preventDefault();
-            return;
-        }        
-        if(email.value == ""){
-            alert("Email không được để trống");
-            event.preventDefault();
-            return;
-        }
-
+    confirmBtn.onclick = (e) => {
+        e.preventDefault()   
+        addNewOrder()
     }
 
     cancelBtn.onclick = () => {
