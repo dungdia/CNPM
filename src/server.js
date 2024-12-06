@@ -5,17 +5,22 @@ const getAllFile = require("./utils/getAllFile");
 const bodyParser = require("body-parser");
 const setUpREST = require("./utils/setUpREST");
 const cookieParser = require("cookie-parser");
+const multer = require('multer');
 
 const app = express();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 app.use(cookieParser())
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 // setting view engine to ejs
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
 
 async function apiHandler() {
   //setup api với mỗi file trong app/api
@@ -31,22 +36,22 @@ async function viewsHandler() {
   const authMiddleWare = require("./utils/authMiddleWare")
   const roleMiddleWare = require("./utils/roleMiddleWare")
   const viewFolder = await getAllFile(path.join(__dirname, "views", "pages"));
-  const adminFolder = await getAllFile(path.join(__dirname,"views","admin"))
-  const requireLoginPage = ["cart","order","orderDetail","user-info"]
+  const adminFolder = await getAllFile(path.join(__dirname, "views", "admin"))
+  const requireLoginPage = ["cart", "order", "orderDetail", "user-info"]
 
   for (const page of viewFolder) {
     //lấy tên trang để setup đường dẫn
     const pageName = page.split("\\").pop().replace(".ejs", "");
-    app.get(`/${pageName}`,requireLoginPage.includes(pageName) ? authMiddleWare : (req,res,next)=> {next()}, (req, res) => {
+    app.get(`/${pageName}`, requireLoginPage.includes(pageName) ? authMiddleWare : (req, res, next) => { next() }, (req, res) => {
       res.render(page);
     });
   }
 
-  for(const page of adminFolder){
+  for (const page of adminFolder) {
     const pageName = page.split("\\").pop().replace(".ejs", "");
-    app.get(`/admin/${pageName}`,authMiddleWare,roleMiddleWare,(req,res)=>{
-    res.render(page)
-  })
+    app.get(`/admin/${pageName}`, authMiddleWare, roleMiddleWare, (req, res) => {
+      res.render(page)
+    })
   }
 }
 
@@ -75,6 +80,94 @@ async function productImgApi() {
     }
   });
 }
+
+async function insertProduct() {
+  app.post("/api/data/addSanPham", upload.single('hinh_anh'), async (req, res) => {
+    const { ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu } = req.body;
+    const image = req.file.buffer
+    if (!ten_sanpham || !kichThuocMan || !cameraSau || !cameraTruoc || !chipXuLy || !heDieuHanh || !dungLuongPin) {
+      return res.json({ message: "Không được để trống" });
+    }
+    try {
+      const DBConnecter = require("./app/controller/DBconnecter");
+      const conn = new DBConnecter();
+
+      const insertSanPham = await conn.insert(`
+          insert into cnpm.sanpham (ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuongthieu , hinh_anh)
+          values (?, ?, ?, ?, ?, ?, ?, ?, ?);
+      `, [ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, image])
+
+      if (insertSanPham.status !== 200) {
+        return res.json({ message: "Thêm sản phẩm không thành công", success: false })
+      }
+
+      conn.closeConnect();
+      res.json({ message: "Thêm sản phẩm thành công", success: true });
+    } catch (error) {
+      res.json({ message: "Lỗi", success: false });
+    }
+  })
+}
+
+async function updateProduct() {
+  app.post("/api/data/updateSanPham", upload.single('hinh_anh'), async (req, res) => {
+    const { id_sanpham, ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, trangThai } = req.body;
+    const image = req.file ? req.file.buffer : null
+    try {
+      const DBConnecter = require("./app/controller/DBconnecter");
+      const conn = new DBConnecter();
+
+      let updateSanPham
+
+      if (trangThai) {
+        console.log("LOCK")
+        updateSanPham = await conn.update(`
+          UPDATE cnpm.sanpham
+          SET trangThai = ?
+          WHERE id_sanpham = ?;
+        `, [trangThai, id_sanpham])
+
+        if (updateSanPham.status !== 200) {
+          return res.json({ message: "Khóa sản phẩm không thành công", success: false })
+        }
+
+        conn.closeConnect();
+        res.json({ message: "Khóa sản phẩm thành công", success: true });
+      } else {
+        if (!id_sanpham || !ten_sanpham || !kichThuocMan || !cameraSau || !cameraTruoc || !chipXuLy || !heDieuHanh || !dungLuongPin) {
+          return res.json({ message: "Không được để trống" });
+        }
+
+        updateSanPham = await conn.update(`
+          UPDATE cnpm.sanpham
+          SET 
+            ten_sanpham = ?, 
+            kichThuocMan = ?, 
+            cameraSau = ?, 
+            cameraTruoc = ?, 
+            chipXuLy = ?, 
+            heDieuHanh = ?, 
+            dungLuongPin = ?, 
+            id_thuongthieu = ?, 
+            hinh_anh = ?
+          WHERE id_sanpham = ?;  
+        `, [ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, image, id_sanpham])
+
+        if (updateSanPham.status !== 200) {
+          return res.json({ message: "Sửa sản phẩm không thành công", success: false })
+        }
+
+        conn.closeConnect();
+        res.json({ message: "Sửa sản phẩm thành công", success: true });
+      }
+    } catch (error) {
+      res.json({ message: "Lỗi", success: false });
+    }
+  })
+}
+
+insertProduct();
+updateProduct();
 
 productImgApi();
 
