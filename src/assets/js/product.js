@@ -3,6 +3,7 @@ const route = fullRoute.length > 1 ? fullRoute[0] : fullRoute.pop();
 import { Validate } from "./Validate.js";
 const URLParams = new URLSearchParams(window.location.search); // Lấy kết quả tìm kiếm
 
+
 let page = 1;
 const itemPerPage = 8;
 let totalPage;

@@ -102,6 +102,13 @@ userInfoForm.addEventListener("submit", async (e) => {
     if (!Validation.checkPhoneNumber(userPhoneNumber)) {
         valid = false;
     }
+    if(!Validation.checkFullName(userFullname)){
+        valid = false;
+    }
+
+    if(!Validation.checkAddress(userAddress)){
+        valid = false;
+    }
     if (!valid) {
         return
     }
