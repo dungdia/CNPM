@@ -23,11 +23,13 @@ module.exports = async (req, res) => {
         `, [username]);
 
         if (userList.length == 0) {
+            conn.closeConnect()
             return res.send({ success: false, message: "Tài khoản không tồn tại" })
         }
 
         const verifiedPassword = await bcrypt.compare(password, userList[0].password);
         if (!verifiedPassword) {
+            conn.closeConnect()
             return res.send({ success: false, message: "Sai mật khẩu" })
         }
         let login_account = userList[0].user_name
@@ -44,8 +46,9 @@ module.exports = async (req, res) => {
             refesh_token = randToken.generate(100)
 
             const updateToken = await conn.update("UPDATE taikhoan SET refesh_token=? WHERE user_name = ?", [refesh_token, username])
-            if (updateToken.status != 200)
-                return res.send({ success: false, message: "lỗi khi tạo token" })
+            if (updateToken.status != 200){
+                conn.closeConnect
+                return res.send({ success: false, message: "lỗi khi tạo token" })}
         }
         else {
 
@@ -53,7 +56,7 @@ module.exports = async (req, res) => {
         }
 
         // console.table({refesh_token: refesh_token,access_token: access_token})
-
+        conn.closeConnect()
         return res.send({ success: true, message: "Đăng nhập thành công", access_token: access_token, refesh_token: refesh_token, login_account: login_account })
     } catch (error) {
         console.log(error)

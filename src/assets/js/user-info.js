@@ -24,8 +24,7 @@ async function fetchCustomerData() {
 
 async function customerInformationRender() {
     const data = await fetchCustomerData(); // fetch thông tin tài khoản của khách hàng
-    console.log(data);
-    
+
     userFullname.value = data[0].ho_ten;
     if(data[0].gioi_tinh == 0)
         userGenderMale.checked = true;

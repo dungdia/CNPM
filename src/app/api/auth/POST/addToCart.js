@@ -22,6 +22,7 @@ module.exports = async (req,res) =>{
             const so_luong = (soLuongQuery.length > 0 ? soLuongQuery[0].so_luong : 0)
         if(so_luong <= 0){
             res.send({success:false, message: "Đã hết hàng vui lòng quay lại sau"})
+            conn.closeConnect()
             return
         }
         const [{id_giohang}] = await conn.select(`SELECT id_giohang
@@ -31,6 +32,7 @@ module.exports = async (req,res) =>{
         AND taikhoan.user_name = ?`,[payload.username])
         if(!id_giohang){
             res.send({success:false, message:"Không tìm thấy giỏ hàng vui lòng báo lại lỗi"})
+            conn.closeConnect()
             return
         }
         const [{imei}] = await conn.select(`SELECT imei FROM 
@@ -44,16 +46,18 @@ module.exports = async (req,res) =>{
 
         if(!imei){
             res.send({success:false,message: "Không tìm thấy sản phẩm tồn kho vui lòng thử lại sau"})
+            conn.closeConnect()
             return
         }
 
         const result = await conn.insert(`INSERT INTO ctgiohang (id_giohang,imei) VALUES (?,?)`,[id_giohang,imei])
         if(result.status != 200){
             res.send({success:false, message: "Thêm thất bại vui lòng thử lại sau"})
+            conn.closeConnect()
             return
         }
         res.send({success:true,message:"Thêm giỏ hàng thành công"})
-
+        conn.closeConnect()
     } catch (error) {
         res.send({success:false,message:error})
     }

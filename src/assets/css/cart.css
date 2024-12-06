@@ -6,13 +6,13 @@
     width: 100%;
     background-color: #fff;
     /* height: 90%; */
-    min-height:  65dvh;
+    min-height: 65dvh;
     height: 95dvh;
     margin-top: 3.6rem !important;
     border: rgb(206, 197, 197);
 }
 
-.cart-container > div {
+.cart-container>div {
     text-align: center;
 }
 
@@ -28,32 +28,37 @@
     display: flex;
 }
 
-.cart-footer > div {
+.cart-footer>div {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.cart-header-img, .item-img {
+.cart-header-img,
+.item-img {
     width: 5%;
     margin-right: 10px;
 }
 
-.cart-header-name, .item-name {
+.cart-header-name,
+.item-name {
     width: 50%;
     max-width: 50%;
 }
 
-.cart-header-quantity, .item-quantity {
+.cart-header-quantity,
+.item-quantity {
     width: 15%;
 }
 
-.cart-header-price, .item-price {
+.cart-header-price,
+.item-price {
     width: 25%;
     /* margin-right: 20px; */
 }
 
-.cart-header-removebtn, .remove-from-cart {
+.cart-header-removebtn,
+.remove-from-cart {
     width: 10%;
 }
 
@@ -74,14 +79,14 @@
     padding: 5px;
 }
 
-.cart-item .item-img > img {
+.cart-item .item-img>img {
     width: 125%;
     margin-left: 2rem;
 }
 
 .cart-item:hover {
     background-color: #eee
-} 
+}
 
 .item-name {
     display: flex;
@@ -97,7 +102,8 @@
     justify-content: center;
 }
 
-.item-quantity-reduce, .item-quantity-increase {
+.item-quantity-reduce,
+.item-quantity-increase {
     background-color: transparent;
     border: none;
     border-radius: 5px;
@@ -150,11 +156,11 @@
     height: 100%;
 }
 
-.user-payment-info-form > p {
+.user-payment-info-form>p {
     margin: 20px 0 0 0 !important;
 }
 
-.user-payment-info-form > input {
+.user-payment-info-form>input {
     padding: 0 16px !important;
     margin-top: 10px;
 }
@@ -169,7 +175,7 @@
     margin-top: 10px;
 }
 
-.button-container > button {
+.button-container>button {
     font-size: 20;
     min-width: 80px;
     cursor: pointer;
@@ -182,7 +188,7 @@
     float: right;
 }
 
-.user-payment-info-form > input {
+.user-payment-info-form>input {
     height: 40px;
     width: 100%;
     border-radius: 5px;

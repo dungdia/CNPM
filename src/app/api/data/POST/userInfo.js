@@ -21,9 +21,11 @@ module.exports = async (req, res) => {
         `, [userFullname, userGender, userPhoneNumber, userAddress, usernameLogin]);
         if (updateUser.status === 200) {
             res.send({ message: "Lưu thông tin tài khoản thành công", success: true })
+            conn.closeConnect()
             return
         }
         res.send({ message: "Đã xảy ra lỗi trong lúc lưu thông tin", success: false })
+        conn.closeConnect()
     } catch (error) {
         console.log(error)
     }

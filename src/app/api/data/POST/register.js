@@ -36,6 +36,7 @@ module.exports = async (req, res) => {
 
         if (usernameList.length > 0) {
             res.send({ message: "Tên tài khoản đã tồn tại", success: false })
+            conn.closeConnect()
             return;
         }
 
@@ -50,16 +51,19 @@ module.exports = async (req, res) => {
             
         if(insertUser.status != 200){
             res.send({message: "Đã xảy ra lỗi trong lúc đăng ký", success: false})
+            conn.closeConnect()
             return    
         }
 
 
         const [{user_id}] = await conn.select(`SELECT LAST_INSERT_ID() as user_id`)
+        // console.log(user_id)
 
         const insertClient = await conn.insert(`INSERT INTO khachhang (id_taikhoan) VALUES (?)`,[user_id])
 
         if(insertClient.status != 200){
             res.send({message: "Đã xảy ra lỗi trong lúc đăng ký", success: false})
+            conn.closeConnect()
             return    
         }
 
@@ -69,10 +73,12 @@ module.exports = async (req, res) => {
 
         if(insertCart.status != 200){
             res.send({message: "Đã xảy ra lỗi trong lúc đăng ký", success: false})
+            conn.closeConnect()
             return    
         }
 
         res.send({ message: "Đăng ký tài khoản thành công", success: true })
+        conn.closeConnect()
     } catch (error) {
         console.error("Error fetching usernames:", error);
         res.send({ message: "Lỗi không thể thực hiện việc đăng ký", success: false })
