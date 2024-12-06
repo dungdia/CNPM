@@ -80,7 +80,7 @@ module.exports = async (req, res) => {
       SELECT ROW_NUMBER() OVER(PARTITION BY sanpham.id_sanpham) c,sanpham.id_sanpham,sanpham.ten_sanpham,sanpham.heDieuHanh, phienbansanpham.ram,phienbansanpham.dung_luong, thuonghieu.ten_thuonghieu, ctphieunhap.gia
           FROM sanpham 
               LEFT JOIN phienbansanpham ON phienbansanpham.id_sanpham = sanpham.id_sanpham 
-              LEFT JOIN thuonghieu ON sanpham.id_thuongthieu = thuonghieu.id_thuonghieu 
+              LEFT JOIN thuonghieu ON sanpham.id_thuonghieu = thuonghieu.id_thuonghieu 
               LEFT JOIN ctphieunhap ON ctphieunhap.id_phienbansp = phienbansanpham.id_phienban
           WHERE phienbansanpham.id_sanpham
         AND ctphieunhap.gia BETWEEN ? AND ?

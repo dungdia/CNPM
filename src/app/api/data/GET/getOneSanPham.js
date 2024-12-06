@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
         const getOneSp = await conn.select(`
             select *
             from sanpham sp
-            join thuonghieu th on th.id_thuonghieu = sp.id_thuongthieu 
+            join thuonghieu th on th.id_thuonghieu = sp.id_thuonghieu 
             where sp.id_sanpham = ?
         `, [id_sanpham]);
         res.json(getOneSp);

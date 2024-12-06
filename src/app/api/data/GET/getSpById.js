@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
         FROM sanpham sp 
         JOIN phienbansanpham pbsp ON sp.id_sanpham = pbsp.id_sanpham 
         JOIN ctphieunhap ctpn ON ctpn.id_phienbansp = pbsp.id_phienban 
-        JOIN thuonghieu th ON th.id_thuonghieu = sp.id_thuongthieu
+        JOIN thuonghieu th ON th.id_thuonghieu = sp.id_thuonghieu
         WHERE sp.id_sanpham = ?
         ORDER BY pbsp.ram ASC) c WHERE stt = 1 
         `, [req.query.id])
