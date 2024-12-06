@@ -1,0 +1,31 @@
+<div class="btn-group my-2" id="popup-button-group">
+    <button class="btn btn-info w-auto" id="btn-popup-detail" data-bs-toggle="modal" data-bs-target="#popupContent">Xem
+        chi tiết</button>
+    <button class="btn btn-primary w-auto" id="btn-popup-add" data-bs-toggle="modal"
+        data-bs-target="#popupContent">Thêm</button>
+    <button class="btn btn-warning w-auto" id="btn-popup-update" data-bs-toggle="modal"
+        data-bs-target="#popupContent">Sửa</button>
+    <button class="btn btn-danger w-auto" id="btn-popup-remove" data-bs-toggle="modal"
+        data-bs-target="#popupContent">Xóa</button>
+</div>
+
+
+<div class="modal fade" id="popupContent" tabindex="-1" aria-labelledby="popup-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="popup-label">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    id="Header-Close-PopUp-Button"></button>
+            </div>
+            <div class="modal-body" id="Popup-Body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    id="Footer-Close-PopUp-Button">Close</button>
+                <button type="button" class="btn btn-primary" id="Footer-Save-PopUp-Button">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
