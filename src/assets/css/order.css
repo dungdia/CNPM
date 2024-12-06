@@ -69,6 +69,7 @@
 .order_content {
     margin-top: 30px;
     flex: 1;
+    display: block !important;
 }
 
 .order_content_row1 {
