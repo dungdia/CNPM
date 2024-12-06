@@ -83,7 +83,7 @@ const main = async ()=>{
                 <div class="order_content_price">
                     ${VND.format(order.gia_ban)}
                 </div>
-                <a href="/orderDetails?id=${order.id_hoadon}" class="order_content_detail_btn">
+                <a href="/orderDetail?id=${order.id_hoadon}" class="order_content_detail_btn">
                     View Order Details
                 </a>
             </div>
@@ -102,6 +102,7 @@ const main = async ()=>{
         </div>`
 
         order_list_element.append(orderItem)
+        count++
     }
 
     const orderCancelBtn = document.getElementsByClassName("order_content_cancel_btn")
@@ -111,6 +112,8 @@ const main = async ()=>{
             console.log(`Cancel ${orderId}`)
         }
     }
+    const orderAmount = document.getElementById("order_amount")
+    orderAmount.textContent = `(${orderList.data.length} orders)`
 }
 
 main()

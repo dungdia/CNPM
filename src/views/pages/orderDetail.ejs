@@ -1,6 +1,8 @@
 <head>
     <%- include("../include/head.ejs"); %>
+        <script type="module" src="../../assets/js/orderDetail.js" defer></script>
 </head>
+
 <body>
     <header>
         <%- include("../include/header.ejs"); %>
@@ -12,14 +14,15 @@
                     <div id="order_header" class="order_header">
                         <div class="order_header_img"></div>
                         <div class="order_header_name">Product name</div>
-                        <div class="order_header_quantity">Quantity</div>
+                        <div class="order_header_quantity">Imei</div>
                         <div class="order_header_guarantee">Guarantee</div>
                         <div class="order_header_price">Price</div>
                     </div>
                     <div id="order_item_container" class="order_item_container">
                         <div id="order_item" class="order_item">
                             <div class="item_img" class="item_img">
-                                <img src="https://cdn.hoanghamobile.com/i/preview/Uploads/2023/09/13/iphone-15-pro-max-natural-titanium-pure-back-iphone-15-pro-max-natural-titanium-pure-front-2up-screen-usen.png" alt="" />
+                                <img src="https://cdn.hoanghamobile.com/i/preview/Uploads/2023/09/13/iphone-15-pro-max-natural-titanium-pure-back-iphone-15-pro-max-natural-titanium-pure-front-2up-screen-usen.png"
+                                    alt="" />
                             </div>
                             <div class="item_name">
                                 Iphone 15 Pro Max Edtion 256 GB 16 GB RAM
@@ -30,7 +33,8 @@
                         </div>
                         <div id="order_item" class="order_item">
                             <div class="item_img" class="item_img">
-                                <img src="https://cdn.hoanghamobile.com/i/preview/Uploads/2023/09/13/iphone-15-pro-max-natural-titanium-pure-back-iphone-15-pro-max-natural-titanium-pure-front-2up-screen-usen.png" alt="" />
+                                <img src="https://cdn.hoanghamobile.com/i/preview/Uploads/2023/09/13/iphone-15-pro-max-natural-titanium-pure-back-iphone-15-pro-max-natural-titanium-pure-front-2up-screen-usen.png"
+                                    alt="" />
                             </div>
                             <div class="item_name">
                                 Iphone 15 Pro Max Edtion 256 GB 16 GB RAM
@@ -97,12 +101,11 @@
                     <p id="order_user_fullname">Họ và tên khách hàng:</p>
                     <p id="order_user_phone_number">Số điện thoại:</p>
                     <p id="order_user_address">Địa chỉ:</p>
-                    <p id="order_user_email">Email:</p>
                     <p id="order_user_total_price">Tổng tiền:</p>
                     <p id="order_user_note">Note:</p>
                 </div>
             </div>
         </div>
     </div>
-    <%- include("../include/footer.ejs"); %> 
+    <%- include("../include/footer.ejs"); %>
 </body>

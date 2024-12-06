@@ -62,6 +62,24 @@ module.exports = class {
     });
   }
 
+  startTransaction() {
+    return new Promise((resolve) => {
+      this.#con.beginTransaction((err) => {
+        if (err) resolve(err);
+        resolve(this.#con);
+      });
+    });
+  }
+
+  commit() {
+    return new Promise((resolve) => {
+      this.#con.commit((err) => {
+        if (err) resolve(err);
+        resolve(this.#con);
+      });
+    });
+  }
+
   closeConnect() {
     this.#con.end((err) => {
       if (err) {
