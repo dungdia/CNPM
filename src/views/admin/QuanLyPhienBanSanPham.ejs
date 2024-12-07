@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../include/admin_head.ejs"); %>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link href="../../assets/css/admin/admin_style.css" rel="stylesheet" type="text/css">
+        <link href="../../assets/css/admin_table.css" rel="stylesheet" type="text/css">
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"
+            type="text/css">
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+        <script type="module" src="../../assets/js/admin/QuanLyPhienBanSanPham.js" defer></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <%- include("../include/admin_header.ejs"); %>
+
+        <!-- Content -->
+        <div class="containter-fluid px-4">
+            <div class="row">
+                <h1 class="mt-4">Quản lý phien ban san pham</h1>
+                <%- include("./popup.ejs"); %>
+                    <div id="datatablesSimple"></div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <%- include("../include/admin_footer.ejs"); %>
+</body>
+
+</html>

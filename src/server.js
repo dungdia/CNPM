@@ -27,7 +27,7 @@ async function apiHandler() {
   const folders = await getAllFile(path.join(__dirname, "app", "api"));
 
   for (const folder of folders) {
-    const parent = folder.split("/").pop();
+    const parent = folder.split("\\").pop();
     await setUpREST(app, path.join(__dirname, "app", "api"), parent);
   }
 }
@@ -42,19 +42,19 @@ async function viewsHandler() {
   for (const page of viewFolder) {
     //lấy tên trang để setup đường dẫn
 
-    const pageName = page.split("/").pop().replace(".ejs", "");
-    app.get(`/${pageName}`,requireLoginPage.includes(pageName) ? authMiddleWare : (req,res,next)=> {next()}, (req, res) => {
+    const pageName = page.split("\\").pop().replace(".ejs", "");
+    app.get(`/${pageName}`, requireLoginPage.includes(pageName) ? authMiddleWare : (req, res, next) => { next() }, (req, res) => {
 
       res.render(page);
     });
   }
 
 
-  for(const page of adminFolder){
-    const pageName = page.split("/").pop().replace(".ejs", "");
-    app.get(`/admin/${pageName}`,authMiddleWare,roleMiddleWare,(req,res)=>{
-    res.render(page)
-  })
+  for (const page of adminFolder) {
+    const pageName = page.split("\\").pop().replace(".ejs", "");
+    app.get(`/admin/${pageName}`, authMiddleWare, roleMiddleWare, (req, res) => {
+      res.render(page)
+    })
 
   }
 }
@@ -88,7 +88,7 @@ async function productImgApi() {
 async function insertProduct() {
   app.post("/api/data/addSanPham", upload.single('hinh_anh'), async (req, res) => {
     const { ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu } = req.body;
-    const image = req.file.buffer
+    const image = req.file ? req.file.buffer : null
     if (!ten_sanpham || !kichThuocMan || !cameraSau || !cameraTruoc || !chipXuLy || !heDieuHanh || !dungLuongPin) {
       return res.json({ message: "Không được để trống" });
     }

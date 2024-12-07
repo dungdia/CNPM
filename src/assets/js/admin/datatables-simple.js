@@ -53,7 +53,6 @@ export default function initTable(jsonData, tableId = "datatablesSimple") {
 let url = ""
 export let fetchJsonData = async (key, meth, projection) => {
     if (meth === "POST" || meth === "PUT") {
-        console.log(formData.get("image"))
         try {
             const res = await fetch(`../api/data/${key}`, {
                 method: meth,

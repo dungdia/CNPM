@@ -8,11 +8,11 @@ import initTable, {
 let dataTable;
 let item = {};
 
-// async function reloadDataTable() {
-//     dataTable.destroy();
-//     const jsonData = await fetchJsonData("getTaiKhoanNVList");
-//     dataTable = initTable(jsonData)
-// }
+async function reloadDataTable() {
+    dataTable.destroy();
+    const jsonData = await fetchJsonData("getAllSanPham");
+    dataTable = initTable(jsonData)
+}
 
 async function renderProductInfo(data, type) {
     const popUpLabel = document.getElementById("popup-label");
@@ -221,6 +221,9 @@ function showAdd() {
         } else {
             alert(res.message)
         }
+        popUpCloseBtn.textContent = "Close";
+        popUpSaveBtn.classList.add("d-none");
+        reloadDataTable()
     }
 }
 
@@ -300,6 +303,10 @@ async function showLock(data) {
         } else {
             alert(res.message)
         }
+        popUpBody.textContent = `${data.trangThai === 1 ? "Lock" : "Unlock"} ${data.ten_sanpham} thành công`;
+        popUpCloseBtn.textContent = "Close";
+        popUpSaveBtn.classList.add("d-none");
+        reloadDataTable()
     }
 }
 
