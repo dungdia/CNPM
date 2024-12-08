@@ -94,7 +94,7 @@ async function renderProductInfo(data, type) {
             value="${type === "add" ? `` : item.chipXuLy}" 
             ${type !== "detail" ? `` : `readonly`}
             style="appearance: none; -moz-appearance: textfield; margin: 0;">
-            <label for="productCPU">Chip Xu Ly</label> 
+            <label for="productCPU">Chip Xử Lý</label> 
         </div>
         <!-- HE DIEU HANH -->
         <div class="form-floating mb-3">
@@ -132,7 +132,6 @@ async function renderProductInfo(data, type) {
             : `<option value="${brand.id_thuonghieu}">${brand.ten_thuonghieu}</option>`}
             </select>
             <label for="brandSelect">Thương hiệu</label>
-        </div>
         </div>
         
         ${type === "add" || type === "edit" ? `

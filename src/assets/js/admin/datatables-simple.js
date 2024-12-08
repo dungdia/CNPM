@@ -69,10 +69,10 @@ export let fetchJsonData = async (key, meth, projection) => {
     } else {
         url = ""
         for (const key in projection) {
-            console.log(`${key}: ${projection[key]}`);
             url += `${key}=${projection[key]}&`
         }
         try {
+            console.log(url)
             const res = await fetch(`../api/data/${key}?${url}`, {
                 method: meth,
                 headers: {

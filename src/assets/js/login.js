@@ -5,6 +5,7 @@ const loginForm = document.getElementById("login-form__body")
 const singinInputBody = document.getElementById("login-form__body").querySelectorAll("input")
 const signinInputUsername = document.getElementById("login-form__input--username")
 const singinInputPassword = document.getElementById("login-form__input--password")
+const allFeedback = document.querySelectorAll(".invalid-feedback")
 
 loginForm.addEventListener("submit", async (e) => {
     e.preventDefault()
@@ -35,6 +36,17 @@ let loginData = async () => {
         const resData = await res.json();
         if (!resData.success) {
             alert(resData.message)
+            if (res.message === "Sai mật khẩu") {
+                allFeedback[0].previousElementSibling.classList.remove("is-valid")
+                allFeedback[1].textContent = resData.message
+                allFeedback[1].previousElementSibling.classList.remove("is-valid")
+                allFeedback[1].previousElementSibling.classList.add("is-invalid")
+            } else {
+                allFeedback[1].previousElementSibling.classList.remove("is-valid")
+                allFeedback[0].textContent = resData.message
+                allFeedback[0].previousElementSibling.classList.remove("is-valid")
+                allFeedback[0].previousElementSibling.classList.add("is-invalid")
+            }
             return
         }
         console.log(resData)
@@ -46,8 +58,8 @@ let loginData = async () => {
         alert("Đăng nhập thành công")
 
         const cookieManager = new CookieManager();
-        cookieManager.set("access_token",access_token)
-        cookieManager.set("refesh_token",refesh_token)
+        cookieManager.set("access_token", access_token)
+        cookieManager.set("refesh_token", refesh_token)
         // cookieManager.set("access_token",access_token)
         window.location = "/"
 
