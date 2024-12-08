@@ -70,7 +70,7 @@
 .order_container .item_img,
 .order_container .order_header_img {
     width: 5%;
-    margin-right: 10px;
+    /* margin-right: 10px; */
 }
 
 .order_container .item_name,
