@@ -1,3 +1,5 @@
+import { Validation } from "./validation.js";
+
 const payBtn = document.getElementById("cart-pay-btn");
 const paymentPopup = document.getElementById("user-payment-info-popup-container");
 const cancelBtn = document.getElementById("user-payment-info-cancel-button");
@@ -246,16 +248,20 @@ const renderCartItems = async () =>{
 }
 
 const addNewOrder = async () =>{
-    if(fullName.value == ""){
-        alert("Họ và tên không được bỏ trống!");
+    const phoneNumberRegex = /^0\d{9,10}$/;
+    const fullnameRegex = /^[^\s][a-zA-ZÀ-ỹà-ỹ\s]{1,99}$/;
+    const addressRegex = /^[^\s][a-zA-ZÀ-ỹà-ỹ0-9\s]{8,99}[^\s]$/;
+    console.log(fullnameRegex.test(fullName.value))
+    if(!fullnameRegex.test(fullName.value)){
+        alert("Họ tên phải từ 3 - 100 kí tự, không bắt đầu bằng khoảng trắng và không chứa kí tự đặc biệt");
         return;
     }
-    if(phoneNumber.value == ""){
-        alert("Số điện thoại không được bỏ trống");
+    if(!phoneNumberRegex.test(phoneNumber.value)){
+        alert("Số điện thoại bao gồm từ 10 - 11 số và bắt đầu bằng số 0");
         return;
     }
-    if(address.value == ""){
-        alert("Địa chỉ không được để trống");
+    if(!addressRegex.test(address.value)){
+        alert("Địa chỉ phải từ 10 - 100 kí tự, không bắt đầu bằng khoảng trắng và không chứa kí tự đặc biệt");
         return;
     }     
     try {
