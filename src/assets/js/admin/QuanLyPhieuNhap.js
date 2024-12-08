@@ -6,7 +6,6 @@ import initTable, {
 } from "./datatables-simple.js";
 
 let dataTable;
-let item = {};
 let receiptDetail = []
 
 
@@ -29,16 +28,17 @@ async function renderReceiptDetail(data,type){
     
     const sanpham = await fetchJsonData(`getAllSanPham`)
     
-    let chiTietSanPham = []
+    let chiTietSanPham = await (data ? fetchJsonData(`getAllChiTietSP?id_sanpham=${data.id_sanpham}`) : [])
     
     let choosedPhienBanSanPham
     let choosedSanPham
 
-
-    
     if(data){
-
+       [choosedSanPham] = sanpham.filter((item) => item.id_sanpham == data.id_sanpham)
+        const [phienban] = chiTietSanPham.filter((item) => item.id_phienban == data.id_phienban)
+        choosedPhienBanSanPham = phienban
     }
+    
     
     popUpBody.innerHTML = `
     <div class="btn-group w-100 my-2">
@@ -68,7 +68,7 @@ async function renderReceiptDetail(data,type){
     class="form-control" 
     id="productDetail" 
     placeholder="" 
-    value="${type === "add" ? `` : data.ten_sanpham}" 
+    value="${type === "add" ? `` : `${data.ten_sanpham} ${data.ram} GB ${data.dung_luong} GB`}" 
     readonly
     style="appearance: none; -moz-appearance: textfield; margin: 0;">
     <label for="productName">Phiên bản sản phẩm</label> 
@@ -124,6 +124,7 @@ async function renderReceiptDetail(data,type){
         const selectedData = getSelectedData(productTable, rowIdx);
         choosedSanPham = selectedData
         productName.value = selectedData.ten_sanpham
+        choosedPhienBanSanPham = null
         reloadDetailTable(selectedData.id_sanpham)
     }
 
@@ -162,18 +163,34 @@ async function renderReceiptDetail(data,type){
             currency: "VND",
           });
 
-        const newSanPham = {id_phienban:choosedPhienBanSanPham.id_phienban,ten_sanpham:choosedSanPham.ten_sanpham,ram:choosedPhienBanSanPham.ram,dung_luong:choosedPhienBanSanPham.dung_luong,so_luong:Number.parseInt(productAmount.value),gia:VND.format(productPrice.value)}
-        const currentsanpham = receiptDetail.filter((item)=>item.id_phienban === newSanPham.id_phienban)
-        if(currentsanpham.length >0){
-            for(const item of receiptDetail){
-                if(item.id_phienban === newSanPham.id_phienban)
-                    item.so_luong += Number.parseInt(productAmount.value)
-            }
-
+        const newSanPham = {id_sanpham:choosedSanPham.id_sanpham,id_phienban:choosedPhienBanSanPham.id_phienban,ten_sanpham:choosedSanPham.ten_sanpham,ram:choosedPhienBanSanPham.ram,dung_luong:choosedPhienBanSanPham.dung_luong,so_luong:Number.parseInt(productAmount.value),gia:productPrice.value}
+        switch (type) {
+            case "add":
+                const currentsanpham = receiptDetail.filter((item)=>item.id_phienban === newSanPham.id_phienban)
+                if(currentsanpham.length >0){
+                    for(const item of receiptDetail){
+                        if(item.id_phienban === newSanPham.id_phienban)
+                            item.so_luong += Number.parseInt(productAmount.value)
+                    }
+        
+                }
+        
+                if(currentsanpham.length <= 0)
+                    receiptDetail.push(newSanPham)
+                break;
+            case "edit":
+                receiptDetail = receiptDetail.map((item) =>{
+                    if(item.id_phienban == data.id_phienban){
+                        return newSanPham
+                    }
+                    return item
+                })
+        
+            default:
+                break;
         }
 
-        if(currentsanpham.length <= 0)
-            receiptDetail.push(newSanPham)
+
         renderReceiptInfo(null,"add")
     }
 
@@ -188,7 +205,7 @@ async function renderReceiptInfo(data, type) {
     footer_modal.innerHTML = `
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
     id="Footer-Close-PopUp-Button">Close</button>
-    <button type="button" class="btn btn-primary" id="Footer-Save-PopUp-Button">Save changes</button>
+    <button type="button" class="btn btn-primary ${type == "detail" ? "d-none":""}" id="Footer-Save-PopUp-Button">Save changes</button>
     `
 
     if(type == "add"){
@@ -199,6 +216,8 @@ async function renderReceiptInfo(data, type) {
     if(data){
         receiptDetail = await fetchJsonData(`getAllReceiptDetail?id_phieunhap=${data.id_phieunhap}`)
     }
+
+  
 
     popUpBody.innerHTML = `
         ${type === "detail" ? `
@@ -267,29 +286,82 @@ async function renderReceiptInfo(data, type) {
         <div id="chitietphieunhap"></div>
     `
 
-    initTable(receiptDetail,"chitietphieunhap")
+    let receiptDetailTable = initTable(receiptDetail,"chitietphieunhap")
 
-    if(type !== "add")
+    if(type !== "add"){
+        popUpSaveBtn.onclick = ()=>{}
         return
+    }
 
 
     const removeBtn = document.getElementById("btn-receiptDetail-remove");
     const editBtn = document.getElementById("btn-receiptDetail-update");
     const addbtn = document.getElementById("btn-receiptDetail-add");
+    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+    const providerSelect = document.getElementById("providerSelect")
 
     addbtn.onclick = ()=>{
         renderReceiptDetail(null,"add")
     }
 
+    editBtn.onclick = ()=>{
+        const selectRow = document.querySelector("#chitietphieunhap .selectedRow");
+        if (!selectRow) {
+            alert("Chưa chọn dòng nào trong bảng")
+            return;
+        }
+        const rowIdx = selectRow.getAttribute("data-index");
+        const selectedData = getSelectedData(receiptDetailTable, rowIdx);
+        // console.log(selectedData)
+        renderReceiptDetail(selectedData,"edit")
+    }
+
+    removeBtn.onclick = ()=>{
+        const selectRow = document.querySelector("#chitietphieunhap .selectedRow");
+        if (!selectRow) {
+            alert("Chưa chọn dòng nào trong bảng")
+            return;
+        }
+        const rowIdx = selectRow.getAttribute("data-index");
+        const selectedData = getSelectedData(receiptDetailTable, rowIdx);
+        receiptDetail = receiptDetail.filter((item) => item.id_phienban != selectedData.id_phienban)
+        receiptDetailTable.destroy()
+        receiptDetailTable = initTable(receiptDetail,"chitietphieunhap")
+    }
+
+    popUpSaveBtn.onclick = async () =>{
+        if(receiptDetail.length <=0){
+            alert("Phải ít nhất có một sản phẩm trong phiếu nhập")
+            return
+        }
+
+
+        const body={id_nhacungcap:providerSelect.value ,ctPhieuNhap:receiptDetail}
+        try {
+            const res = await fetch(`/api/data/addNewReceipt`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+            const result = await res.json()
+            console.log(result)
+            if(!result.success){
+                alert(result.message)
+                return
+            }
+            popUpBody.innerHTML = "Thêm phiếu nhập thành công"
+            popUpSaveBtn.classList.add("d-none")
+            reloadDataTable()
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
 
 async function showDetail(data) {
     const popUpLabel = document.getElementById("popup-label");
-    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-    popUpSaveBtn.classList.add("d-none");
-
-    // console.log(data)
-
     popUpLabel.textContent = `Xem Phiếu Nhập`;
     renderReceiptInfo(data, "detail");
 }
@@ -335,7 +407,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     addbtn.addEventListener("click", () => {
         const popUpLabel = document.getElementById("popup-label");
-        const popUpBody = document.getElementById("Popup-Body");
         const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
     
         popUpSaveBtn.classList.remove("d-none");
