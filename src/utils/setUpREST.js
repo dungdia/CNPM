@@ -12,7 +12,7 @@ function requestHandler(app, list, parent, type) {
         //split để thành mảng, pop để lấy ra tên file
 
 
-        const apiName = Method.split("\\").pop().replace(".js","") 
+        const apiName = Method.split("/").pop().replace(".js","") 
 
         //import callback từ file vào
         const apiCallback = require(Method)
