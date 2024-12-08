@@ -129,7 +129,7 @@ export class Validation {
   // checkPhoneNumber
   //=======================================================================
   static isPhoneNumber(phoneNumber) {
-    const regex = /^((03|05|07|08|09)[0-9]{8})$/;
+    const regex = /^0\d{9,10}$/;
 
     return regex.test(phoneNumber);
   }
@@ -143,7 +143,7 @@ export class Validation {
 
     if (Validation.isEmpty(phoneNumber.value)) {
       phoneNumber.classList.add("is-invalid");
-      userPhoneNumberFeedback.innerHTML = `Số điện thoại không hợp lệ`;
+      userPhoneNumberFeedback.innerHTML = `Số điện thoại bao gồm từ 10 - 11 số và bắt đầu bằng số 0`;
       (valid = false);
     }
     if (!Validation.isPhoneNumber(phoneNumber.value)) {
@@ -178,5 +178,34 @@ export class Validation {
     }
 
     return valid;
+  }
+
+  //=======================================================================
+  // check if user's Fullname is valid or not
+  //=======================================================================
+  static checkFullName(fullname) {
+    const fullnameRegex = /^[^\s][a-zA-ZÀ-ỹà-ỹ\s]{2,99}$/;
+    const fullnameErrorDiv = document.getElementById("userFullname-feedback")
+    if(!fullnameRegex.test(fullname.value)) {
+      console.log("check full name")
+      fullname.classList.add("is-invalid");
+      fullnameErrorDiv.innerHTML = "Họ tên phải từ 3 - 100 kí tự, không bắt đầu bằng khoảng trắng và không chứa kí tự đặc biệt";
+      return false;
+    }
+    return true;
+  }
+  //=======================================================================
+  // check if user's address is valid or not
+  //=======================================================================
+  static checkAddress(address) {
+    const addressRegex = /^[^\s][a-zA-ZÀ-ỹà-ỹ0-9\s]{8,99}[^\s]$/;
+    const addressErrorDiv = document.getElementById("userAddress");
+    if(!addressRegex.test(address.value)) {
+      console.log("check full name")
+      address.classList.add("is-invalid");
+      addressErrorDiv.innerHTML = "Địa chỉ phải từ 10 - 100 kí tự, không bắt đầu bằng khoảng trắng và không chứa kí tự đặc biệt";
+      return false;
+    }
+    return true;
   }
 }

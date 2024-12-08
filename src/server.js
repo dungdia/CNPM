@@ -42,12 +42,16 @@ async function viewsHandler() {
   for (const page of viewFolder) {
     //lấy tên trang để setup đường dẫn
 
-    const pageName = page.split("/").pop().replace(".ejs", "");
-    app.get(`/${pageName}`, requireLoginPage.includes(pageName) ? authMiddleWare : (req, res, next) => { next() }, (req, res) => {
+
+    const pageName = page.split("\\").pop().replace(".ejs", "");
+
+    app.get(`/${pageName}`,requireLoginPage.includes(pageName) ? authMiddleWare : (req,res,next)=> {next()}, (req, res) => {
+
 
       res.render(page);
     });
   }
+
 
 
   for (const page of adminFolder) {
