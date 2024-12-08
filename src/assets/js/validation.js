@@ -47,7 +47,7 @@ export class Validation {
   }
   //=======================================================================
   static isPassword(password) {
-    const regexPassword = (/^(?! )[^\s ]{6,}$/);
+    const regexPassword = (/^(?! )[^\s ]{8,}$/);
     return regexPassword.test(password);
   }
   //=======================================================================
@@ -186,7 +186,7 @@ export class Validation {
   static checkFullName(fullname) {
     const fullnameRegex = /^[^\s][a-zA-ZÀ-ỹà-ỹ\s]{2,99}$/;
     const fullnameErrorDiv = document.getElementById("userFullname-feedback")
-    if(!fullnameRegex.test(fullname.value)) {
+    if (!fullnameRegex.test(fullname.value)) {
       console.log("check full name")
       fullname.classList.add("is-invalid");
       fullnameErrorDiv.innerHTML = "Họ tên phải từ 3 - 100 kí tự, không bắt đầu bằng khoảng trắng và không chứa kí tự đặc biệt";
@@ -200,7 +200,7 @@ export class Validation {
   static checkAddress(address) {
     const addressRegex = /^[^\s][a-zA-ZÀ-ỹà-ỹ0-9\s]{8,99}[^\s]$/;
     const addressErrorDiv = document.getElementById("userAddress");
-    if(!addressRegex.test(address.value)) {
+    if (!addressRegex.test(address.value)) {
       console.log("check full name")
       address.classList.add("is-invalid");
       addressErrorDiv.innerHTML = "Địa chỉ phải từ 10 - 100 kí tự, không bắt đầu bằng khoảng trắng và không chứa kí tự đặc biệt";

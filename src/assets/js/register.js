@@ -6,6 +6,7 @@ const signupFormBody = document.getElementById("register-form__body").querySelec
 const signupInputUsername = document.getElementById("register-form__input--username")
 const signupInputPassword = document.getElementById("register-form__input--password")
 const signupInputConfirmPassword = document.getElementById("register-form__input--confirm-password")
+const AllFeedback = document.querySelectorAll(".invalid-feedback")
 
 formRegister.addEventListener('submit', async (e) => {
     e.preventDefault();

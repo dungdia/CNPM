@@ -44,7 +44,7 @@ async function viewsHandler() {
 
     const pageName = page.split("\\").pop().replace(".ejs", "");
 
-    app.get(`/${pageName}`,requireLoginPage.includes(pageName) ? authMiddleWare : (req,res,next)=> {next()}, (req, res) => {
+    app.get(`/${pageName}`, requireLoginPage.includes(pageName) ? authMiddleWare : (req, res, next) => { next() }, (req, res) => {
 
 
       res.render(page);
@@ -96,6 +96,18 @@ async function insertProduct() {
       return res.json({ message: "Không được để trống" });
     }
     try {
+      const textFieldRegex = /^[a-zA-Z0-9]{1,255}$/
+      const number = /^[0-9]+$/
+      const passwordRegex = /^(?! )[^\s ]{8,}$/
+
+      if (!text.test(textFieldRegex)) {
+        return res.json({ message: "Tên sản phẩm chuỗi từ 1 - 255 kí tự bao gồm chữ và số", success: false })
+      }
+
+      if (!text.test(textFieldRegex)) {
+        return res.json({ message: "Kich thuốc mán phải bao gồm chữ và số", success: false })
+      }
+
       const DBConnecter = require("./app/controller/DBconnecter");
       const conn = new DBConnecter();
 
