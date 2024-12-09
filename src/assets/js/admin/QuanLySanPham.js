@@ -188,26 +188,26 @@ function showAdd() {
     popUpSaveBtn.onclick = async () => {
         console.log("Save")
 
-        const productImg = document.getElementById("productImg").files[0];
-        const productName = document.getElementById("productName").value;
-        const productSZ = document.getElementById("productSZ").value;
-        const productRC = document.getElementById("productRC").value;
-        const productFC = document.getElementById("productFC").value;
-        const productCPU = document.getElementById("productCPU").value;
-        const productOS = document.getElementById("productOS").value;
-        const productBC = document.getElementById("productBC").value;
-        const productBrand = document.getElementById("brandSelect").value;
+        const productImg = document.getElementById("productImg");
+        const productName = document.getElementById("productName")
+        const productSZ = document.getElementById("productSZ")
+        const productRC = document.getElementById("productRC")
+        const productFC = document.getElementById("productFC")
+        const productCPU = document.getElementById("productCPU")
+        const productOS = document.getElementById("productOS")
+        const productBC = document.getElementById("productBC")
+        const productBrand = document.getElementById("brandSelect")
 
         const projection = {
-            "ten_sanpham": productName,
-            "kichThuocMan": productSZ,
-            "cameraSau": productRC,
-            "cameraTruoc": productFC,
-            "chipXuLy": productCPU,
-            "heDieuHanh": productOS,
-            "dungLuongPin": productBC,
-            "id_thuonghieu": productBrand,
-            "hinh_anh": productImg
+            "ten_sanpham": productName.value,
+            "kichThuocMan": productSZ.value,
+            "cameraSau": productRC.value,
+            "cameraTruoc": productFC.value,
+            "chipXuLy": productCPU.value,
+            "heDieuHanh": productOS.value,
+            "dungLuongPin": productBC.value,
+            "id_thuonghieu": productBrand.value,
+            "hinh_anh": productImg.files[0]
         }
         const formData = new FormData();
         for (const [key, value] of Object.entries(projection)) {
@@ -216,10 +216,10 @@ function showAdd() {
         console.log(formData)
         const res = await postImageData("addSanPham", formData);
         if (!res.success) {
-            alert(res.message)
-        } else {
-            alert(res.message)
+            return alert(res.message)
         }
+
+        alert(res.message)
         popUpCloseBtn.textContent = "Close";
         popUpSaveBtn.classList.add("d-none");
         reloadDataTable()
@@ -237,7 +237,7 @@ async function showEdit(data) {
     renderProductInfo(data, "edit");
 
     popUpSaveBtn.onclick = async () => {
-        const productImg = document.getElementById("productImg").files[0];
+        const productImg = document.getElementById("productImg");
         const productName = document.getElementById("productName").value;
         const productSZ = document.getElementById("productSZ").value;
         const productRC = document.getElementById("productRC").value;
@@ -257,7 +257,7 @@ async function showEdit(data) {
             "heDieuHanh": productOS,
             "dungLuongPin": productBC,
             "id_thuonghieu": productBrand,
-            "hinh_anh": productImg
+            "hinh_anh": productImg.files[0]
         }
         const formData = new FormData();
         for (const [key, value] of Object.entries(projection)) {

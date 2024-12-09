@@ -1,10 +1,14 @@
 const bcrypt = require("bcryptjs");
 const { DateTime } = require('luxon');
+const Validator = require('../../../../utils/validator');
 module.exports = async (req, res) => {
     console.log(req.body)
 
     const nowInVietnam = DateTime.now().setZone('Asia/Ho_Chi_Minh');
     const formattedDate = nowInVietnam.toFormat('yyyy-MM-dd HH:mm:ss');
+    function message(msg, status) {
+        return res.json({ message: msg, success: status });
+    }
 
     try {
         const DBConnecter = require("../../../controller/DBconnecter");
@@ -15,61 +19,70 @@ module.exports = async (req, res) => {
 
             const { username, fullName, gender, phoneNumber, email, password, confirmPassword, roleId } = req.body;
 
-            if (!username || !fullName || !gender || !phoneNumber || !email || !password || !confirmPassword) {
+            if (!username || !fullName || !phoneNumber || !email || !password || !confirmPassword) {
                 return res.json({ message: "Vui lòng nhập đầy đủ thông tin", success: false })
+            }
+
+            switch (true) {
+                case Validator.isText(username):
+                    return message("Tên username không được để trống và quá 255 ký tự", false); break;
+                case Validator.isText(fullName):
+                    return message("Tên nhân viên không được để trống và quá 255 ký tự", false); break;
+                case Validator.isNumber(phoneNumber):
+                    return message("Số điện thoại không được để trống và quá 255 ký tự", false); break;
             }
 
             if (password !== confirmPassword) {
                 return res.json({ message: "Mật khẩu không khớp", success: false })
             }
 
-            const checkExistUsername = await conn.select(`
-                SELECT *
-                FROM taikhoan tk
-                join vaitro vt on vt.id_vaitro = tk.vaitro_id and vt.id_vaitro != 1 
-                join nhanvien nv on nv.id_taikhoan = tk.id_taikhoan
-                where tk.user_name = ?
-            `, [username])
+            // const checkExistUsername = await conn.select(`
+            //     SELECT *
+            //     FROM taikhoan tk
+            //     join vaitro vt on vt.id_vaitro = tk.vaitro_id and vt.id_vaitro != 1 
+            //     join nhanvien nv on nv.id_taikhoan = tk.id_taikhoan
+            //     where tk.user_name = ?
+            // `, [username])
 
-            if (checkExistUsername.length > 0) {
-                return res.json({ message: "Tên tài khoản đã tồn tại", success: false })
-            }
+            // if (checkExistUsername.length > 0) {
+            //     return res.json({ message: "Tên tài khoản đã tồn tại", success: false })
+            // }
 
-            const checkExistEmail = await conn.select(`
-                SELECT *
-                FROM taikhoan tk
-                join vaitro vt on vt.id_vaitro = tk.vaitro_id and vt.id_vaitro != 1 
-                join nhanvien nv on nv.id_taikhoan = tk.id_taikhoan
-                where nv.email = ?
-            `, [email])
+            // const checkExistEmail = await conn.select(`
+            //     SELECT *
+            //     FROM taikhoan tk
+            //     join vaitro vt on vt.id_vaitro = tk.vaitro_id and vt.id_vaitro != 1 
+            //     join nhanvien nv on nv.id_taikhoan = tk.id_taikhoan
+            //     where nv.email = ?
+            // `, [email])
 
-            if (checkExistEmail.length > 0) {
-                return res.json({ message: "Email đã tồn tại", success: false })
-            }
+            // if (checkExistEmail.length > 0) {
+            //     return res.json({ message: "Email đã tồn tại", success: false })
+            // }
 
-            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            // const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-            const insertTK = await conn.insert(`
-                INSERT INTO cnpm.taikhoan
-                (user_name, password, vaitro_id, ngaythamgia)
-                VALUES(?, ?, ?, ?);    
-            `, [username, hashedPassword, roleId, formattedDate])
+            // const insertTK = await conn.insert(`
+            //     INSERT INTO cnpm.taikhoan
+            //     (user_name, password, vaitro_id, ngaythamgia)
+            //     VALUES(?, ?, ?, ?);    
+            // `, [username, hashedPassword, roleId, formattedDate])
 
-            if (insertTK.status !== 200) {
-                return res.json({ message: "Thêm tài khoản nhân viên thất bại", success: false })
-            }
+            // if (insertTK.status !== 200) {
+            //     return res.json({ message: "Thêm tài khoản nhân viên thất bại", success: false })
+            // }
 
-            const lastId = await conn.lastId();
+            // const lastId = await conn.lastId();
 
-            const insertNV = await conn.insert(`
-                INSERT INTO cnpm.nhanvien
-                (id_taikhoan, ho_ten, gioi_tinh, sodienthoai, email)
-                VALUES(?, ?, ?, ?, ?);
-            `, [lastId, fullName, gender, phoneNumber, email])
+            // const insertNV = await conn.insert(`
+            //     INSERT INTO cnpm.nhanvien
+            //     (id_taikhoan, ho_ten, gioi_tinh, sodienthoai, email)
+            //     VALUES(?, ?, ?, ?, ?);
+            // `, [lastId, fullName, gender, phoneNumber, email])
 
-            if (insertNV.status !== 200) {
-                return res.json({ message: "Thêm tài khoản nhân viên thất bại", success: false })
-            }
+            // if (insertNV.status !== 200) {
+            //     return res.json({ message: "Thêm tài khoản nhân viên thất bại", success: false })
+            // }
 
             return res.json({ message: "Thêm tài khoản nhân viên thành công", success: true })
         }
