@@ -38,7 +38,13 @@ customerInformationRender();
 changePasswordForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    let valid = true
+    let valid = true;
+    if(!Validation.checkIfOldPasswordEqualNewPassword(oldPassword, newPassword)){
+        valid = false;
+        alert("Mật khẩu cũ không được trùng với mật khẩu mới");
+        oldPassword.value == "";
+        newPassword.value == "";
+    }
     if (!Validation.checkIsEmpty(oldPassword) || !Validation.checkIsEmpty(newPassword)) {
         valid = false
     } else {
@@ -87,6 +93,9 @@ const handleUpdateUserPassword = async () => {
         }
         // clearValid(userInfoFormBody);
         alert("Lưu thành công")
+        window.location.reload();
+
+
     } catch (error) {
         console.log(error);
     }
