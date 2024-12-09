@@ -5,7 +5,7 @@ const getAllFile = require("./utils/getAllFile");
 const bodyParser = require("body-parser");
 const setUpREST = require("./utils/setUpREST");
 const cookieParser = require("cookie-parser");
-const multer = require('multer');
+const multer = require("multer");
 
 const app = express();
 const storage = multer.memoryStorage();
@@ -14,52 +14,58 @@ const upload = multer({ storage: storage });
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(cookieParser())
+app.use(cookieParser());
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 // setting view engine to ejs
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-
 async function apiHandler() {
   //setup api với mỗi file trong app/api
   const folders = await getAllFile(path.join(__dirname, "app", "api"));
 
   for (const folder of folders) {
-    const parent = folder.split("/").pop();
+    const parent = folder.split("\\").pop();
     await setUpREST(app, path.join(__dirname, "app", "api"), parent);
   }
 }
 
 async function viewsHandler() {
-  const authMiddleWare = require("./utils/authMiddleWare")
-  const roleMiddleWare = require("./utils/roleMiddleWare")
+  const authMiddleWare = require("./utils/authMiddleWare");
+  const roleMiddleWare = require("./utils/roleMiddleWare");
   const viewFolder = await getAllFile(path.join(__dirname, "views", "pages"));
-  const adminFolder = await getAllFile(path.join(__dirname, "views", "admin"))
-  const requireLoginPage = ["cart", "order", "orderDetail", "user-info"]
+  const adminFolder = await getAllFile(path.join(__dirname, "views", "admin"));
+  const requireLoginPage = ["cart", "order", "orderDetail", "user-info"];
 
   for (const page of viewFolder) {
     //lấy tên trang để setup đường dẫn
 
+    const pageName = page.split("\\").pop().replace(".ejs", "");
 
-    const pageName = page.split("/").pop().replace(".ejs", "");
-
-    app.get(`/${pageName}`, requireLoginPage.includes(pageName) ? authMiddleWare : (req, res, next) => { next() }, (req, res) => {
-
-
-      res.render(page);
-    });
+    app.get(
+      `/${pageName}`,
+      requireLoginPage.includes(pageName)
+        ? authMiddleWare
+        : (req, res, next) => {
+            next();
+          },
+      (req, res) => {
+        res.render(page);
+      }
+    );
   }
 
-
-
   for (const page of adminFolder) {
-    const pageName = page.split("/").pop().replace(".ejs", "");
-    app.get(`/admin/${pageName}`, authMiddleWare, roleMiddleWare, (req, res) => {
-      res.render(page)
-    })
-
+    const pageName = page.split("\\").pop().replace(".ejs", "");
+    app.get(
+      `/admin/${pageName}`,
+      authMiddleWare,
+      roleMiddleWare,
+      (req, res) => {
+        res.render(page);
+      }
+    );
   }
 }
 
@@ -76,7 +82,7 @@ async function productImgApi() {
       // res.send(product.length)
       if (product.length <= 0 || !product[0].hinh_anh) {
         res.sendFile(path.join(__dirname, "assets", "image", "default.jpg"));
-        conn.closeConnect()
+        conn.closeConnect();
         return;
       }
 
@@ -90,75 +96,148 @@ async function productImgApi() {
 }
 
 async function insertProduct() {
-  app.post("/api/data/addSanPham", upload.single('hinh_anh'), async (req, res) => {
-    const { ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu } = req.body;
-    const image = req.file ? req.file.buffer : null
-    if (!ten_sanpham || !kichThuocMan || !cameraSau || !cameraTruoc || !chipXuLy || !heDieuHanh || !dungLuongPin) {
-      return res.json({ message: "Không được để trống" });
-    }
-    try {
-      const textFieldRegex = /^[a-zA-Z0-9]{1,255}$/
-      const number = /^[0-9]+$/
-      const passwordRegex = /^(?! )[^\s ]{8,}$/
-
-      if (!text.test(textFieldRegex)) {
-        return res.json({ message: "Tên sản phẩm chuỗi từ 1 - 255 kí tự bao gồm chữ và số", success: false })
+  app.post(
+    "/api/data/addSanPham",
+    upload.single("hinh_anh"),
+    async (req, res) => {
+      const {
+        ten_sanpham,
+        kichThuocMan,
+        cameraSau,
+        cameraTruoc,
+        chipXuLy,
+        heDieuHanh,
+        dungLuongPin,
+        id_thuonghieu,
+      } = req.body;
+      const image = req.file ? req.file.buffer : null;
+      if (
+        !ten_sanpham ||
+        !kichThuocMan ||
+        !cameraSau ||
+        !cameraTruoc ||
+        !chipXuLy ||
+        !heDieuHanh ||
+        !dungLuongPin
+      ) {
+        return res.json({ message: "Không được để trống" });
       }
+      try {
+        const textFieldRegex = /^[a-zA-Z0-9]{1,255}$/;
+        const number = /^[0-9]+$/;
+        const passwordRegex = /^(?! )[^\s ]{8,}$/;
 
-      if (!text.test(textFieldRegex)) {
-        return res.json({ message: "Kich thuốc mán phải bao gồm chữ và số", success: false })
-      }
+        if (!text.test(textFieldRegex)) {
+          return res.json({
+            message: "Tên sản phẩm chuỗi từ 1 - 255 kí tự bao gồm chữ và số",
+            success: false,
+          });
+        }
 
-      const DBConnecter = require("./app/controller/DBconnecter");
-      const conn = new DBConnecter();
+        if (!text.test(textFieldRegex)) {
+          return res.json({
+            message: "Kich thuốc mán phải bao gồm chữ và số",
+            success: false,
+          });
+        }
 
-      const insertSanPham = await conn.insert(`
+        const DBConnecter = require("./app/controller/DBconnecter");
+        const conn = new DBConnecter();
+
+        const insertSanPham = await conn.insert(
+          `
           insert into cnpm.sanpham (ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu , hinh_anh)
           values (?, ?, ?, ?, ?, ?, ?, ?, ?);
-      `, [ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, image])
+      `,
+          [
+            ten_sanpham,
+            kichThuocMan,
+            cameraSau,
+            cameraTruoc,
+            chipXuLy,
+            heDieuHanh,
+            dungLuongPin,
+            id_thuonghieu,
+            image,
+          ]
+        );
 
-      if (insertSanPham.status !== 200) {
-        return res.json({ message: "Thêm sản phẩm không thành công", success: false })
-      }
-
-      conn.closeConnect();
-      res.json({ message: "Thêm sản phẩm thành công", success: true });
-    } catch (error) {
-      res.json({ message: "Lỗi", success: false });
-    }
-  })
-}
-
-async function updateProduct() {
-  app.post("/api/data/updateSanPham", upload.single('hinh_anh'), async (req, res) => {
-    const { id_sanpham, ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, trangThai } = req.body;
-    const image = req.file ? req.file.buffer : null
-    try {
-      const DBConnecter = require("./app/controller/DBconnecter");
-      const conn = new DBConnecter();
-
-      let updateSanPham
-
-      if (trangThai) {
-        console.log("LOCK")
-        updateSanPham = await conn.update(`
-          UPDATE cnpm.sanpham
-          SET trangThai = ?
-          WHERE id_sanpham = ?;
-        `, [trangThai, id_sanpham])
-
-        if (updateSanPham.status !== 200) {
-          return res.json({ message: "Khóa sản phẩm không thành công", success: false })
+        if (insertSanPham.status !== 200) {
+          return res.json({
+            message: "Thêm sản phẩm không thành công",
+            success: false,
+          });
         }
 
         conn.closeConnect();
-        res.json({ message: "Khóa sản phẩm thành công", success: true });
-      } else {
-        if (!id_sanpham || !ten_sanpham || !kichThuocMan || !cameraSau || !cameraTruoc || !chipXuLy || !heDieuHanh || !dungLuongPin) {
-          return res.json({ message: "Không được để trống" });
-        }
+        res.json({ message: "Thêm sản phẩm thành công", success: true });
+      } catch (error) {
+        res.json({ message: "Lỗi", success: false });
+      }
+    }
+  );
+}
 
-        updateSanPham = await conn.update(`
+async function updateProduct() {
+  app.post(
+    "/api/data/updateSanPham",
+    upload.single("hinh_anh"),
+    async (req, res) => {
+      const {
+        id_sanpham,
+        ten_sanpham,
+        kichThuocMan,
+        cameraSau,
+        cameraTruoc,
+        chipXuLy,
+        heDieuHanh,
+        dungLuongPin,
+        id_thuonghieu,
+        trangThai,
+      } = req.body;
+      const image = req.file ? req.file.buffer : null;
+      try {
+        const DBConnecter = require("./app/controller/DBconnecter");
+        const conn = new DBConnecter();
+
+        let updateSanPham;
+
+        if (trangThai) {
+          console.log("LOCK");
+          updateSanPham = await conn.update(
+            `
+          UPDATE cnpm.sanpham
+          SET trangThai = ?
+          WHERE id_sanpham = ?;
+        `,
+            [trangThai, id_sanpham]
+          );
+
+          if (updateSanPham.status !== 200) {
+            return res.json({
+              message: "Khóa sản phẩm không thành công",
+              success: false,
+            });
+          }
+
+          conn.closeConnect();
+          res.json({ message: "Khóa sản phẩm thành công", success: true });
+        } else {
+          if (
+            !id_sanpham ||
+            !ten_sanpham ||
+            !kichThuocMan ||
+            !cameraSau ||
+            !cameraTruoc ||
+            !chipXuLy ||
+            !heDieuHanh ||
+            !dungLuongPin
+          ) {
+            return res.json({ message: "Không được để trống" });
+          }
+
+          updateSanPham = await conn.update(
+            `
           UPDATE cnpm.sanpham
           SET 
             ten_sanpham = ?, 
@@ -171,19 +250,36 @@ async function updateProduct() {
             id_thuonghieu = ?, 
             hinh_anh = ?
           WHERE id_sanpham = ?;  
-        `, [ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, image, id_sanpham])
+        `,
+            [
+              ten_sanpham,
+              kichThuocMan,
+              cameraSau,
+              cameraTruoc,
+              chipXuLy,
+              heDieuHanh,
+              dungLuongPin,
+              id_thuonghieu,
+              image,
+              id_sanpham,
+            ]
+          );
 
-        if (updateSanPham.status !== 200) {
-          return res.json({ message: "Sửa sản phẩm không thành công", success: false })
+          if (updateSanPham.status !== 200) {
+            return res.json({
+              message: "Sửa sản phẩm không thành công",
+              success: false,
+            });
+          }
+
+          conn.closeConnect();
+          res.json({ message: "Sửa sản phẩm thành công", success: true });
         }
-
-        conn.closeConnect();
-        res.json({ message: "Sửa sản phẩm thành công", success: true });
+      } catch (error) {
+        res.json({ message: "Lỗi", success: false });
       }
-    } catch (error) {
-      res.json({ message: "Lỗi", success: false });
     }
-  })
+  );
 }
 
 insertProduct();
@@ -196,7 +292,6 @@ apiHandler();
 app.get(["/", "/index"], function (req, res) {
   res.render("index");
 });
-
 
 viewsHandler();
 
