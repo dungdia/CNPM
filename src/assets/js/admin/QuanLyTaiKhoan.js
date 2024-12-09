@@ -145,20 +145,21 @@ function showAdd() {
         const confirmPassword = document.getElementById("userConfirmPassword").value;
         const role = document.getElementById("userRoleSelect").value;
 
-        let data = {
+        let projection = {
             username: username,
             password: password,
             confirmPassword: confirmPassword,
-            roleId: role
+            roleId: role,
+            type: "add"
         }
 
-        const res = await fetchJsonData("TaiKhoan", "POST", data)
+        const res = await fetchJsonData("TaiKhoan", "POST", projection)
         if (!res.success) {
-            console.log(res)
             return alert(res.message)
         }
 
         alert(res.message)
+        window.location.reload();
         reloadDataTable()
     }
 }

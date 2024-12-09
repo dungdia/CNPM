@@ -145,7 +145,7 @@ function showAdd() {
             "query": "insert"
         }
 
-        const res = await fetchJsonData("ChiTietSp", "POST", projection);
+        const res = await fetchJsonData("PhienBanSp", "POST", projection);
         if (!res.success) {
             alert(res.message)
         } else {
@@ -175,17 +175,16 @@ async function showEdit(data) {
             "ram": prodcutRam.value,
             "dung_luong": productMemCap.value,
             "id_baoHanh": warrantySelect.value,
-            "query": "update"
+            "type": "update"
         }
 
-        const res = await fetchJsonData("ChiTietSp", "POST", projection);
+        const res = await fetchJsonData("PhienBanSp", "POST", projection);
         if (!res.success) {
-            alert(res.message)
-        } else {
-            alert(res.message)
+            return alert(res.message)
         }
-        popUpCloseBtn.textContent = "Close";
-        popUpSaveBtn.classList.add("d-none");
+
+        alert(res.message)
+        window.location.reload();
         reloadDataTable()
     }
 }
