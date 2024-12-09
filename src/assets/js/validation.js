@@ -169,7 +169,7 @@ export class Validation {
       if (setPassword.value !== confirmPassword.value) {
         confirmPassword.classList.add("is-invalid");
         confirmPassword.value = "";
-        newConfirmPasswordFeedback.innerHTML = `Mật khẩu không khớp`;
+        newConfirmPasswordFeedback.innerHTML = `Xác nhận mật khẩu mới không khớp với mật khẩu mới`;
         (valid = false);
       } else {
         confirmPassword.classList.remove("is-invalid");
@@ -180,11 +180,18 @@ export class Validation {
     return valid;
   }
 
+  static checkIfOldPasswordEqualNewPassword(oldPassword, newPassword){
+    if(oldPassword.value === newPassword.value) {
+      return false;
+    }
+    return true;
+  }
+
   //=======================================================================
   // check if user's Fullname is valid or not
   //=======================================================================
   static checkFullName(fullname) {
-    const fullnameRegex = /^[^\s][a-zA-ZÀ-ỹà-ỹ\s]{2,99}$/;
+    const fullnameRegex = /^[a-zA-ZÀ-ỹà-ỹ][a-zA-ZÀ-ỹà-ỹ\s]{2,99}$/;
     const fullnameErrorDiv = document.getElementById("userFullname-feedback")
     if (!fullnameRegex.test(fullname.value)) {
       console.log("check full name")
@@ -198,7 +205,7 @@ export class Validation {
   // check if user's address is valid or not
   //=======================================================================
   static checkAddress(address) {
-    const addressRegex = /^[^\s][a-zA-ZÀ-ỹà-ỹ0-9\s]{8,99}[^\s]$/;
+    const addressRegex = /^[a-zA-ZÀ-ỹà-ỹ][a-zA-ZÀ-ỹà-ỹ0-9\s]{8,99}[^\s]$/;
     const addressErrorDiv = document.getElementById("userAddress");
     if (!addressRegex.test(address.value)) {
       console.log("check full name")

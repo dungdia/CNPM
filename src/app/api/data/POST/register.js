@@ -14,13 +14,17 @@ module.exports = async (req, res) => {
     const regexPassword = Validator.regexPassword(password);
     const checkPassword = Validator.checkPassword(password, confirmPassword);
 
-    if (
-        isEmpty ||
-        !regexUsername ||
-        !regexPassword ||
-        !checkPassword
-    ) {
-        res.send({ message: "Lỗi định dạng dữ liệu", success: false })
+    if(isEmpty) {
+        res.send({ message: "Không được để trống các trường dữ liệu", success: false })
+        return
+    } else if(!regexUsername) {
+        res.send({ message: "Username không hợp lệ", success: false })
+        return
+    } else if(!regexPassword) {
+        res.send({ message: "Password phải từ 8 kí tự trở lên", success: false })
+        return
+    } else if(!checkPassword) {
+        res.send({ message: "Password và confirm password phải giống nhau", success: false })
         return
     }
 
