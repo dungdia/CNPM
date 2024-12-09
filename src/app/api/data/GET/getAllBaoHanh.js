@@ -1,13 +1,19 @@
 module.exports = async (req, res) => {
+    console.log(req.query)
     try {
         const DBConnecter = require("../../../controller/DBconnecter");
         const conn = new DBConnecter();
-        const getAllBh = await conn.select(`
+        let query
+        query = await conn.select(`
             select *
             from baohanh bh
         `);
-        res.json(getAllBh);
+        const data = []
+        for (const item of query) {
+            data.push(item)
+        }
         conn.closeConnect()
+        return res.json(data);
     } catch (error) {
         res.send(error);
     }

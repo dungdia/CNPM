@@ -80,6 +80,16 @@ module.exports = class {
     });
   }
 
+  lastId() {
+    return new Promise(resolve => {
+      const query = "SELECT LAST_INSERT_ID() AS last_id";
+      this.#con.query(query, (err, result) => {
+        if (err) resolve(err);
+        resolve(result[0].last_id);
+      });
+    })
+  }
+
   closeConnect() {
     this.#con.end((err) => {
       if (err) {
