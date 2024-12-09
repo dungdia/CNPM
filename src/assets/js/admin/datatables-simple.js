@@ -79,7 +79,6 @@ export let fetchJsonData = async (key, meth, projection) => {
                     "Content-Type": "application/json"
                 }
             });
-
             return res.json();
         } catch (error) {
             return error
