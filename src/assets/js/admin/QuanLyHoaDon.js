@@ -34,11 +34,11 @@ async function renderOrderInfo(data) {
             <!-- Order Summary -->
             <div class="card">
                 <div class="card-body">
-                    <h5>Hóa đơn: <span class="text-muted">${orderDetail["id_hoa_don"]}</span></h5>
-                    <h6>Khách hàng: <span class="text-muted">${orderDetail["ho_ten"]}</span></h6>
-                    <h6>Địa chỉ: <span class="text-muted">${orderDetail["dia_chi"]}</span></h6>
-                    <h6>Số điện thoại: <span class="text-muted">${orderDetail["so_dien_thoai"]}</span></h6>
-                    <h6>Ghi chú: <span class="text-muted">${orderDetail["ghi_chu"]}</span></h6>
+                    <h5 style="margin-bottom: 0.5rem; font-size: 1.4rem">Hóa đơn: <span class="text-muted">${orderDetail["id_hoa_don"]}</span></h5>
+                    <h6 style="margin-bottom: 0.5rem; font-size: 1.4rem">Khách hàng: <span class="text-muted">${orderDetail["ho_ten"]}</span></h6>
+                    <h6 style="margin-bottom: 0.5rem; font-size: 1.4rem">Địa chỉ: <span class="text-muted">${orderDetail["dia_chi"]}</span></h6>
+                    <h6 style="margin-bottom: 0.5rem; font-size: 1.4rem">Số điện thoại: <span class="text-muted">${orderDetail["so_dien_thoai"]}</span></h6>
+                    <h6 style="margin-bottom: 0.5rem; font-size: 1.4rem">Ghi chú: <span class="text-muted">${!orderDetail["ghi_chu"] ? `Không có ghi chú` : `${orderDetail["dia_chi"]}`}</span></h6>
                 </div>
             </div>
 
@@ -102,7 +102,8 @@ async function renderOrderInfo(data) {
     if (orderDetail["trang_thai_hoadon"] === 3) {
         orderStatusSelect.innerHTML = `
             <option value="3">Đang giao</option>
-            <option value="4">Nhận hàng</option>`
+            <option value="4">Nhận hàng</option>
+            <option value="5">Đã hủy</option>`
     }
     if (orderDetail["trang_thai_hoadon"] === 4) {
         orderStatusSelect.innerHTML = `
