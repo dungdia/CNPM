@@ -44,7 +44,7 @@ async function renderProductInfo(data, type) {
             id="productName" 
             placeholder="" 
             value="${type === "add" ? `` : item.ten_sanpham}" 
-            ${type !== "detail" ? `` : `readonly`}
+            ${type !== "detail"  && type !== "edit" ? `` : `readonly`}
             style="appearance: none; -moz-appearance: textfield; margin: 0;">
             <label for="productName">Tên sản phẩm</label> 
         </div>
@@ -122,20 +122,14 @@ async function renderProductInfo(data, type) {
         </div>
         <!-- THUONG HIEU -->
         <div class="form-floating mb-3">
-            <select 
-                class="form-select" 
-                id="brandSelect"
-                ${(type === "add" || type === "edit") ? `` : `disabled`}
-                >
-                ${(type === "add" || type === "edit")
-            ? ``
-            : `<option value="${brand.id_thuonghieu}">${brand.ten_thuonghieu}</option>`}
+            <select class="form-select" id="brandSelect" ${(type === "add" || type === "edit") ? `` : `disabled`}>
+                ${(type === "add" || type === "edit") ? `` : `<option value="${item.id_thuonghieu}" selected>${item.ten_thuonghieu}</option>`}
             </select>
             <label for="brandSelect">Thương hiệu</label>
         </div>
         
-        ${type === "add" || type === "edit" ? `
-            <div class="form-floating mb-3">
+        ${type === "add" || type === "edit" ? (
+            type == "add" ? `<div class="form-floating mb-3">
                 <form id="imageForm" enctype="multipart/form-data">
                     <div class="form-floating mb-3">
                     <input 
@@ -148,8 +142,31 @@ async function renderProductInfo(data, type) {
                     style="appearance: none; -moz-appearance: textfield; margin: 0;">
                 <label for="productImg">Ảnh sản phẩm</label> 
                 </form>
-            </div> 
-        ` : `
+            </div>` 
+            : `<div class="form-floating mb-3">
+                <form id="imageForm" enctype="multipart/form-data">
+                    <div class="form-floating mb-3">
+                    <input 
+                    type="file" 
+                    class="form-control" 
+                    id="productImg" 
+                    placeholder=""
+                    accept="image/*"
+                    name="image"
+                    style="appearance: none; -moz-appearance: textfield; margin: 0;">
+                <label for="productImg">Ảnh sản phẩm</label> 
+                <div class="form-floating mb-3">
+                <label style="top: -10px" for="productImg">Ảnh</label> 
+                <img
+                class="img-thumbnail"
+                id="productImg" 
+                src="/img/${item.ten_sanpham}" 
+                alt="Image"
+                style="width: 150px; height: auto; padding: 30px 0 30px 0;">
+            </div>  
+                </form>
+            </div>`) 
+            : `
             <div class="form-floating mb-3">
                 <label style="top: -10px" for="productImg">Ảnh</label> 
                 <img
@@ -162,7 +179,9 @@ async function renderProductInfo(data, type) {
         `}
     `
     const brandSelect = document.getElementById("brandSelect");
-    brandSelect.innerHTML = brand.map(item => `<option value="${item.id_thuonghieu}">${item.ten_thuonghieu}</option>`).join("");
+    brandSelect.innerHTML = brand.map(item => `<option ${type =="edit" || type == "detail" ? (data.ten_thuonghieu == item.ten_thuonghieu ? "selected" :"") : ""} value="${item.id_thuonghieu}">${item.ten_thuonghieu}</option>`).join("");
+
+    
 }
 
 async function showDetail(data) {
@@ -347,6 +366,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         popUpSaveBtn.onclick = {};
 
         showAdd();
+        
     })
 
     editBtn.addEventListener("click", () => {

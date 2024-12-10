@@ -63,6 +63,7 @@ let loginData = async () => {
         // cookieManager.set("access_token",access_token)
         window.location = "/"
 
+
     } catch (error) {
         console.log(error)
     }

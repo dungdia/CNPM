@@ -1,4 +1,6 @@
+
 require("ejs");
+const Validator = require("./utils/validator");
 const express = require("express");
 const path = require("path");
 const getAllFile = require("./utils/getAllFile");
@@ -101,24 +103,24 @@ async function insertProduct() {
     const image = req.file ? req.file.buffer : null
     console.log(req.body, req.file)
 
-    // switch (true) {
-    //   case !Validator.regexText(ten_sanpham):
-    //     return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
-    //   case !isNumber(kichThuocMan):
-    //     return message("Kích thước màn hình không được để trống, là số và lớn hơn 0", false);
-    //   case !regexText(cameraSau):
-    //     return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
-    //   case !regexText(cameraTruoc):
-    //     return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
-    //   case !regexText(chipXuLy):
-    //     return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
-    //   case !regexText(heDieuHanh):
-    //     return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
-    //   case !isNumber(dungLuongPin):
-    //     return res.json({ message: "Dung lượng pin không được để trống", success: false });
-    //   case !req.file || !imageExtension(req.file.originalname):
-    //     return res.json({ message: "Vui lòng chọn ảnh ảnh với định dạng jpg, jpeg, png, gif", success: false });
-    // }
+    switch (true) {
+      case !Validator.regexText(ten_sanpham):
+        return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
+      case !Validator.isNumber(kichThuocMan):
+        return res.json({ message: "Kích thước màn hình không được để trống, là số và lớn hơn 0", success: false});
+      case !Validator.regexText(cameraSau):
+        return res.json({ message: "Camera sau không được để trống và quá 255 ký tự", success: false });
+      case !Validator.regexText(cameraTruoc):
+        return res.json({ message: "Camera trước không được để trống và quá 255 ký tự", success: false });
+      case !Validator.regexText(chipXuLy):
+        return res.json({ message: "Chip xử lí không được để trống và quá 255 ký tự", success: false });
+      case !Validator.regexText(heDieuHanh):
+        return res.json({ message: "Hệ điều hành không được để trống và quá 255 ký tự", success: false });
+      case !Validator.isNumber(dungLuongPin):
+        return res.json({ message: "Dung lượng pin không được để trống", success: false });
+      case !req.file || !imageExtension(req.file.originalname):
+        return res.json({ message: "Vui lòng chọn ảnh ảnh với định dạng jpg, jpeg, png, gif", success: false });
+    }
 
     try {
       const DBConnecter = require("./app/controller/DBconnecter");
@@ -152,24 +154,24 @@ async function updateProduct() {
     const image = req.file ? req.file.buffer : null
     console.log(req.body, req.file)
 
-    // switch (true) {
-    //   case !Validator.regexText(ten_sanpham):
-    //     return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
-    //   case !isNumber(kichThuocMan):
-    //     return message("Kích thước màn hình không được để trống, là số và lớn hơn 0", false);
-    //   case !regexText(cameraSau):
-    //     return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
-    //   case !regexText(cameraTruoc):
-    //     return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
-    //   case !regexText(chipXuLy):
-    //     return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
-    //   case !regexText(heDieuHanh):
-    //     return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
-    //   case !isNumber(dungLuongPin):
-    //     return res.json({ message: "Dung lượng pin không được để trống", success: false });
-    //   case !req.file || !imageExtension(req.file.originalname):
-    //     return res.json({ message: "Vui lòng chọn ảnh ảnh với định dạng jpg, jpeg, png, gif", success: false });
-    // }
+    switch (true) {
+      case !Validator.regexText(ten_sanpham):
+        return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
+      case !Validator.isNumber(kichThuocMan):
+        return res.json({ message: "Kích thước màn hình không được để trống, là số và lớn hơn 0", success: false});
+      case !Validator.regexText(cameraSau):
+        return res.json({ message: "Camera sau không được để trống và quá 255 ký tự", success: false });
+      case !Validator.regexText(cameraTruoc):
+        return res.json({ message: "Camera trước không được để trống và quá 255 ký tự", success: false });
+      case !Validator.regexText(chipXuLy):
+        return res.json({ message: "Chip xử lí không được để trống và quá 255 ký tự", success: false });
+      case !Validator.regexText(heDieuHanh):
+        return res.json({ message: "Hệ điều hành không được để trống và quá 255 ký tự", success: false });
+      case !Validator.isNumber(dungLuongPin):
+        return res.json({ message: "Dung lượng pin không được để trống", success: false });
+      case !req.file || !imageExtension(req.file.originalname):
+        return res.json({ message: "Vui lòng chọn ảnh ảnh với định dạng jpg, jpeg, png, gif", success: false });
+    }
 
     try {
       const DBConnecter = require("./app/controller/DBconnecter");
@@ -196,6 +198,11 @@ async function updateProduct() {
         conn.closeConnect();
         res.json({ message: "Khóa sản phẩm thành công", success: true });
       } else {
+        const agrs = [ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu]
+        if(image)
+          agrs.push(image)
+        agrs.push(id_sanpham)
+        // console.log(image)
         updateSanPham = await conn.update(`
           UPDATE cnpm.sanpham
           SET ten_sanpham = ?, 
@@ -205,10 +212,10 @@ async function updateProduct() {
               chipXuLy = ?, 
               heDieuHanh= ?, 
               dungLuongPin = ?, 
-              id_thuonghieu = ?,
-              hinh_anh = ?
+              id_thuonghieu = ?
+          ${!image ? `` : `,hinh_anh = ?`}  
           WHERE id_sanpham = ?
-        `, [ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, image, id_sanpham])
+        `, agrs)
 
           if (updateSanPham.status !== 200) {
             return res.json({

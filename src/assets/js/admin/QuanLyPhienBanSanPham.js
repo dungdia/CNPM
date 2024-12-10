@@ -126,7 +126,7 @@ function showAdd() {
 
     popUpSaveBtn.classList.remove("d-none");
 
-    popUpLabel.textContent = "Thêm sản phẩm";
+    popUpLabel.textContent = "Thêm phiên bản sản phẩm";
 
     renderProductInfo({}, "add")
 

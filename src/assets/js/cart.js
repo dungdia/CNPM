@@ -78,8 +78,6 @@ const renderCartItems = async () =>{
     
     const data = await getCartItems()
     
-
-
     console.log(data)
 
     container.innerHTML = ""
@@ -249,8 +247,8 @@ const renderCartItems = async () =>{
 
 const addNewOrder = async () =>{
     const phoneNumberRegex = /^0\d{9,10}$/;
-    const fullnameRegex = /^[^\s][a-zA-ZÀ-ỹà-ỹ\s]{1,99}$/;
-    const addressRegex = /^[^\s][a-zA-ZÀ-ỹà-ỹ0-9\s]{8,99}[^\s]$/;
+    const fullnameRegex = /^[a-zA-ZÀ-ỹà-ỹ][a-zA-ZÀ-ỹà-ỹ\s]{1,99}$/;
+    const addressRegex = /^[a-zA-ZÀ-ỹà-ỹ0-9][a-zA-ZÀ-ỹà-ỹ0-9\s]{8,99}[^\s]$/;
     console.log(fullnameRegex.test(fullName.value))
     if(!fullnameRegex.test(fullName.value)){
         alert("Họ tên phải từ 3 - 100 kí tự, không bắt đầu bằng khoảng trắng và không chứa kí tự đặc biệt");
