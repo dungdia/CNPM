@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
                 user_name: item.user_name,
                 ho_ten: item.ho_ten,
                 ten_vaitro: item.ten_vaitro,
-                ngaythamgia: item.ngaythamgia,
+                ngaythamgia: formatDate(item.ngaythamgia),
                 trangthai: item.trangthai
             })
         }

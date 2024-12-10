@@ -1,8 +1,8 @@
 const decodeJWT = require("../../../../utils/decodeJWT")
 
-module.exports = async (req,res)=>{
+module.exports = async (req, res) => {
     const token = req.cookies.access_token
-    const {payload} = await decodeJWT(token)
+    const { payload } = await decodeJWT(token)
 
     try {
         const DBConnecter = require("../../../controller/DBconnecter")
@@ -16,18 +16,18 @@ module.exports = async (req,res)=>{
         JOIN phienbansanpham ON phienbansanpham.id_phienban = ctsanpham.pbSanPham_id
         JOIN sanpham ON sanpham.id_sanpham = phienbansanpham.id_sanpham
         LEFT JOIN ctphieunhap ON ctsanpham.phieuNhap_id = ctphieunhap.id_phieunhap AND ctsanpham.pbSanPham_id = ctphieunhap.id_phienbansp
-        WHERE taikhoan.user_name = ? GROUP BY ctsanpham.pbSanPham_id`,[payload.username])
-        
+        WHERE taikhoan.user_name = ? GROUP BY ctsanpham.pbSanPham_id`, [payload.username])
+
         const Constant = require("../../../../config/Constant")
         const data = []
-        for(const item of result){
-            item.gia*=Constant.profit
+        for (const item of result) {
+            item.gia *= Constant.profit
             data.push(item)
         }
 
-        res.send({success:true,data})
+        res.send({ success: true, data })
         conn.closeConnect()
     } catch (error) {
-        res.send({success:false,message:error})
+        res.send({ success: false, message: error })
     }
 }
