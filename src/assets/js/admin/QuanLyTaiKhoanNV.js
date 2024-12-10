@@ -21,6 +21,8 @@ async function renderUserInfo(data, type) {
     }
     const vaitro = await fetchJsonData("getAllRole", "GET");
 
+    const userDate = new Date(data.ngaythamgia).toLocaleDateString()
+
     popUpBody.innerHTML = `
         ${type !== "detail" ? `` : `
             <div class="form-floating mb-3">
@@ -139,11 +141,9 @@ async function renderUserInfo(data, type) {
 
         ${(type === "detail") ? `
             <div class="form-floating mb-3">
-                <input type="datetime-local" 
+                <p  
                 class="form-control" 
-                id="userCreatedAt" placeholder="" 
-                value="${data.ngaythamgia}" 
-                readonly>
+                id="userCreatedAt"> ${userDate} </p>
                 <label for="userCreatedAt">Created Date</label>
             </div>  
             ` : ``}
