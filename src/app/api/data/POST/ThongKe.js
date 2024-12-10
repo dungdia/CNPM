@@ -8,8 +8,15 @@ module.exports = async (req, res) => {
     const start = new Date(start_date);
     const end = new Date(end_date);
 
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-        return res.json({ message: "Ngày không hợp lệ", success: false })
+    if (isNaN(start.getTime())) {
+        return res.json({ message: "Ngày bắt đầu không hợp lệ", success: false })
+    }
+    if (isNaN(end.getTime())) {
+        return res.json({ message: "Ngày kết thúc không hợp lệ", success: false })
+    }
+
+    if (start > end) {
+        return res.json({ message: "Ngày kết thúc không được lớn hơn ngày bắt đầu", success: false })
     }
 
     switch (filter) {
@@ -31,7 +38,7 @@ module.exports = async (req, res) => {
 
         const query = await conn.select(`
             SELECT 
-                ${groupBy} AS order_date_grouped, 
+                ${groupBy} AS order_grouped, 
                 SUM(cthd.gia_ban) AS sum_total_grouped
             FROM 
                 hoadon hd
@@ -40,11 +47,52 @@ module.exports = async (req, res) => {
             ON 
                 hd.id_hoadon = cthd.id_hoadon
             WHERE 
-                hd.ngayban BETWEEN '${start_date}' AND '${end_date}'
+                hd.ngayban BETWEEN '${start_date}' AND '${end_date}' AND hd.id_trangthaiHD != 5
             GROUP BY 
                 ${groupBy}
         `)
-        console.log(query)
+
+        if (query.length === 0) {
+            return res.json({ message: `Không có sản phẩm bán được trong khoảng thời gian từ ${start_date} đến ${end_date}`, type: "warning" })
+        }
+
+        // console.log(query)
+
+        let data = {
+            group: [],
+            order_by: ""
+        }
+
+        switch (filter) {
+            case 'day':
+                for (const item of query) {
+                    data.group.push({
+                        order_grouped: item.order_grouped,
+                        sum_total_grouped: item.sum_total_grouped,
+                    })
+                }
+                data.order_by = 'day'
+                console.log(data)
+                return res.json(data)
+            case 'month':
+                for (const item of query) {
+                    data.group.push({
+                        order_grouped: item.order_grouped,
+                        sum_total_grouped: item.sum_total_grouped,
+                    })
+                }
+                data.order_by = 'month'
+                return res.json(data)
+            case 'year':
+                for (const item of query) {
+                    data.group.push({
+                        order_grouped: item.order_grouped,
+                        sum_total_grouped: item.sum_total_grouped,
+                    })
+                }
+                data.order_by = 'year'
+                return res.json(data)
+        }
     } catch (error) {
         res.json({ message: error });
     }
