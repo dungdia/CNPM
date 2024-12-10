@@ -161,11 +161,11 @@ async function renderReceiptDetail(data, type) {
       return;
     }
 
-    if (productAmount <= 0) {
+    if (productAmount.value <= 0) {
       alert("Số lượng phải lớn hơn 0");
       return;
     }
-    if (productPrice <= 0) {
+    if (productPrice.value <= 0) {
       alert("Giá phải lớn hơn 0");
       return;
     }
