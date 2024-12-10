@@ -1,0 +1,78 @@
+<html lang="en">
+
+<head>
+    <%- include("../include/admin_head.ejs"); %>
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <%- include("../include/admin_header.ejs"); %>
+
+        <div class="container-fluid">
+            <h2 class="border-bottom p-2">Thống kê số lượng mua hàng</h2>
+            <form id="statistics-form">
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>Thống kê theo:
+                            <select id="report-period" name="filter" class="form-select form-select-sm">
+                                <option value="date">Ngày</option>
+                                <option value="month">Tháng</option>
+                                <option value="year">Năm</option>
+                                <!-- <option value="total-revenue" <?php if ($filter == 'total-revenue') echo 'selected'; ?>>Tổng doanh thu</option> -->
+                            </select>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>Từ ngày :
+                            <input type="date" id="start-date" name="start_date" class="form-control form-control-sm"
+                                value="" autocomplete="off">
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>Đến ngày :
+                            <input type="date" id="end-date" name="end_date" class="form-control form-control-sm"
+                                value="" autocomplete="off">
+                        </p>
+                    </div>
+                    <div class="row pt-3 text-center">
+                        <div class="col-md-3 w-100">
+                            <button type="submit" class="btn btn-primary">Thống kê</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row mt-3">
+                <div class="col-md-10">
+                    <div class="alert alert-warning text-danger"></div>
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <%- include("../include/admin_footer.ejs"); %>
+</body>
+
+<script>
+    const statisticForm = document.getElementById('statistics-form');
+    statisticForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        console.log("Kek")
+
+        const formData = new FormData(e.target);
+        console.log(formData)
+
+        const res = await fetch('/api/data/ThongKe', {
+            method: 'POST',
+            body: new URLSearchParams(formData)
+        })
+
+        if (!res.success) {
+            alert(res.message)
+        }
+
+        console.log(res)
+    })
+</script>
+
+</html>
