@@ -142,7 +142,7 @@ function showAdd() {
             "ram": prodcutRam.value,
             "dung_luong": productMemCap.value,
             "id_baoHanh": warrantySelect.value,
-            "query": "insert"
+            "type": "insert"
         }
 
         const res = await fetchJsonData("PhienBanSp", "POST", projection);
@@ -206,7 +206,7 @@ async function showLock(data) {
         const projection = {
             "id_phienban": data.id_phienban,
             "trangthai": data.trangthai === "1" ? "0" : "1",
-            "query": "delete"
+            "type": "delete"
         }
 
         const res = await fetchJsonData("ChiTietSp", "POST", projection);
