@@ -36,6 +36,7 @@ statisticForm.addEventListener('submit', async (e) => {
     console.log("Kek")
 
     const formData = new FormData(e.target);
+    formData.append('type', 'thoi_gian');
     const req = await fetch(`/api/data/ThongKe`, {
         method: 'POST',
         body: new URLSearchParams(formData)
