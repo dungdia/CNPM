@@ -201,11 +201,19 @@ export class Validation {
     }
     return true;
   }
+
+  static checkFullName2(fullname) {
+    const fullnameRegex = /^[a-zA-ZÀ-ỹà-ỹ][a-zA-ZÀ-ỹà-ỹ,_.+\s]{2,99}$/;
+    if (!fullnameRegex.test(fullname)) {
+      return false;
+    }
+    return true;
+  }
   //=======================================================================
   // check if user's address is valid or not
   //=======================================================================
   static checkAddress(address) {
-    const addressRegex = /^[a-zA-ZÀ-ỹà-ỹ][a-zA-ZÀ-ỹà-ỹ0-9\s]{8,99}[^\s]$/;
+    const addressRegex = /^[a-zA-ZÀ-Ỹà-ỹ0-9][a-zA-ZÀ-Ỹà-ỹ0-9,_+.\s]{8,99}[^\s]$/;
     const addressErrorDiv = document.getElementById("userAddress");
     if (!addressRegex.test(address.value)) {
       console.log("check full name")

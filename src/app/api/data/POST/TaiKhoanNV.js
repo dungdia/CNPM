@@ -23,72 +23,126 @@ module.exports = async (req, res) => {
                 return res.json({ message: "Vui lòng nhập đầy đủ thông tin", success: false })
             }
 
-            switch (true) {
-                case Validator.isText(username):
-                    return message("Tên username không được để trống và quá 255 ký tự", false); break;
-                case Validator.isText(fullName):
-                    return message("Tên nhân viên không được để trống và quá 255 ký tự", false); break;
-                case Validator.isNumber(phoneNumber):
-                    return message("Số điện thoại không được để trống và quá 255 ký tự", false); break;
+            // switch (true) {
+            //     case !Validator.checkUsername(username):
+            //         console.log(!Validator.checkUsername(username));
+            //         return res.json({ message: "Tên username phải từ 3 - 100 ký tự, không bắt đầu bằng khoảng trắng, không chứa kí tự đặc biệt và khoảng trắng", success: false}); break;
+            //     case !Validator.checkFullname(fullName):
+            //         return res.json({ message: "Tên nhân viên phải từ 3 - 100 kí tự, không bắt đầu bằng khoảng trắng và không chứa kí tự đặc biệt", success: false}); break;
+            //     case !Validator.isPhoneNumber(phoneNumber):
+            //         return res.json({ message: "Số điện thoại phải bắt đầu bằng số 0 và gồm 10 - 11 số", success: false}); break;
+            //     case !Validator.checkEmail(email):
+            //         return res.json({ message: "Vui lòng nhập email hợp lệ", success: false}); break;
+            //     case !Validator.regexPassword(password):
+            //         return res.json({ message: "Mật khẩu phải ít nhất 8 kí tự và không có khoảng trắng", success: false}); break;
+            // }
+
+            if(!Validator.checkUsername(username)){
+                console.log(!Validator.checkUsername(username))
+                return res.json({ message: "Username phải từ 3 - 100 ký tự, không bắt đầu bằng khoảng trắng, không chứa kí tự đặc biệt và khoảng trắng", success: false});
             }
+
+            if(!Validator.checkFullname(fullName)){
+                return res.json({ message: "Tên nhân viên phải từ 3 - 100 kí tự, không bắt đầu bằng khoảng trắng và không chứa kí tự đặc biệt", success: false});
+            }
+
+            if(!Validator.isPhoneNumber(phoneNumber)){
+                return res.json({ message: "Số điện thoại phải bắt đầu bằng số 0 và gồm 10 - 11 số", success: false});
+            }
+            
+            if(!Validator.checkEmail(email)){
+                return res.json({ message: "Vui lòng nhập email hợp lệ", success: false});
+            }
+
+            if(!Validator.regexPassword(password)){
+                return res.json({ message: "Mật khẩu phải ít nhất 8 kí tự và không có khoảng trắng", success: false});
+            }
+
 
             if (password !== confirmPassword) {
                 return res.json({ message: "Mật khẩu không khớp", success: false })
             }
 
-            // const checkExistUsername = await conn.select(`
-            //     SELECT *
-            //     FROM taikhoan tk
-            //     join vaitro vt on vt.id_vaitro = tk.vaitro_id and vt.id_vaitro != 1 
-            //     join nhanvien nv on nv.id_taikhoan = tk.id_taikhoan
-            //     where tk.user_name = ?
-            // `, [username])
+            const checkExistPhonenumber = await conn.select(`
+                SELECT *
+                FROM taikhoan tk
+                join vaitro vt on vt.id_vaitro = tk.vaitro_id and vt.id_vaitro != 1 
+                join nhanvien nv on nv.id_taikhoan = tk.id_taikhoan
+                where nv.sodienthoai = ?`, [phoneNumber])
 
-            // if (checkExistUsername.length > 0) {
-            //     return res.json({ message: "Tên tài khoản đã tồn tại", success: false })
-            // }
+            if(checkExistPhonenumber.length > 0){
+                return res.json({ message: "Số điện thoại đã tồn tại", success: false});
+            }
 
-            // const checkExistEmail = await conn.select(`
-            //     SELECT *
-            //     FROM taikhoan tk
-            //     join vaitro vt on vt.id_vaitro = tk.vaitro_id and vt.id_vaitro != 1 
-            //     join nhanvien nv on nv.id_taikhoan = tk.id_taikhoan
-            //     where nv.email = ?
-            // `, [email])
+            const checkExistUsername = await conn.select(`
+                SELECT *
+                FROM taikhoan tk
+                join vaitro vt on vt.id_vaitro = tk.vaitro_id and vt.id_vaitro != 1 
+                join nhanvien nv on nv.id_taikhoan = tk.id_taikhoan
+                where tk.user_name = ?
+            `, [username])
 
-            // if (checkExistEmail.length > 0) {
-            //     return res.json({ message: "Email đã tồn tại", success: false })
-            // }
+            if (checkExistUsername.length > 0) {
+                return res.json({ message: "Tên tài khoản đã tồn tại", success: false })
+            }
 
-            // const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            const checkExistEmail = await conn.select(`
+                SELECT *
+                FROM taikhoan tk
+                join vaitro vt on vt.id_vaitro = tk.vaitro_id and vt.id_vaitro != 1 
+                join nhanvien nv on nv.id_taikhoan = tk.id_taikhoan
+                where nv.email = ?
+            `, [email])
 
-            // const insertTK = await conn.insert(`
-            //     INSERT INTO cnpm.taikhoan
-            //     (user_name, password, vaitro_id, ngaythamgia)
-            //     VALUES(?, ?, ?, ?);    
-            // `, [username, hashedPassword, roleId, formattedDate])
+            if (checkExistEmail.length > 0) {
+                return res.json({ message: "Email đã tồn tại", success: false })
+            }
 
-            // if (insertTK.status !== 200) {
-            //     return res.json({ message: "Thêm tài khoản nhân viên thất bại", success: false })
-            // }
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-            // const lastId = await conn.lastId();
+            const insertTK = await conn.insert(`
+                INSERT INTO taikhoan
+                (user_name, password, vaitro_id, ngaythamgia)
+                VALUES(?, ?, ?, ?);    
+            `, [username, hashedPassword, roleId, formattedDate])
 
-            // const insertNV = await conn.insert(`
-            //     INSERT INTO cnpm.nhanvien
-            //     (id_taikhoan, ho_ten, gioi_tinh, sodienthoai, email)
-            //     VALUES(?, ?, ?, ?, ?);
-            // `, [lastId, fullName, gender, phoneNumber, email])
+            if (insertTK.status !== 200) {
+                return res.json({ message: "Thêm tài khoản nhân viên thất bại", success: false })
+            }
 
-            // if (insertNV.status !== 200) {
-            //     return res.json({ message: "Thêm tài khoản nhân viên thất bại", success: false })
-            // }
+            const lastId = await conn.lastId();
+
+            const insertNV = await conn.insert(`
+                INSERT INTO nhanvien
+                (id_taikhoan, ho_ten, gioi_tinh, sodienthoai, email)
+                VALUES(?, ?, ?, ?, ?);
+            `, [lastId, fullName, gender, phoneNumber, email])
+
+            if (insertNV.status !== 200) {
+                return res.json({ message: "Thêm tài khoản nhân viên thất bại", success: false })
+            }
 
             return res.json({ message: "Thêm tài khoản nhân viên thành công", success: true })
         }
         // UPDATE TAIKHOAN
         if (req.body.query === "update") {
             const { id_nhanvien, id_taikhoan, username, fullName, gender, phoneNumber, email, roleId } = req.body;
+
+            if (!fullName || !phoneNumber || !email) {
+                return res.json({ message: "Vui lòng nhập đầy đủ thông tin", success: false })
+            }
+
+            if(!Validator.checkFullname(fullName)){
+                return res.json({ message: "Tên nhân viên phải từ 3 - 100 kí tự, không bắt đầu bằng khoảng trắng và không chứa kí tự đặc biệt", success: false});
+            }
+
+            if(!Validator.isPhoneNumber(phoneNumber)){
+                return res.json({ message: "Số điện thoại phải bắt đầu bằng số 0 và gồm 10 - 11 số", success: false});
+            }
+            
+            if(!Validator.checkEmail(email)){
+                return res.json({ message: "Vui lòng nhập email hợp lệ", success: false});
+            }
 
             const checkExistUsername = await conn.select(`
                 SELECT *
@@ -114,6 +168,17 @@ module.exports = async (req, res) => {
                 return res.json({ message: "Email đã tồn tại", success: false })
             }
 
+            const checkExistPhonenumber = await conn.select(`
+                SELECT *
+                FROM taikhoan tk
+                join vaitro vt on vt.id_vaitro = tk.vaitro_id and vt.id_vaitro != 1 
+                join nhanvien nv on nv.id_taikhoan = tk.id_taikhoan
+                where nv.sodienthoai = ?`, [phoneNumber])
+
+            if(checkExistPhonenumber.length > 0){
+                return res.json({ message: "Số điện thoại đã tồn tại", success: false});
+            }
+
             const updateTK = await conn.update(`
                 update cnpm.taikhoan tk
                 set user_name = ?, vaitro_id = ?
@@ -134,7 +199,7 @@ module.exports = async (req, res) => {
         }
         if (req.body.query === "delete") {
             const { id_nhanvien, id_taikhoan, trangthai } = req.body;
-            console.log("delete");
+            console.log(trangthai);
 
             const updateStatusTK = await conn.update(`
                 update cnpm.taikhoan tk
