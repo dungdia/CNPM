@@ -16,9 +16,6 @@ const getUserInfo = async ()=>{
     return json;
 }
 
-
-
-
 const renderOrderDetail = async () =>{
     const orderItem = await getOrderDetail()
     console.log(orderItem)

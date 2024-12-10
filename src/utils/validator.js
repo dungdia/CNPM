@@ -8,6 +8,14 @@ module.exports = class Validator {
         return /^[^\s]{0,255}[^\s]$/.test(text);
     }
 
+    static checkUsername(username){
+        return /^[a-zA-ZÀ-ỹà-ỹ0-9]{2,99}$/.test(username);
+    }
+
+    static checkFullname(fullname){
+        return /^[a-zA-ZÀ-Ỹà-ỹ][a-zA-ZÀ-Ỹà-ỹ\s]{2,99}$/.test(fullname);
+    }
+
     static isNumber(num) {
         return /^(0*([1-9]\d*|0*\.\d*[1-9]\d*))$/.test(num);
     }
@@ -30,6 +38,10 @@ module.exports = class Validator {
     }
 
     static isPhoneNumber(phoneNumber) {
-        return /^((03|05|07|08|09)[0-9]{8})$/.test(phoneNumber);
+        return /^((03|05|07|08|09)[0-9]{8,9})$/.test(phoneNumber);
+    }
+
+    static checkEmail(email){
+        return /^[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.(com|org|net|edu|gov|vn)$/.test(email);
     }
 }

@@ -3,6 +3,7 @@ import initTable, {
     getSelectedData,
     alertSelectRow,
 } from "./datatables-simple.js";
+import { Validation } from "../validation.js";
 
 let dataTable;
 let item = {};
@@ -44,7 +45,7 @@ async function renderUserInfo(data, type) {
             id="userName"
             placeholder="" 
             value="${(type === "add") ? `` : item.user_name}"
-            ${type !== "detail" ? `` : `readonly`}>
+            ${type == "detail" || type == "edit"? `disabled` : ``}>
             <label for="userName">Username</label>
         </div> 
 
@@ -251,6 +252,8 @@ async function showEdit(data) {
 }
 
 function showBan(data) {
+    
+
     const popUpLabel = document.getElementById("popup-label");
     const popUpBody = document.getElementById("Popup-Body");
     const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
@@ -259,6 +262,14 @@ function showBan(data) {
 
     popUpSaveBtn.textContent = "YES";
     popUpCloseBtn.textContent = "NO";
+
+    if(data.ten_vaitro == "Quản lý"){
+        popUpBody.textContent = "Không thể khóa tài khoản quản lý!!!";
+        popUpSaveBtn.classList.add("d-none");
+        popUpSaveBtn.textContent = "Save Changes";
+        popUpCloseBtn.textContent = "Close";
+        return
+    }
 
     popUpLabel.textContent = `Ban tài khoản`;
     popUpBody.textContent = `Bạn có muốn ${(data.trangthai === "1" ? "ban" : "unban")} tài khoản ${data.user_name}?`;
