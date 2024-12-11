@@ -67,7 +67,7 @@ let loginData = async () => {
     cookieManager.set("access_token", access_token);
     cookieManager.set("refesh_token", refesh_token);
     // cookieManager.set("access_token",access_token)
-    localStorage.setItem("id_vaitro", vaitro_id);
+    cookieManager.set("vaitro_id", vaitro_id);
     if (vaitro_id != 1) {
       window.location = "/admin/index";
     } else {

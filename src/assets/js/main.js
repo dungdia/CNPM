@@ -66,7 +66,7 @@ logoutBtn.onclick = () => {
     const cookieManager = new CookieManager();
     cookieManager.remove("access_token");
     cookieManager.remove("refesh_token");
-    localStorage.removeItem("vaitro_id");
+    cookieManager.remove("vaitro_id");
     window.location = "/";
   };
 };

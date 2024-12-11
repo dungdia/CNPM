@@ -4,6 +4,8 @@ import initTable, {
   alertSelectRow,
 } from "./datatables-simple.js";
 
+import CookieManager from "https://cdn.jsdelivr.net/npm/js-cookie-manager@1.0.2/index.min.js";
+
 let dataTable;
 let item = {};
 
@@ -25,7 +27,6 @@ async function renderRoleInfo(data, type) {
     "GET",
     vaitroProject
   );
-  console.log(rolePermissionList);
 
   //   permission list
   //     <div class="form-check form-switch form-check-reverse text-start fs-6" id="test">
@@ -284,4 +285,19 @@ window.addEventListener("DOMContentLoaded", async () => {
       reloadDataTable();
     };
   });
+
+  const cookieManager = new CookieManager();
+
+  const user_vaitro = cookieManager.get("vaitro_id");
+
+  const userRoleProject = { id_vaitro: user_vaitro };
+
+  const userPermissionList = await fetchJsonData(
+    "getPermissionList",
+    "GET",
+    userRoleProject
+  );
+  if (!userPermissionList.includes(18)) addbtn.remove();
+  if (!userPermissionList.includes(19)) editBtn.remove();
+  if (!userPermissionList.includes(20)) banBtn.remove();
 });

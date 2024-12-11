@@ -5,6 +5,8 @@ import initTable, {
   postImageData,
 } from "./datatables-simple.js";
 
+import CookieManager from "https://cdn.jsdelivr.net/npm/js-cookie-manager@1.0.2/index.min.js";
+
 let dataTable;
 let item = {};
 
@@ -193,9 +195,12 @@ window.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      const productIssueRegex = /^[a-zA-ZÀ-ỹà-ỹ0-9][a-zA-ZÀ-ỹà-ỹ0-9,_.+\s]{0,150}[^\s]$/;
+      const productIssueRegex =
+        /^[a-zA-ZÀ-ỹà-ỹ0-9][a-zA-ZÀ-ỹà-ỹ0-9,_.+\s]{0,150}[^\s]$/;
       if (!productIssueRegex.test(productIssue.value)) {
-        alert("Tình trạng máy chỉ được từ 1 - 150 kí tự, không bắt đầu bằng khoảng trắng, không kết thúc bằng khoảng trắng và không chứa kí tự đặc biệt");
+        alert(
+          "Tình trạng máy chỉ được từ 1 - 150 kí tự, không bắt đầu bằng khoảng trắng, không kết thúc bằng khoảng trắng và không chứa kí tự đặc biệt"
+        );
         return;
       }
 
@@ -300,4 +305,18 @@ window.addEventListener("DOMContentLoaded", async () => {
       popUpSaveBtn.classList.add("d-none");
     };
   });
+
+  const cookieManager = new CookieManager();
+
+  const user_vaitro = cookieManager.get("vaitro_id");
+
+  const userRoleProject = { id_vaitro: user_vaitro };
+
+  const userPermissionList = await fetchJsonData(
+    "getPermissionList",
+    "GET",
+    userRoleProject
+  );
+  if (!userPermissionList.includes(15)) addbtn.remove();
+  if (!userPermissionList.includes(16)) editBtn.remove();
 });

@@ -1,4 +1,3 @@
-
 require("ejs");
 const Validator = require("./utils/validator");
 const express = require("express");
@@ -50,8 +49,8 @@ async function viewsHandler() {
       requireLoginPage.includes(pageName)
         ? authMiddleWare
         : (req, res, next) => {
-          next();
-        },
+            next();
+          },
       (req, res) => {
         res.render(page);
       }
@@ -64,8 +63,25 @@ async function viewsHandler() {
       `/admin/${pageName}`,
       authMiddleWare,
       roleMiddleWare,
-      (req, res) => {
-        res.render(page);
+      async (req, res) => {
+        try {
+          const vaitro_id = req.cookies.vaitro_id;
+          const DBConnecter = require("./app/controller/DBconnecter");
+          const conn = new DBConnecter();
+          const permissionList = await conn.select(
+            `SELECT * FROM ctquyen WHERE id_vaitro = ?`,
+            [vaitro_id]
+          );
+          const data = [];
+          for (const item of permissionList) {
+            data.push(item.id_quyen);
+          }
+
+          conn.closeConnect();
+          res.render(page, { data: data });
+        } catch (error) {
+          console.log(error);
+        }
       }
     );
   }
@@ -98,112 +114,212 @@ async function productImgApi() {
 }
 
 async function insertProduct() {
-  app.post("/api/data/addSanPham", upload.single('hinh_anh'), async (req, res) => {
-    const { ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu } = req.body;
-    const image = req.file ? req.file.buffer : null
-    console.log(req.body, req.file)
+  app.post(
+    "/api/data/addSanPham",
+    upload.single("hinh_anh"),
+    async (req, res) => {
+      const {
+        ten_sanpham,
+        kichThuocMan,
+        cameraSau,
+        cameraTruoc,
+        chipXuLy,
+        heDieuHanh,
+        dungLuongPin,
+        id_thuonghieu,
+      } = req.body;
+      const image = req.file ? req.file.buffer : null;
+      console.log(req.body, req.file);
 
-    switch (true) {
-      case !Validator.regexText(ten_sanpham):
-        return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
-      case !Validator.isNumber(kichThuocMan):
-        return res.json({ message: "Kích thước màn hình không được để trống, là số và lớn hơn 0", success: false });
-      case !Validator.regexText(cameraSau):
-        return res.json({ message: "Camera sau không được để trống và quá 255 ký tự", success: false });
-      case !Validator.regexText(cameraTruoc):
-        return res.json({ message: "Camera trước không được để trống và quá 255 ký tự", success: false });
-      case !Validator.regexText(chipXuLy):
-        return res.json({ message: "Chip xử lí không được để trống và quá 255 ký tự", success: false });
-      case !Validator.regexText(heDieuHanh):
-        return res.json({ message: "Hệ điều hành không được để trống và quá 255 ký tự", success: false });
-      case !Validator.isNumber(dungLuongPin):
-        return res.json({ message: "Dung lượng pin không được để trống", success: false });
-      case !req.file || !imageExtension(req.file.originalname):
-        return res.json({ message: "Vui lòng chọn ảnh ảnh với định dạng jpg, jpeg, png, gif", success: false });
-    }
+      switch (true) {
+        case !Validator.regexText(ten_sanpham):
+          return res.json({
+            message: "Tên sản phẩm không được để trống và quá 255 ký tự",
+            success: false,
+          });
+        case !Validator.isNumber(kichThuocMan):
+          return res.json({
+            message:
+              "Kích thước màn hình không được để trống, là số và lớn hơn 0",
+            success: false,
+          });
+        case !Validator.regexText(cameraSau):
+          return res.json({
+            message: "Camera sau không được để trống và quá 255 ký tự",
+            success: false,
+          });
+        case !Validator.regexText(cameraTruoc):
+          return res.json({
+            message: "Camera trước không được để trống và quá 255 ký tự",
+            success: false,
+          });
+        case !Validator.regexText(chipXuLy):
+          return res.json({
+            message: "Chip xử lí không được để trống và quá 255 ký tự",
+            success: false,
+          });
+        case !Validator.regexText(heDieuHanh):
+          return res.json({
+            message: "Hệ điều hành không được để trống và quá 255 ký tự",
+            success: false,
+          });
+        case !Validator.isNumber(dungLuongPin):
+          return res.json({
+            message: "Dung lượng pin không được để trống",
+            success: false,
+          });
+        case !req.file || !imageExtension(req.file.originalname):
+          return res.json({
+            message: "Vui lòng chọn ảnh ảnh với định dạng jpg, jpeg, png, gif",
+            success: false,
+          });
+      }
 
-    try {
-      const DBConnecter = require("./app/controller/DBconnecter");
-      const conn = new DBConnecter();
+      try {
+        const DBConnecter = require("./app/controller/DBconnecter");
+        const conn = new DBConnecter();
 
-      const insertSanPham = await conn.insert(`
+        const insertSanPham = await conn.insert(
+          `
         INSERT INTO cnpm.sanpham
         (ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, hinh_anh)
         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `, [ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, image])
+      `,
+          [
+            ten_sanpham,
+            kichThuocMan,
+            cameraSau,
+            cameraTruoc,
+            chipXuLy,
+            heDieuHanh,
+            dungLuongPin,
+            id_thuonghieu,
+            image,
+          ]
+        );
 
-      if (insertSanPham.status !== 200) {
-        return res.json({
-          message: "Thêm sản phẩm không thành công",
-          success: false,
-        });
-      }
-
-      conn.closeConnect();
-      res.json({ message: "Thêm sản phẩm thành công", success: true });
-    } catch (error) {
-      res.json({ message: "Lỗi", success: false });
-    }
-  }
-  );
-}
-
-async function updateProduct() {
-  app.post("/api/data/updateSanPham", upload.single('hinh_anh'), async (req, res) => {
-    const { ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, id_sanpham, trangThai } = req.body;
-    const image = req.file ? req.file.buffer : null
-    console.log(req.body, req.file)
-
-    switch (true) {
-      case !Validator.regexText(ten_sanpham):
-        return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
-      case !Validator.isNumber(kichThuocMan):
-        return res.json({ message: "Kích thước màn hình không được để trống, là số và lớn hơn 0", success: false });
-      case !Validator.regexText(cameraSau):
-        return res.json({ message: "Camera sau không được để trống và quá 255 ký tự", success: false });
-      case !Validator.regexText(cameraTruoc):
-        return res.json({ message: "Camera trước không được để trống và quá 255 ký tự", success: false });
-      case !Validator.regexText(chipXuLy):
-        return res.json({ message: "Chip xử lí không được để trống và quá 255 ký tự", success: false });
-      case !Validator.regexText(heDieuHanh):
-        return res.json({ message: "Hệ điều hành không được để trống và quá 255 ký tự", success: false });
-      case !Validator.isNumber(dungLuongPin):
-        return res.json({ message: "Dung lượng pin không được để trống", success: false });
-      case !req.file || !imageExtension(req.file.originalname):
-        return res.json({ message: "Vui lòng chọn ảnh ảnh với định dạng jpg, jpeg, png, gif", success: false });
-    }
-
-    try {
-      const DBConnecter = require("./app/controller/DBconnecter");
-      const conn = new DBConnecter();
-
-      let updateSanPham;
-
-      if (trangThai) {
-        console.log("LOCK");
-        updateSanPham = await conn.update(
-          `
-          UPDATE cnpm.sanpham
-          SET trangThai = ?
-          WHERE id_sanpham = ?
-        `, [trangThai, id_sanpham])
-
-        if (updateSanPham.status !== 200) {
+        if (insertSanPham.status !== 200) {
           return res.json({
-            message: "Khóa sản phẩm không thành công",
+            message: "Thêm sản phẩm không thành công",
             success: false,
           });
         }
 
         conn.closeConnect();
-        res.json({ message: "Khóa sản phẩm thành công", success: true });
-      } else {
-        const agrs = [ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu]
-        if (image)
-          agrs.push(image)
-        agrs.push(id_sanpham)
-        // console.log(image)
-        updateSanPham = await conn.update(`
+        res.json({ message: "Thêm sản phẩm thành công", success: true });
+      } catch (error) {
+        res.json({ message: "Lỗi", success: false });
+      }
+    }
+  );
+}
+
+async function updateProduct() {
+  app.post(
+    "/api/data/updateSanPham",
+    upload.single("hinh_anh"),
+    async (req, res) => {
+      const {
+        ten_sanpham,
+        kichThuocMan,
+        cameraSau,
+        cameraTruoc,
+        chipXuLy,
+        heDieuHanh,
+        dungLuongPin,
+        id_thuonghieu,
+        id_sanpham,
+        trangThai,
+      } = req.body;
+      const image = req.file ? req.file.buffer : null;
+      console.log(req.body, req.file);
+
+      switch (true) {
+        case !Validator.regexText(ten_sanpham):
+          return res.json({
+            message: "Tên sản phẩm không được để trống và quá 255 ký tự",
+            success: false,
+          });
+        case !Validator.isNumber(kichThuocMan):
+          return res.json({
+            message:
+              "Kích thước màn hình không được để trống, là số và lớn hơn 0",
+            success: false,
+          });
+        case !Validator.regexText(cameraSau):
+          return res.json({
+            message: "Camera sau không được để trống và quá 255 ký tự",
+            success: false,
+          });
+        case !Validator.regexText(cameraTruoc):
+          return res.json({
+            message: "Camera trước không được để trống và quá 255 ký tự",
+            success: false,
+          });
+        case !Validator.regexText(chipXuLy):
+          return res.json({
+            message: "Chip xử lí không được để trống và quá 255 ký tự",
+            success: false,
+          });
+        case !Validator.regexText(heDieuHanh):
+          return res.json({
+            message: "Hệ điều hành không được để trống và quá 255 ký tự",
+            success: false,
+          });
+        case !Validator.isNumber(dungLuongPin):
+          return res.json({
+            message: "Dung lượng pin không được để trống",
+            success: false,
+          });
+        case !req.file || !imageExtension(req.file.originalname):
+          return res.json({
+            message: "Vui lòng chọn ảnh ảnh với định dạng jpg, jpeg, png, gif",
+            success: false,
+          });
+      }
+
+      try {
+        const DBConnecter = require("./app/controller/DBconnecter");
+        const conn = new DBConnecter();
+
+        let updateSanPham;
+
+        if (trangThai) {
+          console.log("LOCK");
+          updateSanPham = await conn.update(
+            `
+          UPDATE cnpm.sanpham
+          SET trangThai = ?
+          WHERE id_sanpham = ?
+        `,
+            [trangThai, id_sanpham]
+          );
+
+          if (updateSanPham.status !== 200) {
+            return res.json({
+              message: "Khóa sản phẩm không thành công",
+              success: false,
+            });
+          }
+
+          conn.closeConnect();
+          res.json({ message: "Khóa sản phẩm thành công", success: true });
+        } else {
+          const agrs = [
+            ten_sanpham,
+            kichThuocMan,
+            cameraSau,
+            cameraTruoc,
+            chipXuLy,
+            heDieuHanh,
+            dungLuongPin,
+            id_thuonghieu,
+          ];
+          if (image) agrs.push(image);
+          agrs.push(id_sanpham);
+          // console.log(image)
+          updateSanPham = await conn.update(
+            `
           UPDATE cnpm.sanpham
           SET ten_sanpham = ?, 
               kichThuocMan = ?, 
@@ -215,22 +331,24 @@ async function updateProduct() {
               id_thuonghieu = ?
           ${!image ? `` : `,hinh_anh = ?`}  
           WHERE id_sanpham = ?
-        `, agrs)
+        `,
+            agrs
+          );
 
-        if (updateSanPham.status !== 200) {
-          return res.json({
-            message: "Sửa sản phẩm không thành công",
-            success: false,
-          });
+          if (updateSanPham.status !== 200) {
+            return res.json({
+              message: "Sửa sản phẩm không thành công",
+              success: false,
+            });
+          }
+
+          conn.closeConnect();
+          res.json({ message: "Sửa sản phẩm thành công", success: true });
         }
-
-        conn.closeConnect();
-        res.json({ message: "Sửa sản phẩm thành công", success: true });
+      } catch (error) {
+        res.json({ message: "Lỗi", success: false });
       }
-    } catch (error) {
-      res.json({ message: "Lỗi", success: false });
     }
-  }
   );
 }
 
