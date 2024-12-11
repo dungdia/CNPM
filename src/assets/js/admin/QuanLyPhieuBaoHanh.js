@@ -188,8 +188,9 @@ window.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      if (!productIssue.value) {
-        alert("Không được bỏ trống tình trạng máy");
+      const productIssueRegex = /^[a-zA-ZÀ-ỹà-ỹ0-9][a-zA-ZÀ-ỹà-ỹ0-9,_.+\s]{0,150}[^\s]$/;
+      if (!productIssueRegex.test(productIssue.value)) {
+        alert("Tình trạng máy chỉ được từ 1 - 150 kí tự, không bắt đầu bằng khoảng trắng, không kết thúc bằng khoảng trắng và không chứa kí tự đặc biệt");
         return;
       }
 
