@@ -33,9 +33,10 @@ renderChart([])
 const statisticForm = document.getElementById('statistics-form');
 statisticForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    console.log("Kek")
+    // console.log("Kek")
 
     const formData = new FormData(e.target);
+    const alertMessage = document.getElementById('alert-warning');
     formData.append('type', 'thoi_gian');
     const req = await fetch(`/api/data/ThongKe`, {
         method: 'POST',
@@ -48,10 +49,13 @@ statisticForm.addEventListener('submit', async (e) => {
         return
     }
     if (res.type === "warning") {
-        const alert = document.getElementById('alert-warning');
-        alert.removeAttribute('style');
-        alert.innerHTML = res.message;
+        
+        alertMessage.removeAttribute('style');
+        alertMessage.innerHTML = res.message;
         return
+    } else {
+        alertMessage.style.display = "none"
+        alertMessage.innerHTML = "";
     }
 
     let labels = []
