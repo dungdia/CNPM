@@ -115,6 +115,37 @@ const main = async () => {
   );
   for (const btn of orderCancelBtn) {
     btn.onclick = async () => {
+      const popupContainer = document.getElementById("popup_container");
+      const popup = document.getElementById("popup");
+      const [body] = document.getElementsByTagName("body");
+      popupContainer.style.top = "0%";
+
+      document.onkeydown = (e) => {
+        if(e.key == "Escapse"){
+            popupContainer.style.top = "-150%";
+        }
+        body.style.overflowY = "scroll";
+      }
+
+    popup.innerHTML = `
+    <div class="popup_logout_confirm">
+        <p class="popup_logout_confirm_text" style="font-size: 24px">You want to cancel this order?</p>
+        <button class="popup_logout_confirm_yesBtn" id="popup_logout_confirm_yesBtn">Yes</button>
+        <button class="popup_logout_confirm_noBtn" id="popup_logout_confirm_noBtn">No</button>
+      </div>
+    `;
+    body.style.overflow = "hidden";
+
+    const yesBtn = document.getElementById("popup_logout_confirm_yesBtn");
+    const noBtn = document.getElementById("popup_logout_confirm_noBtn");
+
+    noBtn.onclick = () => {
+        popupContainer.style.top = "-150%";
+        body.style.overflowY = "scroll";
+        console.log("no btn")
+    }
+
+    yesBtn.onclick = async () => {
       const orderId = btn.id;
       const data = { order_id: orderId };
       try {
@@ -134,6 +165,9 @@ const main = async () => {
       } catch (error) {
         console.log(error);
       }
+      popupContainer.style.top = "-150%";
+      body.style.overflowY = "scroll";
+    }
     };
   }
   const orderAmount = document.getElementById("order_amount");
