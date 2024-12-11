@@ -1,0 +1,105 @@
+<html lang="en">
+
+<head>
+    <%- include("../include/admin_head.ejs"); %>
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+        <script type="module" src="../../assets/js/admin/ThongKeTheoSanPham.js"></script>
+</head>
+
+<body>
+    <%- include("../include/admin_header.ejs"); %>
+
+        <div class="container-fluid">
+            <h2 class="border-bottom p-2">Top sản phẩm bán chạy nhất</h2>
+            <form id="statistics-form">
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <label for="start_date">Từ ngày:</label>
+                        <input type="date" id="start-date" name="start_date" class="form-control form-control-sm"
+                            value="" autocomplete="off">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="end_date">Đến ngày:</label>
+                        <input type="date" id="end-date" name="end_date" class="form-control form-control-sm" value=""
+                            autocomplete="off">
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary" style="margin-top: 12px;">Xem thống kê</button>
+                    </div>
+                </div>
+            </form>
+            <div class="row mt-3">
+                <div id="main" class="col-md-10 text-danger">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <%- include("../include/admin_footer.ejs"); %>
+</body>
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ["test"],
+                datasets: [{
+                    label: 'Số lượng bán',
+                    data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    backgroundColor: [
+                        '#52FFB8',
+                        '#1E2EDE',
+                        '#F4FF52',
+                        '#FF4242',
+                        '#B3FFFC',
+                        '#FFB842',
+                        '#FF42B8',
+                        '#B842FF',
+                        '#42B8FF',
+                        '#B8FF42',
+                    ],
+                    borderColor: [
+                        '#FFFFFF',
+                        '#FFFFFF',
+                        '#FFFFFF',
+                        '#FFFFFF',
+                        '#FFFFFF',
+                        '#FFFFFF',
+                        '#FFFFFF',
+                        '#FFFFFF',
+                        '#FFFFFF',
+                        '#FFFFFF',
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                var label = context.label || '';
+
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !==null) {
+                                    label += context.parsed;
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script> -->
+
+</html>

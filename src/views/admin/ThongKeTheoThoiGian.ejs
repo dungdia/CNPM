@@ -1,0 +1,59 @@
+<html lang="en">
+
+<head>
+    <%- include("../include/admin_head.ejs"); %>
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+        <script type="module" src="../../assets/js/admin/ThongKeTheoThoiGian.js"></script>
+</head>
+
+<body>
+    <%- include("../include/admin_header.ejs"); %>
+
+        <div class="container-fluid">
+            <h2 class="border-bottom p-2">Thống kê số lượng mua hàng</h2>
+            <form id="statistics-form">
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>Thống kê theo:
+                            <select id="report-period" name="filter" class="form-select form-select-sm">
+                                <option value="day">Ngày</option>
+                                <option value="month">Tháng</option>
+                                <option value="year">Năm</option>
+                                <!-- <option value="total-revenue" <?php if ($filter == 'total-revenue') echo 'selected'; ?>>Tổng doanh thu</option> -->
+                            </select>
+                        </p>
+                    </div>
+                    <div id="date-table" class="col-md-3" style="display: flex;">
+                        <div>
+                            <p>Từ ngày :
+                                <input type="date" id="start-date" name="start_date" class="form-control form-control-sm"
+                                    value="" autocomplete="off">
+                            </p>
+                        </div>
+                        <div>
+                            <p>Đến ngày :
+                                <input type="date" id="end-date" name="end_date" class="form-control form-control-sm"
+                                    value="" autocomplete="off">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row pt-3 text-center">
+                        <div class="col-md-3 w-100">
+                            <button type="submit" class="btn btn-primary">Thống kê</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row mt-3">
+                <div class="col-md-10 text-center">
+                    <div id="alert-warning" class="alert alert-warning text-danger" style="display: none;"></div>
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <%- include("../include/admin_footer.ejs"); %>
+</body>
+
+</html>
