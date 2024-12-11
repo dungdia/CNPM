@@ -1,28 +1,34 @@
 import initTable, {
-    fetchJsonData,
-    getSelectedData,
-    alertSelectRow,
-    postImageData,
+  fetchJsonData,
+  getSelectedData,
+  alertSelectRow,
+  postImageData,
 } from "./datatables-simple.js";
+
+import CookieManager from "https://cdn.jsdelivr.net/npm/js-cookie-manager@1.0.2/index.min.js";
 
 let dataTable;
 let item = {};
 
 async function reloadDataTable() {
-    dataTable.destroy();
-    const jsonData = await fetchJsonData("getAllSanPham");
-    dataTable = initTable(jsonData)
+  dataTable.destroy();
+  const jsonData = await fetchJsonData("getAllSanPham");
+  dataTable = initTable(jsonData);
 }
 
 async function renderProductInfo(data, type) {
-    const popUpLabel = document.getElementById("popup-label");
-    const popUpBody = document.getElementById("Popup-Body");
-    if (data) {
-        [item] = await fetchJsonData("getOneSanPham", "GET", { id_sanpham: data.id_sanpham });
-    }
-    const brand = await fetchJsonData("getAllThuongHieu");
-    popUpBody.innerHTML = `
-        ${type === "detail" ? `
+  const popUpLabel = document.getElementById("popup-label");
+  const popUpBody = document.getElementById("Popup-Body");
+  if (data) {
+    [item] = await fetchJsonData("getOneSanPham", "GET", {
+      id_sanpham: data.id_sanpham,
+    });
+  }
+  const brand = await fetchJsonData("getAllThuongHieu");
+  popUpBody.innerHTML = `
+        ${
+          type === "detail"
+            ? `
             <div class="form-floating mb-3">
                 <input 
                 type="number" 
@@ -34,8 +40,10 @@ async function renderProductInfo(data, type) {
                 style="appearance: none; -moz-appearance: textfield; margin: 0;">
                 <label for="productId">ID</label> 
             </div>     
-        ` : ` 
-        `}
+        `
+            : ` 
+        `
+        }
 
         <div class="form-floating mb-3">
             <input 
@@ -44,7 +52,7 @@ async function renderProductInfo(data, type) {
             id="productName" 
             placeholder="" 
             value="${type === "add" ? `` : item.ten_sanpham}" 
-            ${type !== "detail"  && type !== "edit" ? `` : `readonly`}
+            ${type !== "detail" && type !== "edit" ? `` : `readonly`}
             style="appearance: none; -moz-appearance: textfield; margin: 0;">
             <label for="productName">Tên sản phẩm</label> 
         </div>
@@ -122,14 +130,22 @@ async function renderProductInfo(data, type) {
         </div>
         <!-- THUONG HIEU -->
         <div class="form-floating mb-3">
-            <select class="form-select" id="brandSelect" ${(type === "add" || type === "edit") ? `` : `disabled`}>
-                ${(type === "add" || type === "edit") ? `` : `<option value="${item.id_thuonghieu}" selected>${item.ten_thuonghieu}</option>`}
+            <select class="form-select" id="brandSelect" ${
+              type === "add" || type === "edit" ? `` : `disabled`
+            }>
+                ${
+                  type === "add" || type === "edit"
+                    ? ``
+                    : `<option value="${item.id_thuonghieu}" selected>${item.ten_thuonghieu}</option>`
+                }
             </select>
             <label for="brandSelect">Thương hiệu</label>
         </div>
         
-        ${type === "add" || type === "edit" ? (
-            type == "add" ? `<div class="form-floating mb-3">
+        ${
+          type === "add" || type === "edit"
+            ? type == "add"
+              ? `<div class="form-floating mb-3">
                 <form id="imageForm" enctype="multipart/form-data">
                     <div class="form-floating mb-3">
                     <input 
@@ -142,8 +158,8 @@ async function renderProductInfo(data, type) {
                     style="appearance: none; -moz-appearance: textfield; margin: 0;">
                 <label for="productImg">Ảnh sản phẩm</label> 
                 </form>
-            </div>` 
-            : `<div class="form-floating mb-3">
+            </div>`
+              : `<div class="form-floating mb-3">
                 <form id="imageForm" enctype="multipart/form-data">
                     <div class="form-floating mb-3">
                     <input 
@@ -165,7 +181,7 @@ async function renderProductInfo(data, type) {
                 style="width: 150px; height: auto; padding: 30px 0 30px 0;">
             </div>  
                 </form>
-            </div>`) 
+            </div>`
             : `
             <div class="form-floating mb-3">
                 <label style="top: -10px" for="productImg">Ảnh</label> 
@@ -176,222 +192,239 @@ async function renderProductInfo(data, type) {
                 alt="Image"
                 style="width: 150px; height: auto; padding: 30px 0 30px 0;">
             </div>      
-        `}
-    `
-    const brandSelect = document.getElementById("brandSelect");
-    brandSelect.innerHTML = brand.map(item => `<option ${type =="edit" || type == "detail" ? (data.ten_thuonghieu == item.ten_thuonghieu ? "selected" :"") : ""} value="${item.id_thuonghieu}">${item.ten_thuonghieu}</option>`).join("");
-
-    
+        `
+        }
+    `;
+  const brandSelect = document.getElementById("brandSelect");
+  brandSelect.innerHTML = brand
+    .map(
+      (item) =>
+        `<option ${
+          type == "edit" || type == "detail"
+            ? data.ten_thuonghieu == item.ten_thuonghieu
+              ? "selected"
+              : ""
+            : ""
+        } value="${item.id_thuonghieu}">${item.ten_thuonghieu}</option>`
+    )
+    .join("");
 }
 
 async function showDetail(data) {
-    const popUpLabel = document.getElementById("popup-label");
-    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-    popUpSaveBtn.classList.add("d-none");
+  const popUpLabel = document.getElementById("popup-label");
+  const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+  popUpSaveBtn.classList.add("d-none");
 
-    popUpLabel.textContent = `Chi tiết sản phẩm`;
-    renderProductInfo(data, "detail");
+  popUpLabel.textContent = `Chi tiết sản phẩm`;
+  renderProductInfo(data, "detail");
 }
 
 function showAdd() {
-    const popUpLabel = document.getElementById("popup-label");
-    const popUpBody = document.getElementById("Popup-Body");
-    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+  const popUpLabel = document.getElementById("popup-label");
+  const popUpBody = document.getElementById("Popup-Body");
+  const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
 
-    popUpSaveBtn.classList.remove("d-none");
+  popUpSaveBtn.classList.remove("d-none");
 
-    popUpLabel.textContent = "Thêm sản phẩm";
+  popUpLabel.textContent = "Thêm sản phẩm";
 
-    renderProductInfo({}, "add")
+  renderProductInfo({}, "add");
 
-    popUpSaveBtn.onclick = async () => {
-        console.log("Save")
+  popUpSaveBtn.onclick = async () => {
+    console.log("Save");
 
-        const productImg = document.getElementById("productImg");
-        const productName = document.getElementById("productName")
-        const productSZ = document.getElementById("productSZ")
-        const productRC = document.getElementById("productRC")
-        const productFC = document.getElementById("productFC")
-        const productCPU = document.getElementById("productCPU")
-        const productOS = document.getElementById("productOS")
-        const productBC = document.getElementById("productBC")
-        const productBrand = document.getElementById("brandSelect")
+    const productImg = document.getElementById("productImg");
+    const productName = document.getElementById("productName");
+    const productSZ = document.getElementById("productSZ");
+    const productRC = document.getElementById("productRC");
+    const productFC = document.getElementById("productFC");
+    const productCPU = document.getElementById("productCPU");
+    const productOS = document.getElementById("productOS");
+    const productBC = document.getElementById("productBC");
+    const productBrand = document.getElementById("brandSelect");
 
-        const projection = {
-            "ten_sanpham": productName.value,
-            "kichThuocMan": productSZ.value,
-            "cameraSau": productRC.value,
-            "cameraTruoc": productFC.value,
-            "chipXuLy": productCPU.value,
-            "heDieuHanh": productOS.value,
-            "dungLuongPin": productBC.value,
-            "id_thuonghieu": productBrand.value,
-            "hinh_anh": productImg.files[0]
-        }
-        const formData = new FormData();
-        for (const [key, value] of Object.entries(projection)) {
-            formData.append(key, value);
-        }
-        console.log(formData)
-        const res = await postImageData("addSanPham", formData);
-        if (!res.success) {
-            return alert(res.message)
-        }
-
-        alert(res.message)
-        popUpCloseBtn.textContent = "Close";
-        popUpSaveBtn.classList.add("d-none");
-        reloadDataTable()
+    const projection = {
+      ten_sanpham: productName.value,
+      kichThuocMan: productSZ.value,
+      cameraSau: productRC.value,
+      cameraTruoc: productFC.value,
+      chipXuLy: productCPU.value,
+      heDieuHanh: productOS.value,
+      dungLuongPin: productBC.value,
+      id_thuonghieu: productBrand.value,
+      hinh_anh: productImg.files[0],
+    };
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(projection)) {
+      formData.append(key, value);
     }
+    console.log(formData);
+    const res = await postImageData("addSanPham", formData);
+    if (!res.success) {
+      return alert(res.message);
+    }
+
+    alert(res.message);
+    popUpCloseBtn.textContent = "Close";
+    popUpSaveBtn.classList.add("d-none");
+    reloadDataTable();
+  };
 }
 
 async function showEdit(data) {
-    const popUpLabel = document.getElementById("popup-label");
-    const popUpBody = document.getElementById("Popup-Body");
-    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-    const popUpCloseBtn = document.getElementById("Footer-Close-PopUp-Button")
-    popUpSaveBtn.classList.remove("d-none");
+  const popUpLabel = document.getElementById("popup-label");
+  const popUpBody = document.getElementById("Popup-Body");
+  const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+  const popUpCloseBtn = document.getElementById("Footer-Close-PopUp-Button");
+  popUpSaveBtn.classList.remove("d-none");
 
-    popUpLabel.textContent = `Sửa sản phẩm: ${data.id_sanpham}`;
-    renderProductInfo(data, "edit");
+  popUpLabel.textContent = `Sửa sản phẩm: ${data.id_sanpham}`;
+  renderProductInfo(data, "edit");
 
-    popUpSaveBtn.onclick = async () => {
-        const productImg = document.getElementById("productImg");
-        const productName = document.getElementById("productName").value;
-        const productSZ = document.getElementById("productSZ").value;
-        const productRC = document.getElementById("productRC").value;
-        const productFC = document.getElementById("productFC").value;
-        const productCPU = document.getElementById("productCPU").value;
-        const productOS = document.getElementById("productOS").value;
-        const productBC = document.getElementById("productBC").value;
-        const productBrand = document.getElementById("brandSelect").value;
+  popUpSaveBtn.onclick = async () => {
+    const productImg = document.getElementById("productImg");
+    const productName = document.getElementById("productName").value;
+    const productSZ = document.getElementById("productSZ").value;
+    const productRC = document.getElementById("productRC").value;
+    const productFC = document.getElementById("productFC").value;
+    const productCPU = document.getElementById("productCPU").value;
+    const productOS = document.getElementById("productOS").value;
+    const productBC = document.getElementById("productBC").value;
+    const productBrand = document.getElementById("brandSelect").value;
 
-        const projection = {
-            "id_sanpham": data.id_sanpham,
-            "ten_sanpham": productName,
-            "kichThuocMan": productSZ,
-            "cameraSau": productRC,
-            "cameraTruoc": productFC,
-            "chipXuLy": productCPU,
-            "heDieuHanh": productOS,
-            "dungLuongPin": productBC,
-            "id_thuonghieu": productBrand,
-            "hinh_anh": productImg.files[0]
-        }
-        const formData = new FormData();
-        for (const [key, value] of Object.entries(projection)) {
-            formData.append(key, value);
-        }
-        console.log(formData)
-        const res = await postImageData("updateSanPham", formData);
-        if (!res.success) {
-            alert(res.message)
-        } else {
-            alert(res.message)
-        }
+    const projection = {
+      id_sanpham: data.id_sanpham,
+      ten_sanpham: productName,
+      kichThuocMan: productSZ,
+      cameraSau: productRC,
+      cameraTruoc: productFC,
+      chipXuLy: productCPU,
+      heDieuHanh: productOS,
+      dungLuongPin: productBC,
+      id_thuonghieu: productBrand,
+      hinh_anh: productImg.files[0],
+    };
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(projection)) {
+      formData.append(key, value);
     }
+    console.log(formData);
+    const res = await postImageData("updateSanPham", formData);
+    if (!res.success) {
+      alert(res.message);
+    } else {
+      alert(res.message);
+    }
+  };
 }
 
 async function showLock(data) {
-    const popUpLabel = document.getElementById("popup-label");
-    const popUpBody = document.getElementById("Popup-Body");
-    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-    const popUpCloseBtn = document.getElementById("Footer-Close-PopUp-Button")
-    popUpSaveBtn.classList.remove("d-none");
+  const popUpLabel = document.getElementById("popup-label");
+  const popUpBody = document.getElementById("Popup-Body");
+  const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+  const popUpCloseBtn = document.getElementById("Footer-Close-PopUp-Button");
+  popUpSaveBtn.classList.remove("d-none");
 
-    popUpSaveBtn.textContent = "YES";
-    popUpCloseBtn.textContent = "NO";
+  popUpSaveBtn.textContent = "YES";
+  popUpCloseBtn.textContent = "NO";
 
-    popUpLabel.textContent = `Khóa sản phẩm`;
-    popUpBody.textContent = `Bạn có muốn ${(data.trangThai === "1" ? "lock" : "unclock")} tài khoản ${data.ten_sanpham}?`;
+  popUpLabel.textContent = `Khóa sản phẩm`;
+  popUpBody.textContent = `Bạn có muốn ${
+    data.trangThai === "1" ? "lock" : "unclock"
+  } tài khoản ${data.ten_sanpham}?`;
 
-    popUpSaveBtn.onclick = async () => {
-        const projection = {
-            "id_sanpham": data.id_sanpham,
-            "trangThai": data.trangThai === "1" ? "0" : "1",
-        }
-        const formData = new FormData();
-        for (const [key, value] of Object.entries(projection)) {
-            formData.append(key, value);
-        }
-        console.log(formData)
-        const res = await postImageData("updateSanPham", formData);
-        if (!res.success) {
-            alert(res.message)
-        } else {
-            alert(res.message)
-        }
-        popUpBody.textContent = `${data.trangThai === 1 ? "Lock" : "Unlock"} ${data.ten_sanpham} thành công`;
-        popUpCloseBtn.textContent = "Close";
-        popUpSaveBtn.classList.add("d-none");
-        reloadDataTable()
+  popUpSaveBtn.onclick = async () => {
+    const projection = {
+      id_sanpham: data.id_sanpham,
+      trangThai: data.trangThai === "1" ? "0" : "1",
+    };
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(projection)) {
+      formData.append(key, value);
     }
+    console.log(formData);
+    const res = await postImageData("updateSanPham", formData);
+    if (!res.success) {
+      alert(res.message);
+    } else {
+      alert(res.message);
+    }
+    popUpBody.textContent = `${data.trangThai === 1 ? "Lock" : "Unlock"} ${
+      data.ten_sanpham
+    } thành công`;
+    popUpCloseBtn.textContent = "Close";
+    popUpSaveBtn.classList.add("d-none");
+    reloadDataTable();
+  };
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-    console.log("hi")
-    const jsonData = await fetchJsonData("getAllSanPham")
-    dataTable = initTable(jsonData);
+  console.log("hi");
+  const jsonData = await fetchJsonData("getAllSanPham");
+  dataTable = initTable(jsonData);
 
-    // xoa remove button
-    const removeBtn = document.getElementById("btn-popup-remove");
-    removeBtn.remove()
+  // xoa remove button
+  const removeBtn = document.getElementById("btn-popup-remove");
+  removeBtn.remove();
 
-    const popupBtnGroup = document.getElementById("popup-button-group");
-    popupBtnGroup.innerHTML += `<button class="btn btn-danger w-auto" id="btn-popup-ban" data-bs-toggle="modal" data-bs-target="#popupContent">Lock/Unlock</button>`
+  const popupBtnGroup = document.getElementById("popup-button-group");
+  popupBtnGroup.innerHTML += `<button class="btn btn-danger w-auto" id="btn-popup-ban" data-bs-toggle="modal" data-bs-target="#popupContent">Lock/Unlock</button>`;
 
-    const banBtn = document.getElementById("btn-popup-ban")
-    const btnPopUp = document.getElementById("btn-popup-detail");
-    const editBtn = document.getElementById("btn-popup-update");
-    const addbtn = document.getElementById("btn-popup-add");
+  const banBtn = document.getElementById("btn-popup-ban");
+  const btnPopUp = document.getElementById("btn-popup-detail");
+  const editBtn = document.getElementById("btn-popup-update");
+  const addbtn = document.getElementById("btn-popup-add");
 
-    // xem chi tiet
-    btnPopUp.addEventListener("click", () => {
-        console.log("Xem chi tiet tk")
-        const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-        popUpSaveBtn.onclick = {};
-        const selectRow = document.querySelector(".selectedRow");
-        if (!selectRow) {
-            alertSelectRow();
-            return;
-        }
-        const rowIdx = selectRow.getAttribute("data-index");
-        const selectedData = getSelectedData(dataTable, rowIdx);
-        console.log(selectedData)
-        showDetail(selectedData);
-    });
+  // xem chi tiet
+  btnPopUp.addEventListener("click", () => {
+    console.log("Xem chi tiet tk");
+    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+    popUpSaveBtn.onclick = {};
+    const selectRow = document.querySelector(".selectedRow");
+    if (!selectRow) {
+      alertSelectRow();
+      return;
+    }
+    const rowIdx = selectRow.getAttribute("data-index");
+    const selectedData = getSelectedData(dataTable, rowIdx);
+    console.log(selectedData);
+    showDetail(selectedData);
+  });
 
-    addbtn.addEventListener("click", () => {
-        const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-        popUpSaveBtn.onclick = {};
+  addbtn.addEventListener("click", () => {
+    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+    popUpSaveBtn.onclick = {};
 
-        showAdd();
-        
-    })
+    showAdd();
+  });
 
-    editBtn.addEventListener("click", () => {
-        const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-        popUpSaveBtn.onclick = {};
-        const selectRow = document.querySelector(".selectedRow");
-        if (!selectRow) {
-            alertSelectRow();
-            return;
-        }
-        const rowIdx = selectRow.getAttribute("data-index");
-        const selectedData = getSelectedData(dataTable, rowIdx);
+  editBtn.addEventListener("click", () => {
+    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+    popUpSaveBtn.onclick = {};
+    const selectRow = document.querySelector(".selectedRow");
+    if (!selectRow) {
+      alertSelectRow();
+      return;
+    }
+    const rowIdx = selectRow.getAttribute("data-index");
+    const selectedData = getSelectedData(dataTable, rowIdx);
 
-        showEdit(selectedData)
-    })
+    showEdit(selectedData);
+  });
 
-    banBtn.addEventListener("click", () => {
-        const selectRow = document.querySelector(".selectedRow");
-        if (!selectRow) {
-            alertSelectRow();
-            return;
-        }
-        const rowIdx = selectRow.getAttribute("data-index");
-        const selectedData = getSelectedData(dataTable, rowIdx);
-        console.log(selectedData)
-        showLock(selectedData);
-    })
-})
+  banBtn.addEventListener("click", () => {
+    const selectRow = document.querySelector(".selectedRow");
+    if (!selectRow) {
+      alertSelectRow();
+      return;
+    }
+    const rowIdx = selectRow.getAttribute("data-index");
+    const selectedData = getSelectedData(dataTable, rowIdx);
+    console.log(selectedData);
+    showLock(selectedData);
+  });
+
+  if (!userPermissionList.includes(1)) addbtn.remove();
+  if (!userPermissionList.includes(2)) editBtn.remove();
+  if (!userPermissionList.includes(3)) banBtn.remove();
+});

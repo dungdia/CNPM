@@ -40,13 +40,16 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-house-user"></i></div>
                             Dashboard
                         </a>
-                        <div class="sb-sidenav-menu-heading" id="sidenav-menu-heading-management">Quản Lý</div>
-                        <a class="nav-link" href="QuanLyVaiTro">
-                            <div class="sb-nav-link-icon"><i class="bi bi-person-fill-gear"></i></div>
-                            Quản lý vai trò
+                        <% if (data.includes(18) || data.includes(19) || data.includes(20)) { %>
+                            <!-- 18,19,20 là id của quản lý vai trò -->
+                            <div class="sb-sidenav-menu-heading" id="sidenav-menu-heading-management">Quản Lý</div>
+                            <a class="nav-link" href="QuanLyVaiTro">
+                                <div class="sb-nav-link-icon"><i class="bi bi-person-fill-gear"></i></div>
+                                Quản lý vai trò
 
-                        </a>
-                        <!-- <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                            </a>
+                            <%}%>
+                                <!-- <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="QuanLyTaiKhoan">Quản lý tài
@@ -56,75 +59,133 @@
                                 <a class="nav-link" href="QuanLyVaiTro">Quản lý vai trò</a>
                             </nav>
                         </div> -->
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
-                            aria-expanded="false" aria-controls="collapsePages">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-shop"></i></div>
-                            Sản phẩm
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesProduct" aria-expanded="false" aria-controls="pagesProduct">
-                                    Quản lý sản phẩm
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesProduct" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="QuanLySanPham">Quản lý
-                                            sản phẩm</a>
-                                        <a class="nav-link" href="QuanLyPhienBanSanPham">Quản lý
-                                            phiên bản sản phẩm</a>
-                                    </nav>
-                                </div>
-                                <a class="nav-link" href="QuanLyPhieuNhap">Quản lý phiếu
-                                    nhập</a>
-                                <a class="nav-link" href="QuanLyHoaDon">Quản lý hóa
-                                    đơn</a>
-                                <a class="nav-link" href="QuanLyBaoHanh">Quản lý bảo
-                                    hành</a>
-                            </nav>
-                        </div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                            data-bs-target="#collapseEmployee" aria-expanded="false" aria-controls="collapseEmployee">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-people-line"></i></i></div>
-                            Nhân viên
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseEmployee" aria-labelledby="headingTwo"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="QuanLyNhanVien">Quản lý tài
-                                    khoản nhân viên</a>
-                            </nav>
-                        </div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUser"
-                            aria-expanded="false" aria-controls="collapseUser">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-user-tie"></i></i></div>
-                            Khách hàng
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseUser" aria-labelledby="headingTwo"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="QuanLyKhachHang">Quản lý tài
-                                    khoản khách hàng</a>
-                            </nav>
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="QuanLyPhieuBaoHanh">Quản lý Phiếu Bảo Hành</a>
-                            </nav>
-                        </div>
-                        <div class="sb-sidenav-menu-heading" id="sidenav-menu-heading-statistic">Thống kê</div>
-                        <a class="nav-link" href="ThongKeTheoThoiGian">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
-                            Thống kê theo thời gian
-                        </a>
-                        <a class="nav-link" href="ThongKeTheoSanPham">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-pie"></i></div>
-                            Thống kê theo sản phẩm
-                        </a>
+
+                                <% if(data.includes(1) || data.includes(2) || data.includes(3) || data.includes(4) ||
+                                    data.includes(5) || data.includes(6) || data.includes(7) || data.includes(8) ||
+                                    data.includes(9) || data.includes(10 )){ %>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        data-bs-target="#collapsePages" aria-expanded="false"
+                                        aria-controls="collapsePages">
+                                        <div class="sb-nav-link-icon"><i class="fa-solid fa-shop"></i></div>
+                                        Sản phẩm
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <%} %>
+                                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                                            data-bs-parent="#sidenavAccordion">
+                                            <nav class="sb-sidenav-menu-nested nav accordion"
+                                                id="sidenavAccordionPages">
+                                                <%if(data.includes(1) || data.includes(2)|| data.includes(3) ||
+                                                    data.includes(4) ||data.includes(5) || data.includes(6)){%>
+                                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                                        data-bs-target="#pagesProduct" aria-expanded="false"
+                                                        aria-controls="pagesProduct">
+                                                        Quản lý sản phẩm
+                                                        <div class="sb-sidenav-collapse-arrow"><i
+                                                                class="fas fa-angle-down"></i>
+                                                        </div>
+                                                    </a>
+                                                    <div class="collapse" id="pagesProduct" aria-labelledby="headingOne"
+                                                        data-bs-parent="#sidenavAccordionPages">
+                                                        <nav class="sb-sidenav-menu-nested nav">
+                                                            <%if(data.includes(1) || data.includes(2) ||
+                                                                data.includes(3)){%>
+                                                                <a class="nav-link" href="QuanLySanPham">Quản lý
+                                                                    sản phẩm</a>
+                                                                <%}%>
+                                                                    <%if(data.includes(4) || data.includes(5) ||
+                                                                        data.includes(6)){%>
+                                                                        <a class="nav-link"
+                                                                            href="QuanLyPhienBanSanPham">Quản lý
+                                                                            phiên bản sản phẩm</a>
+                                                                        <%}%>
+                                                        </nav>
+                                                    </div>
+                                                    <%}%>
+                                                        <%if(data.includes(7)){%>
+                                                            <a class="nav-link" href="QuanLyPhieuNhap">Quản lý phiếu
+                                                                nhập</a>
+                                                            <%}%>
+                                                                <%if(data.includes(8)){%>
+                                                                    <a class="nav-link" href="QuanLyHoaDon">Quản lý hóa
+                                                                        đơn</a>
+                                                                    <%}%>
+                                                                        <%if(data.includes(9) || data.includes(10)){%>
+                                                                            <a class="nav-link"
+                                                                                href="QuanLyBaoHanh">Quản lý
+                                                                                bảo
+                                                                                hành</a>
+                                                                            <%}%>
+                                            </nav>
+                                        </div>
+                                        <%if(data.includes(11) || data.includes(12) || data.includes(13)){%>
+                                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseEmployee" aria-expanded="false"
+                                                aria-controls="collapseEmployee">
+                                                <div class="sb-nav-link-icon"><i
+                                                        class="fa-solid fa-people-line"></i></i>
+                                                </div>
+                                                Nhân viên
+                                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i>
+                                                </div>
+                                            </a>
+                                            <div class="collapse" id="collapseEmployee" aria-labelledby="headingTwo"
+                                                data-bs-parent="#sidenavAccordion">
+                                                <nav class="sb-sidenav-menu-nested nav">
+                                                    <a class="nav-link" href="QuanLyNhanVien">Quản lý tài
+                                                        khoản nhân viên</a>
+                                                </nav>
+                                            </div>
+                                            <%}%>
+                                                <%if(data.includes(14) || data.includes(15) || data.includes(16)){%>
+                                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseUser" aria-expanded="false"
+                                                        aria-controls="collapseUser">
+                                                        <div class="sb-nav-link-icon"><i
+                                                                class="fa-solid fa-user-tie"></i></i>
+                                                        </div>
+                                                        Khách hàng
+                                                        <div class="sb-sidenav-collapse-arrow"><i
+                                                                class="fas fa-angle-down"></i>
+                                                        </div>
+                                                    </a>
+                                                    <div class="collapse" id="collapseUser" aria-labelledby="headingTwo"
+                                                        data-bs-parent="#sidenavAccordion">
+                                                        <%if(data.includes(14)){%>
+                                                            <nav class="sb-sidenav-menu-nested nav">
+                                                                <a class="nav-link" href="QuanLyKhachHang">Quản lý tài
+                                                                    khoản khách hàng</a>
+                                                            </nav>
+                                                            <%}%>
+                                                                <%if(data.includes(15) || data.includes(16)){%>
+                                                                    <nav class="sb-sidenav-menu-nested nav">
+                                                                        <a class="nav-link"
+                                                                            href="QuanLyPhieuBaoHanh">Quản
+                                                                            lý Phiếu
+                                                                            Bảo
+                                                                            Hành</a>
+                                                                    </nav>
+                                                                    <%}%>
+                                                    </div>
+                                                    <%}%>
+                                                        <%if(data.includes(17)){%>
+                                                            <div class="sb-sidenav-menu-heading"
+                                                                id="sidenav-menu-heading-statistic">
+                                                                Thống
+                                                                kê
+                                                            </div>
+                                                            <a class="nav-link" href="ThongKeTheoThoiGian">
+                                                                <div class="sb-nav-link-icon"><i
+                                                                        class="fas fa-chart-line"></i>
+                                                                </div>
+                                                                Thống kê theo thời gian
+                                                            </a>
+                                                            <a class="nav-link" href="ThongKeTheoSanPham">
+                                                                <div class="sb-nav-link-icon"><i
+                                                                        class="fas fa-chart-pie"></i></div>
+                                                                Thống kê theo sản phẩm
+                                                            </a>
+                                                            <%}%>
                     </div>
                 </div>
             </nav>
