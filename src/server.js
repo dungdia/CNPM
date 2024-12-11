@@ -50,8 +50,8 @@ async function viewsHandler() {
       requireLoginPage.includes(pageName)
         ? authMiddleWare
         : (req, res, next) => {
-            next();
-          },
+          next();
+        },
       (req, res) => {
         res.render(page);
       }
@@ -107,7 +107,7 @@ async function insertProduct() {
       case !Validator.regexText(ten_sanpham):
         return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
       case !Validator.isNumber(kichThuocMan):
-        return res.json({ message: "Kích thước màn hình không được để trống, là số và lớn hơn 0", success: false});
+        return res.json({ message: "Kích thước màn hình không được để trống, là số và lớn hơn 0", success: false });
       case !Validator.regexText(cameraSau):
         return res.json({ message: "Camera sau không được để trống và quá 255 ký tự", success: false });
       case !Validator.regexText(cameraTruoc):
@@ -132,19 +132,19 @@ async function insertProduct() {
         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
       `, [ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu, image])
 
-        if (insertSanPham.status !== 200) {
-          return res.json({
-            message: "Thêm sản phẩm không thành công",
-            success: false,
-          });
-        }
-
-        conn.closeConnect();
-        res.json({ message: "Thêm sản phẩm thành công", success: true });
-      } catch (error) {
-        res.json({ message: "Lỗi", success: false });
+      if (insertSanPham.status !== 200) {
+        return res.json({
+          message: "Thêm sản phẩm không thành công",
+          success: false,
+        });
       }
+
+      conn.closeConnect();
+      res.json({ message: "Thêm sản phẩm thành công", success: true });
+    } catch (error) {
+      res.json({ message: "Lỗi", success: false });
     }
+  }
   );
 }
 
@@ -158,7 +158,7 @@ async function updateProduct() {
       case !Validator.regexText(ten_sanpham):
         return res.json({ message: "Tên sản phẩm không được để trống và quá 255 ký tự", success: false });
       case !Validator.isNumber(kichThuocMan):
-        return res.json({ message: "Kích thước màn hình không được để trống, là số và lớn hơn 0", success: false});
+        return res.json({ message: "Kích thước màn hình không được để trống, là số và lớn hơn 0", success: false });
       case !Validator.regexText(cameraSau):
         return res.json({ message: "Camera sau không được để trống và quá 255 ký tự", success: false });
       case !Validator.regexText(cameraTruoc):
@@ -177,29 +177,29 @@ async function updateProduct() {
       const DBConnecter = require("./app/controller/DBconnecter");
       const conn = new DBConnecter();
 
-        let updateSanPham;
+      let updateSanPham;
 
-        if (trangThai) {
-          console.log("LOCK");
-          updateSanPham = await conn.update(
-            `
+      if (trangThai) {
+        console.log("LOCK");
+        updateSanPham = await conn.update(
+          `
           UPDATE cnpm.sanpham
           SET trangThai = ?
           WHERE id_sanpham = ?
         `, [trangThai, id_sanpham])
 
-          if (updateSanPham.status !== 200) {
-            return res.json({
-              message: "Khóa sản phẩm không thành công",
-              success: false,
-            });
-          }
+        if (updateSanPham.status !== 200) {
+          return res.json({
+            message: "Khóa sản phẩm không thành công",
+            success: false,
+          });
+        }
 
         conn.closeConnect();
         res.json({ message: "Khóa sản phẩm thành công", success: true });
       } else {
         const agrs = [ten_sanpham, kichThuocMan, cameraSau, cameraTruoc, chipXuLy, heDieuHanh, dungLuongPin, id_thuonghieu]
-        if(image)
+        if (image)
           agrs.push(image)
         agrs.push(id_sanpham)
         // console.log(image)
@@ -217,20 +217,20 @@ async function updateProduct() {
           WHERE id_sanpham = ?
         `, agrs)
 
-          if (updateSanPham.status !== 200) {
-            return res.json({
-              message: "Sửa sản phẩm không thành công",
-              success: false,
-            });
-          }
-
-          conn.closeConnect();
-          res.json({ message: "Sửa sản phẩm thành công", success: true });
+        if (updateSanPham.status !== 200) {
+          return res.json({
+            message: "Sửa sản phẩm không thành công",
+            success: false,
+          });
         }
-      } catch (error) {
-        res.json({ message: "Lỗi", success: false });
+
+        conn.closeConnect();
+        res.json({ message: "Sửa sản phẩm thành công", success: true });
       }
+    } catch (error) {
+      res.json({ message: "Lỗi", success: false });
     }
+  }
   );
 }
 
