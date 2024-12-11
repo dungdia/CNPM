@@ -1,146 +1,287 @@
 import initTable, {
-    fetchJsonData,
-    getSelectedData,
-    alertSelectRow,
+  fetchJsonData,
+  getSelectedData,
+  alertSelectRow,
 } from "./datatables-simple.js";
 
 let dataTable;
 let item = {};
 
+async function reloadDataTable() {
+  dataTable.destroy();
+  const jsonData = await fetchJsonData("getAllRole");
+  dataTable = initTable(jsonData);
+}
+
 async function renderRoleInfo(data, type) {
-    const popUpLabel = document.getElementById("popup-label");
-    const popUpBody = document.getElementById("Popup-Body");
-    popUpBody.innerHTML = `
+  const popUpLabel = document.getElementById("popup-label");
+  const popUpBody = document.getElementById("Popup-Body");
+
+  const permissionList = await fetchJsonData("getPermissionList");
+  const vaitroProject = { id_vaitro: data.id_vaitro };
+
+  const rolePermissionList = await fetchJsonData(
+    "getPermissionList",
+    "GET",
+    vaitroProject
+  );
+  console.log(rolePermissionList);
+
+  //   permission list
+  //     <div class="form-check form-switch form-check-reverse text-start fs-6" id="test">
+  //     <input class="form-check-input me-1 permission" type="checkbox" role="switch" id="${
+  //       data.id_vaitro
+  //     }" ${type == "view" ? "disabled" : ""}>
+  //     <label class="form-check-label" for="${data.id_vaitro}">${
+  //         data.ten_vaitro
+  //     }</label>
+  //     </div>
+
+  popUpBody.innerHTML = `
+  ${
+    type !== "add"
+      ? `
+  <div class="form-floating mb-3">
+      <input 
+      type="number" 
+      class="form-control" 
+      id="roleId" 
+      placeholder="" 
+      value="${data.id_vaitro}" 
+      readonly
+      style="appearance: none; -moz-appearance: textfield; margin: 0;">
+      <label for="roleId">ID</label> 
+  </div>     
+`
+      : ` 
+`
+  }
+
         <div class="form-floating mb-3">
             <input 
             type="text" 
             class="form-control" 
             id="roleName" 
-            value="${(type === "add") ? `` : data.ten_vaitro}"
-            placeholder="">
+            value="${type === "add" ? `` : data.ten_vaitro}"
+            placeholder=""
+            ${type === "detail" ? `readonly` : ``}
+            >
             <label for="roleName">Tên vai trò</label>
         </div>
-    `
-}
+        <p class="fs-5">Danh sách quyền:</p><br/>
+        ${permissionList
+          .map(
+            (
+              item
+            ) => `<div class="form-check form-switch form-check-reverse text-start fs-6" id="test">
+            <input class="form-check-input me-1 permission-list" type="checkbox" role="switch" id="${
+              item.id_quyen
+            }" ${type == "detail" ? "disabled" : ""} ${
+              rolePermissionList.includes(item.id_quyen) ? "checked" : ""
+            }>
+            <label class="form-check-label" for="${item.id_quyen}">${
+              item.ten_quyen
+            }</label>
+            </div>`
+          )
+          .join("")}
+        
 
-function showAdd() {
-    const popUpLabel = document.getElementById("popup-label");
-    const popUpBody = document.getElementById("Popup-Body");
-    const popUpCloseBtn = document.getElementById("Footer-Close-PopUp-Button")
-    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-
-    popUpSaveBtn.classList.remove("d-none");
-
-    popUpLabel.textContent = "Thêm vai trò";
-
-    renderRoleInfo({}, "add")
-
-    popUpSaveBtn.onclick = async () => {
-        console.log("Save")
-
-        const roleName = document.getElementById("roleName")
-        const projection = {
-            ten_vaitro: roleName.value,
-            type: "insert"
-        }
-        console.log(JSON.stringify(projection, null, 2));
-        const res = await fetchJsonData("VaiTro", "POST", projection)
-        if (!res.success) {
-            return alert(res.message)
-        }
-        alert(res.message)
-    }
-}
-
-function showEdit(data) {
-    const popUpLabel = document.getElementById("popup-label");
-    const popUpBody = document.getElementById("Popup-Body");
-    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-    const popUpCloseBtn = document.getElementById("Footer-Close-PopUp-Button")
-    popUpSaveBtn.classList.remove("d-none");
-
-    popUpLabel.textContent = `Chinh sửa vai trò: ${data.ten_vaitro}`;
-    renderRoleInfo(data, "edit");
-
-    popUpSaveBtn.onclick = async () => {
-        console.log("edit")
-        const roleName = document.getElementById("roleName")
-        const projection = {
-            id_vaitro: data.id_vaitro,
-            ten_vaitro: roleName.value,
-            type: "update"
-        }
-        console.log(JSON.stringify(projection, null, 2));
-        // const res = await fetchJsonData("VaiTro", "POST", projection)
-        // if (!res.success) {
-        //     return alert(res.message)
-        // }
-        // alert(res.message)
-    }
+    `;
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-    const jsonData = await fetchJsonData("getAllRole")
-    dataTable = initTable(jsonData);
+  const jsonData = await fetchJsonData("getAllRole");
+  dataTable = initTable(jsonData);
 
-    // xoa remove button
-    const removeBtn = document.getElementById("btn-popup-remove");
-    removeBtn.remove()
+  // xoa remove button
+  const removeBtn = document.getElementById("btn-popup-remove");
+  removeBtn.remove();
 
-    // const popupBtnGroup = document.getElementById("popup-button-group");
-    // popupBtnGroup.innerHTML += `<button class="btn btn-danger w-auto" id="btn-popup-ban" data-bs-toggle="modal" data-bs-target="#popupContent">Ban/Unban</button>`
+  const popupBtnGroup = document.getElementById("popup-button-group");
+  popupBtnGroup.innerHTML += `<button class="btn btn-danger w-auto" id="btn-popup-ban" data-bs-toggle="modal" data-bs-target="#popupContent">Ban/Unban</button>`;
 
-    const btnPopUp = document.getElementById("btn-popup-detail");
-    const banBtn = document.getElementById("btn-popup-ban")
-    const editBtn = document.getElementById("btn-popup-update");
-    editBtn.remove()
-    const addbtn = document.getElementById("btn-popup-add");
-    addbtn.remove()
+  const btnPopUp = document.getElementById("btn-popup-detail");
+  const banBtn = document.getElementById("btn-popup-ban");
+  const editBtn = document.getElementById("btn-popup-update");
+  const addbtn = document.getElementById("btn-popup-add");
 
-    btnPopUp.addEventListener("click", () => {
-        const selectRow = document.querySelector(".selectedRow");
-        if (!selectRow) {
-            alertSelectRow();
-            return;
-        }
-        const rowIdx = selectRow.getAttribute("data-index");
-        const selectedData = getSelectedData(dataTable, rowIdx);
-        showDetail(selectedData);
-    })
+  btnPopUp.addEventListener("click", () => {
+    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+    const popUpLabel = document.getElementById("popup-label");
+    popUpSaveBtn.onclick = {};
+    const selectRow = document.querySelector(".selectedRow");
+    if (!selectRow) {
+      alertSelectRow();
+      return;
+    }
+    const rowIdx = selectRow.getAttribute("data-index");
+    const selectedData = getSelectedData(dataTable, rowIdx);
+    popUpSaveBtn.classList.add("d-none");
 
-    // // // them tai khoan
-    // addbtn.addEventListener("click", () => {
-    //     const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-    //     popUpSaveBtn.onclick = {};
+    popUpLabel.textContent = `Chi tiết Vai Trò`;
+    renderRoleInfo(selectedData, "detail");
+  });
 
-    //     showAdd();
-    // })
+  addbtn.addEventListener("click", () => {
+    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+    const popUpLabel = document.getElementById("popup-label");
+    popUpSaveBtn.classList.remove("d-none");
 
-    // editBtn.addEventListener("click", () => {
-    //     const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-    //     popUpSaveBtn.onclick = {};
-    //     const selectRow = document.querySelector(".selectedRow");
-    //     if (!selectRow) {
-    //         alertSelectRow();
-    //         return;
-    //     }
-    //     const rowIdx = selectRow.getAttribute("data-index");
-    //     const selectedData = getSelectedData(dataTable, rowIdx);
+    popUpLabel.textContent = `Thêm vai trò`;
 
-    //     showEdit(selectedData)
-    // })
+    renderRoleInfo({}, "add");
+    popUpSaveBtn.onclick = async () => {
+      const permissionListSwitch =
+        document.getElementsByClassName("permission-list");
+      const roleName = document.getElementById("roleName");
+      const popUpBody = document.getElementById("Popup-Body");
+      if (!roleName) {
+        alert("Không tìm thấy tên vai trò");
+        return;
+      }
+      if (roleName.value == "") {
+        alert("Không được bỏ trống tên vai trò");
+        return;
+      }
 
-    banBtn.addEventListener("click", () => {
-        const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
-        popUpSaveBtn.onclick = {};
-        const selectRow = document.querySelector(".selectedRow");
-        if (!selectRow) {
-            alertSelectRow();
-            return;
-        }
-        const rowIdx = selectRow.getAttribute("data-index");
-        const selectedData = getSelectedData(dataTable, rowIdx);
-        console.log(selectedData)
-        showBan(selectedData);
+      const data = [];
+      for (const item of permissionListSwitch) {
+        if (item.checked) data.push(Number.parseInt(item.id));
+      }
+
+      const insertProjection = {
+        ten_vaitro: roleName.value,
+        data: data,
+        type: "insert",
+      };
+      const result = await fetchJsonData("VaiTro", "POST", insertProjection);
+
+      if (!result.success) {
+        alert(result.message);
+        return;
+      }
+
+      reloadDataTable();
+      popUpBody.textContent = "Thêm vai trò thành công";
+      popUpSaveBtn.classList.add("d-none");
+    };
+  });
+
+  editBtn.addEventListener("click", () => {
+    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+    const popUpLabel = document.getElementById("popup-label");
+    const selectRow = document.querySelector(".selectedRow");
+    if (!selectRow) {
+      alertSelectRow();
+      return;
+    }
+    const rowIdx = selectRow.getAttribute("data-index");
+    const selectedData = getSelectedData(dataTable, rowIdx);
+    popUpSaveBtn.classList.remove("d-none");
+
+    popUpLabel.textContent = `Chi tiết Vai Trò`;
+    renderRoleInfo(selectedData, "edit");
+    popUpSaveBtn.onclick = async () => {
+      const permissionListSwitch =
+        document.getElementsByClassName("permission-list");
+      const roleName = document.getElementById("roleName");
+      const roleId = document.getElementById("roleId");
+      const popUpBody = document.getElementById("Popup-Body");
+      if (!roleName) {
+        alert("Không tìm thấy tên vai trò");
+        return;
+      }
+      if (roleName.value == "") {
+        alert("Không được bỏ trống tên vai trò");
+        return;
+      }
+      const data = [];
+      for (const item of permissionListSwitch) {
+        if (item.checked) data.push(Number.parseInt(item.id));
+      }
+
+      const editProjection = {
+        id_vaitro: roleId.value,
+        ten_vaitro: roleName.value,
+        data: data,
+        type: "edit",
+      };
+
+      const result = await fetchJsonData("VaiTro", "POST", editProjection);
+
+      if (!result.success) {
+        alert(result.message);
+        return;
+      }
+
+      reloadDataTable();
+      popUpBody.textContent = "Sửa vai trò thành công";
+      popUpSaveBtn.classList.add("d-none");
+    };
+  });
+
+  banBtn.addEventListener("click", () => {
+    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
+    const popUpCloseBtn = document.getElementById("Footer-Close-PopUp-Button");
+    const popUpLabel = document.getElementById("popup-label");
+    const popUpBody = document.getElementById("Popup-Body");
+
+    popUpLabel.textContent = "Khoá vai trò";
+
+    const selectRow = document.querySelector(".selectedRow");
+    if (!selectRow) {
+      alertSelectRow();
+      return;
+    }
+    const rowIdx = selectRow.getAttribute("data-index");
+    const selectedData = getSelectedData(dataTable, rowIdx);
+
+    if (selectedData.id_vaitro == 2 || selectedData.id_vaitro == 1) {
+      popUpBody.textContent = "Không thể khoá quyền này";
+    }
+
+    popUpBody.textContent = `Bạn có muốn ${
+      selectedData.trangthai == 1 ? "khoá" : "mở khoá"
+    } ${selectedData.ten_vaitro}`;
+
+    popUpSaveBtn.classList.remove("d-none");
+
+    popUpSaveBtn.textContent = "YES";
+    popUpCloseBtn.textContent = "NO";
+
+    const modal = document.getElementById("popupContent");
+    modal.addEventListener("hide.bs.modal", () => {
+      popUpSaveBtn.classList.add("d-none");
+      popUpSaveBtn.textContent = "Save changes";
+      popUpCloseBtn.textContent = "Close";
     });
-})
+
+    popUpSaveBtn.onclick = async () => {
+      const lockProjection = {
+        id_vaitro: selectedData.id_vaitro,
+        newtrangthai: selectedData.trangthai == 1 ? 0 : 1,
+        type: "lock",
+      };
+      console.log(lockProjection);
+      const result = await fetchJsonData(
+        "VaiTro",
+        "POST",
+        lockProjection
+      ).catch((e) => {
+        alert(e);
+      });
+
+      if (!result.success) {
+        alert(result.message);
+        return;
+      }
+
+      popUpBody.textContent = `${
+        selectedData.trangthai == 1 ? "khoá" : "Mở khoá"
+      } vai trò ${selectedData.ten_vaitro} thành công`;
+      popUpSaveBtn.classList.add("d-none");
+      reloadDataTable();
+    };
+  });
+});

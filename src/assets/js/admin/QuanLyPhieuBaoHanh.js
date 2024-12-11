@@ -126,6 +126,11 @@ async function renderProductInfo(data, type) {
   const productOrderId = document.getElementById("productIdHd");
   const productImei = document.getElementById("productImei");
 
+  const modal = document.getElementById("popupContent");
+  modal.addEventListener("hide.bs.modal", () => {
+    hoadonTable.destroy();
+  });
+
   selectImeiBtn.onclick = () => {
     const selectRow = document.querySelector("#sanphambaohanh .selectedRow");
     if (!selectRow) {
