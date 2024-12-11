@@ -125,6 +125,12 @@ async function renderReceiptDetail(data, type) {
     "btn-choose-product-detail"
   );
 
+  const modal = document.getElementById("popupContent");
+  modal.addEventListener("hide.bs.modal", () => {
+    productDetailTable.destroy();
+    productTable.destroy();
+  });
+
   chooseProduct.onclick = async () => {
     const selectRow = document.querySelector("#sanpham .selectedRow");
     if (!selectRow) {
@@ -336,6 +342,7 @@ async function renderReceiptInfo(data, type) {
   let receiptDetailTable = initTable(receiptDetail, "chitietphieunhap");
 
   if (type !== "add") {
+    const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
     popUpSaveBtn.onclick = () => {};
     return;
   }
@@ -345,6 +352,11 @@ async function renderReceiptInfo(data, type) {
   const addbtn = document.getElementById("btn-receiptDetail-add");
   const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
   const providerSelect = document.getElementById("providerSelect");
+
+  const modal = document.getElementById("popupContent");
+  modal.addEventListener("hide.bs.modal", () => {
+    receiptDetailTable.destroy();
+  });
 
   addbtn.onclick = () => {
     renderReceiptDetail(null, "add");

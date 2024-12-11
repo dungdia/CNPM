@@ -1,57 +1,165 @@
 module.exports = async (req, res) => {
-    console.log(req.body)
-    const { id_vaitro, ten_vaitro, type } = req.body;
-    try {
-        const DBConnecter = require("../../../controller/DBconnecter");
-        const conn = new DBConnecter();
+  const { id_vaitro, ten_vaitro, data, newtrangthai, type } = req.body;
+
+  if (!type) {
+    res.send({ success: false, message: "Không có type" });
+    return;
+  }
+  try {
+    const DBconnecter = require("../../../controller/DBconnecter");
+    const conn = new DBconnecter();
+
+    switch (type) {
+      case "insert":
+        if (!ten_vaitro) {
+          res.send({ success: false, message: "Không có tên vai trò" });
+          return;
+        }
+        if (!data) {
+          res.send({ success: false, message: "không có danh sách quyền" });
+          return;
+        }
+        const tenVaitro = await conn.select(
+          `SELECT * FROM vaitro WHERE ten_vaitro=?`,
+          [ten_vaitro]
+        );
+        if (tenVaitro.length > 0) {
+          conn.closeConnect();
+          res.send({ success: false, message: "Tên vai trò đã tồn tại" });
+          return;
+        }
+
+        const roleResult = await conn.insert(
+          `INSERT INTO vaitro (ten_vaitro) VALUES (?)`,
+          [ten_vaitro]
+        );
+
+        if (roleResult.status != 200) {
+          conn.closeConnect();
+          res.send({ success: false, message: "Thêm vai trò thất bại" });
+          return;
+        }
+
+        const id_role = await conn.lastId();
+
+        for (const id_permission of data) {
+          const permissionResult = await conn.insert(
+            `INSERT INTO ctquyen (id_vaitro,id_quyen) VALUES (?,?)`,
+            [id_role, id_permission]
+          );
+
+          if (permissionResult.status != 200) {
+            conn.closeConnect();
+            res.send({ success: false, message: "Thêm quyền thất bại" });
+            return;
+          }
+        }
+        conn.closeConnect();
+        res.send({ success: true, message: "Thêm vai trò thành công" });
+        break;
+      case "edit":
+        if (!id_vaitro) {
+          res.send({ success: false, message: "không có id vai trò" });
+          return;
+        }
+        if (id_vaitro == 1 || id_vaitro == 2) {
+          res.send({ success: false, message: "Không được sửa vai trò này" });
+          return;
+        }
 
         if (!ten_vaitro) {
-            return res.json({ message: "Vui lòng nhập tên vai trò", success: false })
+          res.send({ success: false, message: "Không có tên vai trò" });
+          return;
+        }
+        if (!data) {
+          res.send({ success: false, message: "không có danh sách quyền" });
+          return;
+        }
+        const tenVaitroEdit = await conn.select(
+          `SELECT * FROM vaitro WHERE ten_vaitro=? and id_vaitro != ?`,
+          [ten_vaitro, id_vaitro]
+        );
+        if (tenVaitroEdit.length > 0) {
+          conn.closeConnect();
+          res.send({ success: false, message: "Tên vai trò đã tồn tại" });
+          return;
         }
 
-        if (type === "insert") {
-            const checkExist = await conn.select(`
-                select *
-                from vaitro vt
-                where vt.ten_vaitro = ?
-            `, [ten_vaitro])
+        const updateNameResult = await conn.update(
+          `UPDATE vaitro SET ten_vaitro =? WHERE id_vaitro=?`,
+          [ten_vaitro, id_vaitro]
+        );
 
-            if (checkExist.length > 0) {
-                return res.json({ message: "Vai trò đã tồn tại", success: false })
-            }
-
-            const addVaiTro = await conn.insert(`
-                INSERT INTO cnpm.vaitro
-                (ten_vaitro)
-                VALUES(?);
-            `, [ten_vaitro])
-
-            if (addVaiTro.status !== 200) {
-                return res.json({ message: "Thêm vai trò thất bại", success: false })
-            }
-
-            return res.json({ message: "Thêm vai trò thành công", success: true })
+        if (updateNameResult.status != 200) {
+          res.send({ success: false, message: "sửa tên vai trò thất bại" });
+          return;
         }
-        if (type === "update") {
-            const checkExist = await conn.select(`
-                select *
-                from vaitro vt
-                where vt.ten_vaitro = ?
-            `, [ten_vaitro])
+        //clean permission detail
+        const removeOldPermissionDetail = await conn.delete(
+          `DELETE FROM ctquyen WHERE id_vaitro=?`,
+          [id_vaitro]
+        );
 
-            if (checkExist.length > 0) {
-                return res.json({ message: "Vai trò đã tồn tại", success: false })
-            }
+        for (const id_permission of data) {
+          const permissionResult = await conn.insert(
+            `INSERT INTO ctquyen (id_vaitro,id_quyen) VALUES (?,?)`,
+            [id_vaitro, id_permission]
+          );
 
-            const updateVaiTro = await conn.update(`
-                update cnpm.vaitro
-                set ten_vaitro = ?
-                where id_vaitro = ?
-            `, [ten_vaitro, id_vaitro])
-
-            return res.json({ message: "Cập nhật bảo hành thành công", success: true })
+          if (permissionResult.status != 200) {
+            conn.closeConnect();
+            res.send({ success: false, message: "Thêm quyền thất bại" });
+            return;
+          }
         }
-    } catch (error) {
-        res.json({ message: error });
+        conn.closeConnect();
+        res.send({ success: true, message: "Sửa quyền thành công" });
+        break;
+      case "lock":
+        if (!id_vaitro) {
+          res.send({ success: false, message: "không có id vai trò" });
+          return;
+        }
+        if (id_vaitro == 1 || id_vaitro == 2) {
+          res.send({ success: false, message: "Không được sửa vai trò này" });
+          return;
+        }
+        if (newtrangthai === undefined || newtrangthai === null) {
+          res.send({ success: false, message: "không có trạng thái mới" });
+          return;
+        }
+
+        if (newtrangthai != 1 && newtrangthai != 0) {
+          res.send({
+            success: false,
+            message: "Trạng thái chỉ có thể là 1 hoặc 0",
+          });
+          return;
+        }
+
+        const lockResult = await conn.update(
+          `UPDATE vaitro SET trangthai=? WHERE id_vaitro = ?`,
+          [newtrangthai, id_vaitro]
+        );
+
+        if (lockResult.status != 200) {
+          conn.closeConnect();
+          res.send({ success: false, message: "Sửa vai trò thất bại" });
+          return;
+        }
+        conn.closeConnect();
+        res.send({ success: true, message: "Cập nhật thành công" });
+        break;
+      default:
+        conn.closeConnect();
+        res.send({
+          success: false,
+          message: "Không có loại chức năng tương ứng",
+        });
+
+        break;
     }
-}
+  } catch (error) {
+    console.log(error);
+  }
+};
