@@ -137,6 +137,20 @@ module.exports = async (req, res) => {
           return;
         }
 
+        if (newtrangthai == 0) {
+          const checkDependency = await conn.select(
+            `SELECT * FROM taikhoan WHERE vaitro_id = ?`,
+            [id_vaitro]
+          );
+          if (checkDependency.length > 0) {
+            res.send({
+              success: false,
+              message: "Không thể khoá vì còn tài khoản giữa vai trò này",
+            });
+            return;
+          }
+        }
+
         const lockResult = await conn.update(
           `UPDATE vaitro SET trangthai=? WHERE id_vaitro = ?`,
           [newtrangthai, id_vaitro]
