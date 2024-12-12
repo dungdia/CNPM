@@ -172,6 +172,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   editBtn.addEventListener("click", () => {
     const popUpSaveBtn = document.getElementById("Footer-Save-PopUp-Button");
     const popUpLabel = document.getElementById("popup-label");
+    const popUpBody = document.getElementById("Popup-Body");
     const selectRow = document.querySelector(".selectedRow");
     if (!selectRow) {
       alertSelectRow();
@@ -181,14 +182,20 @@ window.addEventListener("DOMContentLoaded", async () => {
     const selectedData = getSelectedData(dataTable, rowIdx);
     popUpSaveBtn.classList.remove("d-none");
 
-    popUpLabel.textContent = `Chi tiết Vai Trò`;
+    popUpLabel.textContent = `Sửa Vai Trò`;
+
+    if (selectedData.id_vaitro == 2 || selectedData.id_vaitro == 1) {
+      popUpBody.textContent = `Không thể sửa vai trò ${selectedData.ten_vaitro}`;
+      popUpSaveBtn.classList.add("d-none");
+      return;
+    }
+
     renderRoleInfo(selectedData, "edit");
     popUpSaveBtn.onclick = async () => {
       const permissionListSwitch =
         document.getElementsByClassName("permission-list");
       const roleName = document.getElementById("roleName");
       const roleId = document.getElementById("roleId");
-      const popUpBody = document.getElementById("Popup-Body");
       if (!roleName) {
         alert("Không tìm thấy tên vai trò");
         return;
@@ -240,6 +247,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     if (selectedData.id_vaitro == 2 || selectedData.id_vaitro == 1) {
       popUpBody.textContent = "Không thể khoá quyền này";
+      return;
     }
 
     popUpBody.textContent = `Bạn có muốn ${

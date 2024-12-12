@@ -337,6 +337,7 @@ async function showLock(data) {
     const projection = {
       id_sanpham: data.id_sanpham,
       trangThai: data.trangThai === "1" ? "0" : "1",
+      type: "lock",
     };
     const formData = new FormData();
     for (const [key, value] of Object.entries(projection)) {
@@ -347,14 +348,14 @@ async function showLock(data) {
     if (!res.success) {
       alert(res.message);
     } else {
-      alert(res.message);
+      popUpBody.textContent = `${data.trangThai == 1 ? "Lock" : "Unlock"} ${
+        data.ten_sanpham
+      } thành công`;
+      popUpCloseBtn.textContent = "Close";
+      popUpSaveBtn.textContent = "Save Changes";
+      popUpSaveBtn.classList.add("d-none");
+      reloadDataTable();
     }
-    popUpBody.textContent = `${data.trangThai === 1 ? "Lock" : "Unlock"} ${
-      data.ten_sanpham
-    } thành công`;
-    popUpCloseBtn.textContent = "Close";
-    popUpSaveBtn.classList.add("d-none");
-    reloadDataTable();
   };
 }
 
