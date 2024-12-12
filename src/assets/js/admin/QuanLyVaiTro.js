@@ -274,7 +274,10 @@ window.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (!result.success) {
-        alert(result.message);
+        popUpBody.textContent = result.message;
+        popUpSaveBtn.classList.add("d-none");
+        popUpSaveBtn.textContent = "Save changes";
+        popUpCloseBtn.textContent = "Close";
         return;
       }
 
@@ -282,6 +285,8 @@ window.addEventListener("DOMContentLoaded", async () => {
         selectedData.trangthai == 1 ? "khoá" : "Mở khoá"
       } vai trò ${selectedData.ten_vaitro} thành công`;
       popUpSaveBtn.classList.add("d-none");
+      popUpSaveBtn.textContent = "Save changes";
+      popUpCloseBtn.textContent = "Close";
       reloadDataTable();
     };
   });
