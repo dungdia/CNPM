@@ -12,7 +12,9 @@ module.exports = async (req, res) => {
             from phienbansanpham pbsp
             join sanpham sp on pbsp.id_sanpham = sp.id_sanpham 
             join baohanh bh on pbsp.id_BaoHanh = bh.id_baohanh
-            ${id_sanpham ? `WHERE sp.id_sanpham = ?` : ""}`,
+            ${
+              id_sanpham ? `WHERE sp.id_sanpham = ?` : ""
+            } ORDER BY pbsp.id_phienban`,
       agrs
     );
     const data = [];

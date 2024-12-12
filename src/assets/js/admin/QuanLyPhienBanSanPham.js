@@ -233,7 +233,7 @@ async function showLock(data) {
       type: "delete",
     };
 
-    const res = await fetchJsonData("ChiTietSp", "POST", projection);
+    const res = await fetchJsonData("PhienBanSp", "POST", projection);
     if (!res.success) {
       alert(res.message);
     }

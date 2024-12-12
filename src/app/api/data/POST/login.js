@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
 
     const userList = await conn.select(
       `
-            SELECT user_name,password,vaitro_id,refesh_token
+            SELECT user_name,password,vaitro_id,refesh_token,trangthai
             FROM taikhoan
             WHERE user_name = ?
         `,
@@ -27,6 +27,10 @@ module.exports = async (req, res) => {
     if (userList.length == 0) {
       conn.closeConnect();
       return res.send({ success: false, message: "Tài khoản không tồn tại" });
+    }
+    if (userList[0].trangthai == 0) {
+      conn.closeConnect();
+      return res.send({ success: false, message: "Tài khoản đã bị khoá" });
     }
 
     const verifiedPassword = await bcrypt.compare(
