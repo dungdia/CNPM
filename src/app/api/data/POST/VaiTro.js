@@ -143,6 +143,7 @@ module.exports = async (req, res) => {
             [id_vaitro]
           );
           if (checkDependency.length > 0) {
+            conn.closeConnect();
             res.send({
               success: false,
               message: "Không thể khoá vì còn tài khoản giữa vai trò này",
