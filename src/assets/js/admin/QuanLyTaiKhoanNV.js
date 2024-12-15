@@ -75,9 +75,14 @@ async function renderUserInfo(data, type) {
                     <input 
                         class="form-check-input" 
                         type="radio" 
-                        value="0" 
+                        value="1" 
                         name="flexRadioDefault" 
-                        id="genderFemale">
+                        id="genderFemale"
+                        ${
+                          item?.gioi_tinh == 1 && type !== "add"
+                            ? "checked"
+                            : ""
+                        }>
                     <label class="form-check-label" for="genderFemale">
                         Nữ
                     </label>
@@ -86,10 +91,10 @@ async function renderUserInfo(data, type) {
                     <input 
                         class="form-check-input" 
                         type="radio" 
-                        value="1" 
+                        value="0" 
                         name="flexRadioDefault" 
                         id="genderMale" 
-                        checked>
+                        ${item?.gioi_tinh == 0 ? "checked" : ""}>
                     <label class="form-check-label" for="genderMale">
                         Nam
                     </label>
