@@ -28,6 +28,7 @@ module.exports = async (req, res) => {
       conn.closeConnect();
       return res.send({ success: false, message: "Tài khoản không tồn tại" });
     }
+
     if (userList[0].trangthai == 0) {
       conn.closeConnect();
       return res.send({ success: false, message: "Tài khoản đã bị khoá" });
